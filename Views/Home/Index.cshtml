@@ -1,0 +1,157 @@
+﻿@model OnlineShopingStore.Models.Home.HomeIndexViewModel
+@using PagedList;
+
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Home Page";
+
+
+}
+
+<div id="themeSlider" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#themeSlider" data-slide-to="0" class="active"></li>
+        <li data-target="#themeSlider" data-slide-to="1"></li>
+        <li data-target="#themeSlider" data-slide-to="2"></li>
+    </ol>
+
+    <div class="carousel-inner">
+        <div class="item active">
+            <div class="imgOverlay"></div>
+            <img style="height:400px;width:100%" src="~/Images/istockphoto-458990823-612x612.jpg" alt="First slide">
+            <div class="carousel-caption">
+                <h3>new</h3>
+            </div>
+        </div>
+        <div class="item">
+            <div class="imgOverlay"></div>
+            <img style="height:400px;width:100%" src="~/Images/istockphoto-458610715-612x612.jpg" alt="Second slide">
+            <div class="carousel-caption">
+                <h3>My Phone</h3>
+            </div>
+        </div>
+        <div class="item">
+            <div class="imgOverlay"></div>
+            <img style="height:400px;width:100%" src="~/Images/istockphoto-1398204953-612x612.jpg" alt="Third slide">
+            <div class="carousel-caption">
+                <h3>Sale</h3>
+            </div>
+        </div>
+    </div>
+
+    <a class="left carousel-control" href="#themeSlider" data-slide="prev">
+        <span class="fa fa-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#themeSlider" data-slide="next">
+        <span class="fa fa-chevron-right"></span>
+    </a>
+
+</div>
+@*<div class="olContent f1"><h2 style="color:black">Search Product/Category</h2></div>
+    <div class="olSearch fr">
+        <input type="text" placeholder="Enter Keyword" name="SearchKey" class="inputComn houseText form-control border-0" style="flex: 1; outline: none;" />
+    <div class="searchIcon">
+        <button type="button" class="searchBtn border-0 bg-transparent">
+            <img src="~/Images/icons8-search-30.png" alt="Search" class="search-icon" />
+        </button>
+    </div>
+    </div>*@
+@*<div class="olContent f1">
+        <h2 style="color:black">Search Product/Category</h2>
+        <div class="olSearch fr d-flex align-items-center border rounded">
+            <input type="text" placeholder="Enter Keyword"  class="inputComn  form-control ">
+            <button type="button" class="searchBtn btn ">
+                <img src="/Images/icons8-search-30.png" alt="Search" class="search-icon">
+            </button>
+        </div>
+
+    </div>*@
+
+@*<div class="olContent f1">
+        <h2 style="color:black">Search Product/Category</h2>
+        <form method="post">
+            <div class="olSearch d-flex align-items-center border rounded">
+                <input type="text" placeholder="Enter Keyword" class="inputComn form-control">
+                <div class="search-icon">
+                    <button type="button" class="searchBtn btn">
+                        <img src="/Images/icons8-search-30.png" alt="Search" class="search-icon">
+                    </button>
+                </div>
+
+        </form>
+        </div>
+    </div>*@
+<div class="olContent f1">
+    <h2 style="color:black">Search Product/Category</h2>
+    <form action="@Url.Action("Index", "Home")" method="get" class="d-flex  ">
+        <input type="text" name="search" placeholder="Enter Keyword" class="inputComn " />
+        <button type="submit" class="searchBtn btn">
+            <img src="/Images/icons8-search-30.png" alt="Search" class="search-icon" />
+        </button>
+        <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'" class="btn btn-secondary ml-2">
+            Reset
+        </button>
+    </form>
+</div>
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h2>Our Products <small>Trends Products</small></h2>
+
+        </div>
+    </div>
+</div>
+
+<div class="row product-container">
+    @foreach (var item in Model.ListofProducts)
+    {
+        <div class="col-md-3 col-sm-3 col-xs-6" style="margin-bottom:8px">
+            <div class="img-thumbnail product-item" style="height:300px">
+                <img class="img-responsive" title="Click to view product detail"
+                     style="cursor:pointer;height:160px;width:100%"
+                     src="~/ProductImg/@item.ProductImage" />
+                <div class="caption">
+                    <h5>@item.ProductName</h5>  <!-- Correct field here -->
+                    <p>@item.Price</p> <!-- Example price, modify accordingly -->
+                    <p>
+                        @if (item.Quantity > 0)
+                        {
+                            using (Html.BeginForm("AddToCart", "Home", new { productId = item.ProductId }, FormMethod.Post))
+                            {
+                                <button type="submit" class="pull-right"><i class="fa fa-shopping-cart"></i></button>
+                            }
+
+                        <p>Available</p>
+                    }
+                    else
+                    {
+                        <p>Not Available</p>
+                    }
+                        </p>
+                        <div class="product-item-badge">
+                            @if (item.IsFeatured == true)
+                            {
+                                <p>New</p>
+                            }
+                            else
+                            {
+                                <p>Old</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+</div>
+<div class="container">
+    <br />
+    @Html.PagedListPager(
+    Model.ListofProducts,
+    pageNum => Url.Action("Index", new { page = pageNum, search = Request.QueryString["search"] }))
+</div>

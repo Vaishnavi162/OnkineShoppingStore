@@ -1,0 +1,159 @@
+﻿@using OnlineShopingStore.Models.Home
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/MyMainLayout.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="logo">
+                    <div class="logo-container">
+                        <img src="~/Images/nextgen.png" class="logo-img" width="50px" height="auto" />
+                        <h1><a href="#"><span>NextGen </span></a></h1>
+                    </div>
+                </div>
+                @*<div class="row">
+                    <div class="col-md-12">
+                        <div class="nav-menus">*@
+                <ul class="nav nav-pills ">
+                    <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
+                    <li><a style="border-radius:initial;" href="#">Location</a></li>
+                    <li><a style="border-radius:initial;" href="#">About</a></li>
+                </ul>
+                <br />
+                @*</div>
+                        </div>
+                    </div>*@
+
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="account">
+                    @*<ul>
+            <li>
+                <div class="hidden-xs">
+                    <h4><a>Call</a></h4>
+                    <p>0183##-######</p>
+                </div>
+
+                <div class="visible-xs">
+
+
+                </div>
+
+            </li>
+        </ul>*@
+                    
+                    
+                    
+                    
+                    
+                    <ul class="nav navbar-nav navbar-right">
+
+
+                        <li class="dropdown">
+                            <a data-toggle="dropdown"  href="#">Cart(3)<b class="caret"></b></a>
+
+                            <ul class="dropdown-menu" style="width:300px">
+                                @if (Session["cart"] != null)
+                                {
+                                    var cartItems = (List<Item>)Session["cart"];
+                                    foreach (var item in cartItems)
+                                    {
+                                        if (item?.Product != null)
+                                        {
+                                            <li><a href="@Url.Action("RemoveFromCart","Home",new {productId =item.Product.ProductId})">@item.Product.ProductName - @item.Quantity <i class="fa fa-times"></i></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li><a href="#">Product not available - @item.Quantity</a></li>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <li><a href="#">No items in cart</a></li>
+                                }
+                                <li class="divider"></li>
+                                <li><a href="#">View Cart</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        @*<div class="row">
+                <div class="col-md-12">
+                    <div class="nav-menus">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
+                            <li><a style="border-radius:initial;" href="#">Location</a></li>
+                            <li><a style="border-radius:initial;" href="#">About</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>*@
+
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="row">
+                <div class="col-md-12 copyright">
+                    <div class="col-md-6 col-sm-6 copyright-left">
+                        <p>&copy; @DateTime.Now.Year - OnlineShopingStore. All right reserved.</p>
+                    </div>
+                    @*<div class="col-md-6 col-sm-6 copyright-right">
+                            <ul class="list-unstyled list-social">
+                                <li><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+
+                            </ul>
+                        </div>*@
+                    <div class="col-12 text-center">
+                        <ul class="list-unstyled list-social d-flex justify-content-center">
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <!-- Chart.js (Make sure this is included) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Your Custom Chart.js Script -->
+    <script src="~/AdminStyle/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/AdminStyle/js/demo/chart-area-demo.js"></script>
+
+    @RenderSection("scripts", required: false)
+
+
+</body>
+</html>
