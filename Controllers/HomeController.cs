@@ -72,8 +72,7 @@ namespace OnlineShopingStore.Controllers
             {
                 
                 List<Item> cart = (List<Item>)Session["cart"];
-                var product = ctx.Tbl_Product.Find(productId);
-
+                var product = ctx.Tbl_Product.Find(productId); 
                 var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
                 if (existingItem != null)
                 {
