@@ -66,9 +66,18 @@
                     
                     <ul class="nav navbar-nav navbar-right">
 
-
+                        @if (Session["UserID"] != null)
+                        {
+                            <li><a href="#">Welcome, @Session["UserName"]</a></li>
+                            <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                        }
+                        else
+                        {
+                            <li><a href="@Url.Action("Login", "Account")">Login</a></li>
+                            <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                        }
                         <li class="dropdown">
-                            <a data-toggle="dropdown"  href="#">Cart<b class="caret"></b></a>
+                            <a data-toggle="dropdown" href="#">Cart<b class="caret"></b></a>
 
                             <ul class="dropdown-menu" style="width:300px">
                                 @if (Session["cart"] != null)

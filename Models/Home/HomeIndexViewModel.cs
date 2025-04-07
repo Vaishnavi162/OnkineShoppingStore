@@ -13,7 +13,7 @@ namespace OnlineShopingStore.Models.Home
     public class HomeIndexViewModel
     {
         public GenericUnitOfWork _unitOfWork = new GenericUnitOfWork();
-        dbMyOnlineShoppingEntities1 contex = new dbMyOnlineShoppingEntities1();
+        dbMyOnlineShoppingEntitiess contex = new dbMyOnlineShoppingEntitiess();
         public IPagedList<Tbl_Product> ListofProducts { get; set; }
 
         public HomeIndexViewModel CreateModel(string search, int pageSize, int? page)

@@ -10,7 +10,7 @@ namespace OnlineShopingStore.Controllers
 {
     public class HomeController : Controller
     {
-        dbMyOnlineShoppingEntities1 ctx = new dbMyOnlineShoppingEntities1();
+        dbMyOnlineShoppingEntitiess ctx = new dbMyOnlineShoppingEntitiess();
         public ActionResult Index(string search, int? page)
         {
             HomeIndexViewModel model = new HomeIndexViewModel();
