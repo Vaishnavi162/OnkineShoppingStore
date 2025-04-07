@@ -1,0 +1,65 @@
+﻿@{
+    Layout = null; // Optional if you don't want the full layout
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link href="~/AdminStyle/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h3>Admin Login</h3>
+        <form method="post">
+            <div class="form-group">
+                <label>Username</label>
+                <input name="username" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input name="password" type="password" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <span class="text-danger">@ViewBag.Error</span>
+        </form>
+    </div>
+</body>
+</html>
+
+
+<!--@{
+    ViewBag.Title = "Admin Login";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4>Admin Login</h4>
+                </div>
+                <div class="card-body">
+                    @using (Html.BeginForm("AdminLogin", "Admin", FormMethod.Post))
+                    {
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            @Html.TextBox("username", null, new { @class = "form-control", placeholder = "Enter Username" })
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            @Html.Password("password", null, new { @class = "form-control", placeholder = "Enter Password" })
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+<!-- Optional: Add client-side validation or scripts here -->
+<!--}-->

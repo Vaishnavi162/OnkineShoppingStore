@@ -15,7 +15,64 @@ namespace OnlineShopingStore.Controllers
     {
         // GET: Admin
         public GenericUnitOfWork _unitOfWork = new GenericUnitOfWork();
-        
+
+
+        //public ActionResult AdminLogin()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public ActionResult AdminLogin(string username, string password)
+        //{
+        //    if (username == "admin" && password == "admin123") // Example logic
+        //    {
+        //        Session["AdminUsername"] = username;
+        //        return RedirectToAction("Dashboard", "Admin");
+        //    }
+
+        //    ViewBag.Message = "Invalid credentials!";
+        //    return View();
+        //}
+        //public ActionResult Logout()
+        //{
+        //    Session.Clear(); // or Session.Abandon();
+        //    return RedirectToAction("AdminLogin", "Admin");
+        //}
+
+        // GET: Admin/Login
+        public ActionResult AdminLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AdminLogin(string username, string password)
+        {
+            // Dummy check — replace with your DB logic
+            if (username == "admin" && password == "admin123")
+            {
+                Session["Admin"] = username;
+                return RedirectToAction("Dashboard");
+            }
+
+            ViewBag.Error = "Invalid login details";
+            return View();
+        }
+
+        public ActionResult Dashboard()
+        {
+            if (Session["Admin"] == null)
+                return RedirectToAction("AdminLogin");
+
+            return View();
+        }
+
+        public ActionResult Logout()
+        {
+            Session["Admin"] = null;
+            return RedirectToAction("AdminLogin");
+        }
         public List<SelectListItem> GetCategory()
         {
             List<SelectListItem> list= new List<SelectListItem>();
@@ -27,10 +84,10 @@ namespace OnlineShopingStore.Controllers
             return list;
         }
         
-        public ActionResult Dashboard()
-        {
-            return View();
-        }
+        //public ActionResult Dashboard()
+        //{
+        //    return View();
+        //}
 
         public ActionResult Categories()
         {
