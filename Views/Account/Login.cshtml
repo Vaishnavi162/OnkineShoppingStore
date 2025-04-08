@@ -18,11 +18,18 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>
-    if (TempData["Success"] != null)
+    @*if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }*@
+    if (TempData["LoginRequired"] != null)
     {
-        <div class="alert alert-success">
-            @TempData["Success"]
+        <div class="alert alert-warning">
+            @TempData["LoginRequired"]
         </div>
     }
+
 
 }

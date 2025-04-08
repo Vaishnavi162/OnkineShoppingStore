@@ -24,18 +24,22 @@
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="logo">
                     <div class="logo-container">
-                        <img src="~/Images/nextgen.png" class="logo-img" width="50px" height="auto" />
-                        <h1><a href="#"><span>NextGen </span></a></h1>
+                        <br />
+                        <img src="~/Images/Blue Simple Modern Electronic Logo.png" width="200px" height="100px"/>
+                        @*<img src="~/Images/nextgen.png" class="logo-img" width="50px" height="auto" />
+        <h1><a href="#"><span>NextGen </span></a></h1>*@
                     </div>
                 </div>
                 @*<div class="row">
                     <div class="col-md-12">
                         <div class="nav-menus">*@
-                <ul class="nav nav-pills ">
-                    <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
-                    <li><a style="border-radius:initial;" href="#">Location</a></li>
-                    <li><a style="border-radius:initial;" href="#">About</a></li>
-                </ul>
+            <ul class="nav nav-pills ">
+                <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
+                <li><a style="border-radius:initial;" href="#">Location</a></li>
+                @*<li><a style="border-radius:initial;" href="../Home/About">About</a></li>*@
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+
+            </ul>
                 <br />
                 @*</div>
                         </div>
