@@ -2004,6 +2004,7 @@
     <Content Include="Views\Payment\FailureView.cshtml" />
     <Content Include="Views\Payment\SuccessView.cshtml" />
     <Content Include="Views\Admin\AdminLogin.cshtml" />
+    <Content Include="Views\Home\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

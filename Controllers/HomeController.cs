@@ -64,42 +64,7 @@ namespace OnlineShopingStore.Controllers
            
             return Redirect("CheckOut");
         }
-        //public ActionResult AddToCart(int productId)
-        //{
-        //    if (Session["cart"] == null)
-        //    {
-
-        //        List<Item> cart = new List<Item>();
-        //        var product = ctx.Tbl_Product.Find(productId);
-        //        cart.Add(new Item()
-        //        {
-        //            Product = product,
-        //            Quantity = 1
-        //        });
-        //        Session["cart"] = cart;
-        //    }
-        //    else
-        //    {
-
-        //        List<Item> cart = (List<Item>)Session["cart"];
-        //        var product = ctx.Tbl_Product.Find(productId); 
-        //        var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
-        //        if (existingItem != null)
-        //        {
-        //            existingItem.Quantity += 1;
-        //        }
-        //        else
-        //        {
-        //            cart.Add(new Item()
-        //            {
-        //                Product = product,
-        //                Quantity = 1
-        //            });
-        //        }
-        //        Session["cart"] = cart;
-        //    }
-        //    return RedirectToAction("Index");
-        //}
+      
 
         public ActionResult AddToCart(int productId)
         {
@@ -153,6 +118,18 @@ namespace OnlineShopingStore.Controllers
             }
             Session["cart"] = cart;
             return Redirect("Index");
+        }
+        public ActionResult Details(int productId)
+        {
+            // Get product from database
+            var product = ctx.Tbl_Product.Find(productId);
+
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(product);
         }
     }
 }
