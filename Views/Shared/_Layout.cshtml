@@ -33,17 +33,25 @@
                 @*<div class="row">
                     <div class="col-md-12">
                         <div class="nav-menus">*@
-            <ul class="nav nav-pills ">
-                <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
-                <li><a style="border-radius:initial;" href="#">Location</a></li>
-                @*<li><a style="border-radius:initial;" href="../Home/About">About</a></li>*@
-                <li>@Html.ActionLink("About", "About", "Home")</li>
+            <!--<ul class="nav nav-pills ">
+                <li class="active"><a style="border-radius:initial;" href="../Home/Index">Home</a></li>-->
 
-            </ul>
+                @*<li><a style="border-radius:initial;" href="../Home/About">About</a></li>*@
+                @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+            <!--</ul>-->
                 <br />
-                @*</div>
-                        </div>
-                    </div>*@
+                <ul class="nav nav-pills">
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                        @Html.ActionLink("Home", "Index", "Home")
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">
+                        @Html.ActionLink("About", "About", "Home")
+                    </li>
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">
+                        @Html.ActionLink("Contact", "Contact", "Home")
+                    </li>
+                </ul>
 
 
             </div>
@@ -51,75 +59,70 @@
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="account">
 
-                    @*<ul>
-            <li>
-                <div class="hidden-xs">
-                    <h4><a>Call</a></h4>
-                    <p>0183##-######</p>
-                </div>
-
-                <div class="visible-xs">
-
-
-                </div>
-
-            </li>
-        </ul>*@
-
+                   
                     <br />
-                    @if (Session["Fullname"] != null)
-                    {
-                        <h4>Welcome, @Session["Fullname"]!</h4>
-                    }
-                    else
-                    {
-                        <h4>Welcome to our online store!</h4>
+                   
+
+                    @{
+                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+                        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
                     }
 
-                    <br />
-
-
-                    <ul class="nav navbar-nav navbar-right">
-
-                        @if (Session["Fullname"] != null)
+                    @if (!(Request.RequestContext.RouteData.Values["action"].ToString() == "Contact" &&
+Request.RequestContext.RouteData.Values["controller"].ToString() == "Home"))
+                    {
+                        // Only show on pages that are NOT the Contact page
+                        if (Session["Fullname"] != null)
                         {
-                            <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                            <h4>Welcome, @Session["Fullname"]!</h4>
                         }
-
-
                         else
                         {
-                            <li><a href="@Url.Action("Login", "Account")">Login</a></li>
-                            <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                            <h4>Welcome to our online store!</h4>
                         }
-                        <li class="dropdown">
-                            <a data-toggle="dropdown" href="#">Cart<b class="caret"></b></a>
 
-                            <ul class="dropdown-menu" style="width:300px">
-                                @if (Session["cart"] != null)
-                                {
-                                    var cartItems = (List<Item>)Session["cart"];
-                                    foreach (var item in cartItems)
+                        <br />
+
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (Session["Fullname"] != null)
+                            {
+                                <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="@Url.Action("Login", "Account")">Login</a></li>
+                                <li><a href="@Url.Action("Register", "Account")">Register</a></li>
+                            }
+                            <li class="dropdown">
+                                <a data-toggle="dropdown" href="#">Cart<b class="caret"></b></a>
+                                <ul class="dropdown-menu" style="width:300px">
+                                    @if (Session["cart"] != null)
                                     {
-                                        if (item?.Product != null)
+                                        var cartItems = (List<Item>)Session["cart"];
+                                        foreach (var item in cartItems)
                                         {
-                                            <li><a href="@Url.Action("RemoveFromCart","Home",new {productId =item.Product.ProductId})">@item.Product.ProductName - @item.Quantity <i class="fa fa-times"></i></a></li>
-                                        }
-                                        else
-                                        {
-                                            <li><a href="#">Product not available - @item.Quantity</a></li>
+                                            if (item?.Product != null)
+                                            {
+                                                <li><a href="@Url.Action("RemoveFromCart","Home",new {productId =item.Product.ProductId})">@item.Product.ProductName - @item.Quantity <i class="fa fa-times"></i></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li><a href="#">Product not available - @item.Quantity</a></li>
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    <li><a href="#">No items in cart</a></li>
-                                }
-                                <li class="divider"></li>
-                                <li><a href="../Home/CheckOut">Checkout</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                                    else
+                                    {
+                                        <li><a href="#">No items in cart</a></li>
+                                    }
+                                    <li class="divider"></li>
+                                    <li><a href="../Home/CheckOut">Checkout</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+
+
 
                 </div>
             </div>

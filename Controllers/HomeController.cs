@@ -22,6 +22,11 @@ namespace OnlineShopingStore.Controllers
             return View();
         }
 
+        public ActionResult Contact()
+        {
+            return View();
+        }
+
         public ActionResult CheckOut()
         {
             return View();

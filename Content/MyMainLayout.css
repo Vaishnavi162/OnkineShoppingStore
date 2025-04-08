@@ -63,6 +63,7 @@ h6 {
                 color: #888;
                 text-decoration: underline;
             }
+
 .account {
     text-align: right;
 }
@@ -105,6 +106,10 @@ h6 {
     font-weight: bold;
     color: #ffffff;
     background-color: #007bff; /* Blue highlight background */
+}
+.navbar-nav > .active > a {
+    background-color: #007bff;
+    color: white !important;
 }
 
 
@@ -369,3 +374,4 @@ h6 {
                 margin-left: -8px;
                 margin-top: -9px;
             }
+

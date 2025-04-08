@@ -1,19 +1,58 @@
 ﻿@{
     ViewBag.Title = "Contact";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<div class="container mt-5 text-center">
+    <h2 class="display-4 fw-bold mb-4">Contact Us</h2>
+    <p class="lead fs-4 mb-5">Have a question or feedback? We'd love to hear from you!</p>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
-</main>
+    <div class="row justify-content-center">
+        <!-- Contact Info -->
+        <div class="col-md-5 text-start">
+            <h4 class="mb-3">📧 Email</h4>
+            <p class="fs-5">support@nextgenelectronics.com</p>
+
+            <h4 class="mt-4 mb-3">📞 Phone</h4>
+            <p class="fs-5">+91 98765 43210</p>
+
+            <h4 class="mt-4 mb-3">📍 Address</h4>
+            <p class="fs-5">
+                NextGen Electronics Pvt. Ltd.<br />
+                123 Tech Street, Bengaluru, Karnataka - 560001<br />
+                India
+            </p>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-md-7 text-start">
+            <h4 class="mb-4">Send Us a Message</h4>
+            <form>
+                <div class="mb-3">
+                    <label class="form-label fs-5">Name</label>
+                    <input type="text" class="form-control form-control-lg" placeholder="Your Name" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fs-5">Email</label>
+                    <input type="email" class="form-control form-control-lg" placeholder="Your Email" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fs-5">Message</label>
+                    <textarea class="form-control form-control-lg" rows="4" placeholder="Your Message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <h4 class="mb-3">Our Location</h4>
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3890.364427121279!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c3b9d3b1%3A0x36e1bcf4fc5a16f4!2sBangalore%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1647884693856!5m2!1sen!2sin"
+                        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
