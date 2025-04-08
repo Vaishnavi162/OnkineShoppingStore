@@ -15,7 +15,49 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
+    <style>
+        body {
+            background: linear-gradient(120deg, #f0f4f7, #e0f7fa);
+            font-family: 'Segoe UI', sans-serif;
+        }
 
+        .logo-container img {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-pills > li > a {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .nav-pills > li.active > a {
+            background-color: #007bff;
+            color: #fff !important;
+        }
+
+        .account h4 {
+            color: #333;
+            font-weight: 600;
+        }
+
+        footer {
+            padding: 20px 0;
+            background-color: #85c1e9;
+            color: #fff;
+        }
+
+            footer ul.list-social i {
+                font-size: 22px;
+                color: #5d6d7e;
+                transition: 0.3s;
+            }
+
+                footer ul.list-social i:hover {
+                    color: #85929e;
+                }
+    </style>
 </head>
 <body>
 
@@ -26,19 +68,8 @@
                     <div class="logo-container">
                         <br />
                         <img src="~/Images/Blue Simple Modern Electronic Logo.png" width="200px" height="100px" />
-                        @*<img src="~/Images/nextgen.png" class="logo-img" width="50px" height="auto" />
-                            <h1><a href="#"><span>NextGen </span></a></h1>*@
                     </div>
                 </div>
-                @*<div class="row">
-                    <div class="col-md-12">
-                        <div class="nav-menus">*@
-                <!--<ul class="nav nav-pills ">
-                    <li class="active"><a style="border-radius:initial;" href="../Home/Index">Home</a></li>-->
-                @*<li><a style="border-radius:initial;" href="../Home/About">About</a></li>*@
-                @*<li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                <!--</ul>-->
                 <br />
                 <ul class="nav nav-pills">
                     <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
@@ -51,26 +82,16 @@
                         @Html.ActionLink("Contact", "Contact", "Home")
                     </li>
                 </ul>
-
-
             </div>
 
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="account">
-
-
                     <br />
-
-
-                    @{
-                        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
-                        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-                    }
+                    @{ var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); }
 
                     @if (!(Request.RequestContext.RouteData.Values["action"].ToString() == "Contact" &&
                         Request.RequestContext.RouteData.Values["controller"].ToString() == "Home"))
                     {
-                        // Only show on pages that are NOT the Contact page
                         if (Session["Fullname"] != null)
                         {
                             <h4>Welcome, @Session["Fullname"]!</h4>
@@ -90,7 +111,6 @@
                             else
                             {
                                 <li><a href="@Url.Action("Login", "Account")">Login</a></li>
-                                @*<li><a href="@Url.Action("Register", "Account")">Register</a></li>*@
                             }
                             <li class="dropdown">
                                 <a data-toggle="dropdown" href="#">Cart<b class="caret"></b></a>
@@ -120,23 +140,9 @@
                             </li>
                         </ul>
                     }
-
-
-
                 </div>
             </div>
         </div>
-        @*<div class="row">
-                <div class="col-md-12">
-                    <div class="nav-menus">
-                        <ul class="nav nav-pills">
-                            <li class="active"><a style="border-radius:initial;" href="#">Home</a></li>
-                            <li><a style="border-radius:initial;" href="#">Location</a></li>
-                            <li><a style="border-radius:initial;" href="#">About</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>*@
 
         @RenderBody()
         <hr />
@@ -146,14 +152,6 @@
                     <div class="col-md-6 col-sm-6 copyright-left">
                         <p>&copy; @DateTime.Now.Year - OnlineShopingStore. All right reserved.</p>
                     </div>
-                    @*<div class="col-md-6 col-sm-6 copyright-right">
-                            <ul class="list-unstyled list-social">
-                                <li><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
-
-                            </ul>
-                        </div>*@
                     <div class="col-12 text-center">
                         <ul class="list-unstyled list-social d-flex justify-content-center">
                             <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
@@ -161,26 +159,18 @@
                             <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
                         </ul>
                     </div>
-
                 </div>
             </div>
         </footer>
     </div>
 
-
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 
-    <!-- Chart.js (Make sure this is included) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Your Custom Chart.js Script -->
     <script src="~/AdminStyle/vendor/chart.js/Chart.min.js"></script>
     <script src="~/AdminStyle/js/demo/chart-area-demo.js"></script>
 
     @RenderSection("Scripts", required: false)
-
-
 </body>
 </html>
