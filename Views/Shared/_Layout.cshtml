@@ -41,36 +41,48 @@
                         </div>
                     </div>*@
 
+
             </div>
 
             <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="account">
+
                     @*<ul>
-                            <li>
-                                <div class="hidden-xs">
-                                    <h4><a>Call</a></h4>
-                                    <p>0183##-######</p>
-                                </div>
+            <li>
+                <div class="hidden-xs">
+                    <h4><a>Call</a></h4>
+                    <p>0183##-######</p>
+                </div>
 
-                                <div class="visible-xs">
-
-
-                                </div>
-
-                            </li>
-                        </ul>*@
+                <div class="visible-xs">
 
 
+                </div>
 
+            </li>
+        </ul>*@
+
+                    <br />
+                    @if (Session["Fullname"] != null)
+                    {
+                        <h4>Welcome, @Session["Fullname"]!</h4>
+                    }
+                    else
+                    {
+                        <h4>Welcome to our online store!</h4>
+                    }
+
+                    <br />
 
 
                     <ul class="nav navbar-nav navbar-right">
 
-                        @if (Session["UserID"] != null)
+                        @if (Session["Fullname"] != null)
                         {
-                            <li><a href="#">Welcome, @Session["UserName"]</a></li>
                             <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
                         }
+
+
                         else
                         {
                             <li><a href="@Url.Action("Login", "Account")">Login</a></li>

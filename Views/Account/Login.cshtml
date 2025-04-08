@@ -18,5 +18,11 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>
-    <p class="text-danger">@ViewBag.Error</p>
+    if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
 }

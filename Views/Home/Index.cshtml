@@ -8,6 +8,14 @@
 
 
 }
+@*@if (Session["UserName"] != null)
+{
+    <h4>Welcome, @Session["UserName"]!</h4>
+}
+else
+{
+    <h4>Welcome to our online store!</h4>
+}*@
 
 <div id="themeSlider" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">

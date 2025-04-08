@@ -232,14 +232,36 @@ namespace OnlineShopingStore.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public ActionResult Login(string email, string password)
+        //{
+        //    // Your authentication logic...
+        //    FormsAuthentication.SetAuthCookie(email, false);
+        //    return RedirectToAction("Index", "Home");
+        //}
+
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Login(string email, string password)
+        public ActionResult Login(Tbl_User model)
         {
-            // Your authentication logic...
-            FormsAuthentication.SetAuthCookie(email, false);
-            return RedirectToAction("Index", "Home");
+            using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
+            {
+                var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+                if (user != null)
+                {
+                    // Store name or email in Session
+                    Session["Fullname"] = user.Fullname; // Or use user.UEmail
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid email or password");
+                    return View();
+                }
+            }
         }
+
 
         [AllowAnonymous]
         public ActionResult Register()
@@ -247,19 +269,52 @@ namespace OnlineShopingStore.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public ActionResult Register(User model)
+        //{
+        //    // Save to DB logic here...
+        //    return RedirectToAction("Login");
+        //}
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult Register(User model)
+        public ActionResult Register(Tbl_User model)
         {
-            // Save to DB logic here...
-            return RedirectToAction("Login");
+            if (ModelState.IsValid)
+            {
+                using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
+                {
+                    var existingUser = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email);
+                    if (existingUser != null)
+                    {
+                        // ✅ This line adds the error message
+                        ModelState.AddModelError("Email", "This email is already registered.");
+                        return View(model);
+                    }
+
+                    db.Tbl_User.Add(model);
+                    db.SaveChanges();
+                    TempData["Success"] = "Registration successful! Please log in.";
+                    return RedirectToAction("Login");
+                }
+            }
+
+            return View(model);
         }
 
+
+        //public ActionResult Logout()
+        //{
+        //    FormsAuthentication.SignOut();
+        //    return RedirectToAction("Login");
+        //}
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
+            Session.Clear(); // This will remove all session variables
+            return RedirectToAction("Index", "Home");
         }
+
+
 
         //
         // GET: /Account/ConfirmEmail
