@@ -252,3 +252,110 @@ namespace OnlineShopingStore.Controllers
         }
     }
 }
+
+
+//using PayPal.Api;
+//using System.Collections.Generic;
+//using System.Web.Mvc;
+
+//public class PaymentController : Controller
+//{
+//    public ActionResult PaymentWithPayPal()
+//    {
+//        // Set up the payer
+//        var payer = new Payer() { payment_method = "paypal" };
+
+//        // Set redirect URLs
+//        var redirectUrls = new RedirectUrls()
+//        {
+//            cancel_url = "https://localhost:44300/Payment/Cancel",
+//            return_url = "https://localhost:44300/Payment/Success"
+//        };
+
+//        // Set item list
+//        var itemList = new ItemList() { items = new List<Item>() };
+
+//        itemList.items.Add(new Item()
+//        {
+//            name = "Product 1",
+//            currency = "USD",
+//            price = "10",
+//            quantity = "1",
+//            sku = "sku"
+//        });
+
+//        // Set payment details
+//        var details = new Details()
+//        {
+//            tax = "1",
+//            shipping = "2",
+//            subtotal = "10"
+//        };
+
+//        // Set amount
+//        var amount = new Amount()
+//        {
+//            currency = "USD",
+//            total = "13", // Total = tax + shipping + subtotal
+//            details = details
+//        };
+
+//        // Create transaction
+//        var transactionList = new List<Transaction>();
+//        transactionList.Add(new Transaction()
+//        {
+//            description = "Payment description",
+//            invoice_number = "123456", // You should generate this
+//            amount = amount,
+//            item_list = itemList
+//        });
+
+//        var payment = new Payment()
+//        {
+//            intent = "sale",
+//            payer = payer,
+//            transactions = transactionList,
+//            redirect_urls = redirectUrls
+//        };
+
+//        // Create the payment
+//        var createdPayment = payment.Create(PaypalConfiguration.GetAPIContext());
+
+//        // Get PayPal redirect URL and redirect user
+//        var links = createdPayment.links.GetEnumerator();
+
+//        string paypalRedirectUrl = null;
+//        while (links.MoveNext())
+//        {
+//            Links lnk = links.Current;
+//            if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+//            {
+//                paypalRedirectUrl = lnk.href;
+//            }
+//        }
+
+//        return Redirect(paypalRedirectUrl);
+//    }
+
+//    public ActionResult Success(string paymentId, string token, string PayerID)
+//    {
+//        var apiContext = PaypalConfiguration.GetAPIContext();
+
+//        var paymentExecution = new PaymentExecution() { payer_id = PayerID };
+//        var payment = new Payment() { id = paymentId };
+
+//        var executedPayment = payment.Execute(apiContext, paymentExecution);
+
+//        if (executedPayment.state.ToLower() != "approved")
+//        {
+//            return View("Failure");
+//        }
+
+//        return View("Success");
+//    }
+
+//    public ActionResult Cancel()
+//    {
+//        return View();
+//    }
+//}

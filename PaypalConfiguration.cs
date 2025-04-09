@@ -18,9 +18,9 @@ namespace OnlineShopingStore
             clientSecret = "EOOYDTWOOu_orfq3JxYHq3-ycGVvm3bQYqyvuOgR-i1GKHGzKpjv8vqdNK5LqMGLpuxPSwa3R7enz_H-";
         }
 
-        private static Dictionary<string,string> getconfig()
+        private static Dictionary<string, string> getconfig()
         {
-            return PayPal.Api.ConfigManager.Instance.GetProperties();   
+            return PayPal.Api.ConfigManager.Instance.GetProperties();
         }
         private static string GetAccessToken()
         {
@@ -35,3 +35,27 @@ namespace OnlineShopingStore
         }
     }
 }
+
+//using PayPal.Api;
+//using System.Collections.Generic;
+
+//public static class PaypalConfiguration
+//{
+//    public static APIContext GetAPIContext()
+//    {
+//        // Set configuration
+//        var config = new Dictionary<string, string>();
+//        config["mode"] = "sandbox";
+//        config["clientId"] = "clientId";
+//        config["clientSecret"] = "clientSecret";
+
+//        // Get OAuth token
+//        var accessToken = new OAuthTokenCredential(config).GetAccessToken();
+
+//        // Return API context with access token
+//        var apiContext = new APIContext(accessToken);
+//        apiContext.Config = config;
+
+//        return apiContext;
+//    }
+//}
