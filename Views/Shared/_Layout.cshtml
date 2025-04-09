@@ -8,6 +8,7 @@
     @Styles.Render("~/Content/css")
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/MyMainLayout.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -58,6 +59,14 @@
                 footer ul.list-social i:hover {
                     color: #85929e;
                 }
+        .navbar-nav > li > a i {
+            transition: color 0.3s;
+        }
+
+            .navbar-nav > li > a i:hover {
+                color: #007bff;
+            }
+
     </style>
 </head>
 <body>
@@ -71,7 +80,7 @@
                         <img src="~/Images/Blue Simple Modern Electronic Logo.png" width="200px" height="100px" />
                     </div>
                 </div>
-                <br />
+
                 <ul class="nav nav-pills">
                     <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
                         @Html.ActionLink("Home", "Index", "Home")
@@ -102,20 +111,32 @@
                             <h4>Welcome to our online store!</h4>
                         }
 
-                        <br />
 
-                        <ul class="nav navbar-nav navbar-right">
-                            @if (Session["Fullname"] != null)
+
+                        <ul class="nav navbar-nav navbar-right d-flex align-items-center gap-3">
+
+                            @if (Session["Fullname"] == null)
                             {
-                                <li><a href="@Url.Action("Logout", "Account")">Logout</a></li>
+                                <li>
+                                    <a href="@Url.Action("Login", "Account")" class="text-dark text-decoration-none" title="Login">
+                                        <i class="fas fa-user fa-lg"></i>
+                                    </a>
+                                </li>
                             }
                             else
                             {
-                                <li><a href="@Url.Action("Login", "Account")">Login</a></li>
+                                <li>
+                                    <a href="@Url.Action("Logout", "Account")" class="text-dark text-decoration-none" title="Account">
+                                        <i class="fas fa-user fa-lg"></i>
+                                    </a>
+                                </li>
                             }
+
                             <li class="dropdown">
-                                <a data-toggle="dropdown" href="#">Cart<b class="caret"></b></a>
-                                <ul class="dropdown-menu" style="width:300px">
+                                <a href="#" class="dropdown-toggle text-dark text-decoration-none" data-toggle="dropdown" title="Cart">
+                                    <i class="fas fa-shopping-cart fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu" style="width: 300px">
                                     @if (Session["cart"] != null)
                                     {
                                         var cartItems = (List<Item>)Session["cart"];
@@ -123,7 +144,11 @@
                                         {
                                             if (item?.Product != null)
                                             {
-                                                <li><a href="@Url.Action("RemoveFromCart","Home",new {productId =item.Product.ProductId})">@item.Product.ProductName - @item.Quantity <i class="fa fa-times"></i></a></li>
+                                                <li>
+                                                    <a href="@Url.Action("RemoveFromCart", "Home", new { productId = item.Product.ProductId })">
+                                                        @item.Product.ProductName - @item.Quantity <i class="fa fa-times"></i>
+                                                    </a>
+                                                </li>
                                             }
                                             else
                                             {
@@ -140,11 +165,12 @@
                                 </ul>
                             </li>
                         </ul>
+
                     }
                 </div>
             </div>
         </div>
-
+        <br />
         @RenderBody()
         <hr />
         <footer>
@@ -157,7 +183,7 @@
                         <ul class="list-unstyled list-social d-flex justify-content-center">
                             <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
                             <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google"></i></a></li>
                         </ul>
                     </div>
                 </div>

@@ -7,6 +7,8 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6">
+            <br />
+            <br />
             <img src="~/ProductImg/@Model.ProductImage"
                  class="img-fluid rounded shadow"
                  alt="@Model.ProductName"
@@ -24,18 +26,20 @@
 
             @if (Model.Quantity > 0)
             {
-                using (Html.BeginForm("AddToCart", "Home", new { productId = Model.ProductId }, FormMethod.Post))
+                using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
                 {
+                    @Html.Hidden("productId", Model.ProductId)
+
                     <div class="form-group">
                         <label>Quantity:</label>
-                        <input type="number" name="quantity"
-                               class="form-control w-25"
-                               value="1" min="1" max="@Model.Quantity">
+                        <input type="number" name="quantity" class="form-control w-25" value="1" min="1" max="@Model.Quantity" />
                     </div>
+
                     <button type="submit" class="btn btn-primary btn-lg">
                         <i class="fas fa-cart-plus"></i> Add to Cart
                     </button>
                 }
+
             }
 
             <hr>

@@ -64,44 +64,76 @@ namespace OnlineShopingStore.Controllers
            
             return Redirect("CheckOut");
         }
-      
 
-        public ActionResult AddToCart(int productId)
+        [HttpPost]
+        public ActionResult AddToCart(int productId, int quantity)
         {
-            // Check if the user is logged in
+            // Check login
             if (Session["Fullname"] == null)
             {
                 TempData["LoginRequired"] = "Please login to add items to your cart.";
-                return RedirectToAction("Login", "Account"); // Redirect to login page
+                return RedirectToAction("Login", "Account");
             }
 
-            // Proceed to add the product to the cart
-            List<Item> cart = new List<Item>();
-            if (Session["cart"] != null)
-            {
-                cart = (List<Item>)Session["cart"];
-            }
-
+            List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
             var product = ctx.Tbl_Product.Find(productId);
 
             var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
             if (existingItem != null)
             {
-                existingItem.Quantity += 1;
+                existingItem.Quantity += quantity; // ✅ Add the entered quantity
             }
             else
             {
-                cart.Add(new Item()
+                cart.Add(new Item
                 {
                     Product = product,
-                    Quantity = 1
+                    Quantity = quantity
                 });
             }
 
             Session["cart"] = cart;
+            TempData["CartSuccess"] = "Your product has been added to the cart.";
 
             return RedirectToAction("Index");
         }
+
+        //public ActionResult AddToCart(int productId)
+        //{
+        //    // Check if the user is logged in
+        //    if (Session["Fullname"] == null)
+        //    {
+        //        TempData["LoginRequired"] = "Please login to add items to your cart.";
+        //        return RedirectToAction("Login", "Account"); // Redirect to login page
+        //    }
+
+        //    // Proceed to add the product to the cart
+        //    List<Item> cart = new List<Item>();
+        //    if (Session["cart"] != null)
+        //    {
+        //        cart = (List<Item>)Session["cart"];
+        //    }
+
+        //    var product = ctx.Tbl_Product.Find(productId);
+
+        //    var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
+        //    if (existingItem != null)
+        //    {
+        //        existingItem.Quantity += 1;
+        //    }
+        //    else
+        //    {
+        //        cart.Add(new Item()
+        //        {
+        //            Product = product,
+        //            Quantity = 1
+        //        });
+        //    }
+
+        //    Session["cart"] = cart;
+
+        //    return RedirectToAction("Index");
+        //}
 
 
 
