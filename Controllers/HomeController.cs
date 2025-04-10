@@ -65,10 +65,44 @@ namespace OnlineShopingStore.Controllers
             return Redirect("CheckOut");
         }
 
+        //[HttpPost]
+        //public ActionResult AddToCart(int productId, int quantity)
+        //{
+        //    // Check login
+        //    if (Session["Fullname"] == null)
+        //    {
+        //        TempData["LoginRequired"] = "Please login to add items to your cart.";
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
+        //    var product = ctx.Tbl_Product.Find(productId);
+
+        //    var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
+        //    if (existingItem != null)
+        //    {
+        //        existingItem.Quantity += quantity; // ✅ Add the entered quantity
+        //    }
+        //    else
+        //    {
+        //        cart.Add(new Item
+        //        {
+        //            Product = product,
+        //            Quantity = quantity
+        //        });
+        //    }
+
+        //    Session["cart"] = cart;
+        //    TempData["CartSuccess"] = "Your product has been added to the cart.";
+
+        //    return RedirectToAction("Index");
+        //}
+
         [HttpPost]
-        public ActionResult AddToCart(int productId, int quantity)
+        public ActionResult AddToCart(int productId, int? quantity)
         {
-            // Check login
+            int qty = quantity ?? 1;
+
             if (Session["Fullname"] == null)
             {
                 TempData["LoginRequired"] = "Please login to add items to your cart.";
@@ -81,14 +115,14 @@ namespace OnlineShopingStore.Controllers
             var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
             if (existingItem != null)
             {
-                existingItem.Quantity += quantity; // ✅ Add the entered quantity
+                existingItem.Quantity += qty;
             }
             else
             {
                 cart.Add(new Item
                 {
                     Product = product,
-                    Quantity = quantity
+                    Quantity = qty
                 });
             }
 
@@ -97,6 +131,7 @@ namespace OnlineShopingStore.Controllers
 
             return RedirectToAction("Index");
         }
+
 
         //public ActionResult AddToCart(int productId)
         //{

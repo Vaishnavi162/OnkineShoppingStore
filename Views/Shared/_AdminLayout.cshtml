@@ -87,6 +87,13 @@
                 </a>
             </li>
 
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Genre" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Genre", "Admin")">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Genre</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>

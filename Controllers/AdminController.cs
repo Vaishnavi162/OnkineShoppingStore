@@ -94,27 +94,32 @@ namespace OnlineShopingStore.Controllers
             List<Tbl_Category> allcategories = _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetAllRecordsIQueryable().Where(i => i.IsDelete == false).ToList();
             return View(allcategories);
         }
-
+        [HttpPost]
         public ActionResult AddCategory()
         {
             return UpdateCategory(0);
         }
 
-        public ActionResult UpdateCategory(int categoryId)
+        public ActionResult UpdateCategory(int? categoryId)
         {
             CategoryDetail cd;
-                if(categoryId != 0)
-                {
-                cd = JsonConvert.DeserializeObject<CategoryDetail>(JsonConvert.SerializeObject(_unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(categoryId)));
-                }
+            if (categoryId != null && categoryId != 0)
+            {
+                cd = JsonConvert.DeserializeObject<CategoryDetail>(
+                    JsonConvert.SerializeObject(
+                        _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(categoryId.Value)
+                    )
+                );
+            }
             else
             {
-                cd=new CategoryDetail();
+                cd = new CategoryDetail();
             }
-                return View("UpdateCategory",cd);
+            return View("UpdateCategory", cd);
+
         }
 
-       
+
         public ActionResult CategoryEdit(int catId)
         {
           
@@ -187,5 +192,6 @@ namespace OnlineShopingStore.Controllers
             _unitOfWork.GetRepositoryInstance<Tbl_Product>().Add(tbl);
             return RedirectToAction("Product");
         }
+        
     }
 }

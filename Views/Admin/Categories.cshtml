@@ -19,7 +19,7 @@
         <div class="card-header">
             <i class="fas fa-table"></i>
             Category Details
-            <a href="../Admin/AddCategory" class="btn btn-info pull-right fa fa-plus">Add New</a>
+            <a href="@Url.Action("UpdateCategory", "Admin")" class="btn btn-info pull-right fa fa-plus">Add New</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -48,6 +48,7 @@
 
                                 <td>@item.CategoryName</td>
                                 <td>
+                                   
                                     @Html.ActionLink("Edit", "CategoryEdit", new { catId = item.CategoryId })
                                 </td>
 

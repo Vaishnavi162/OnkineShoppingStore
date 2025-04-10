@@ -193,6 +193,9 @@
                             {
                                 using (Html.BeginForm("AddToCart", "Home", new { productId = item.ProductId }, FormMethod.Post))
                                 {
+                                    @Html.Hidden("productId", item.ProductId)
+
+                                   
                                     <button type="submit" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-cart-plus"></i> Add to Cart
                                     </button>

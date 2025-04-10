@@ -1,43 +1,29 @@
 ﻿@model OnlineShopingStore.Models.CategoryDetail
+
 @{
-    ViewBag.Title = "UpdateCategory";
+    ViewBag.Title = "Update Category";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="container-fluid">
-    <!-- Breadcrumbs-->
+<h2>Update Category</h2>
 
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="#">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item ">Categories</li>
-        <li class="breadcrumb-item active"> Add New Category</li>
+@using (Html.BeginForm("AddCategory", "Admin", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.CategoryId)
 
-    </ol>
-    <!-- DataTables Example -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <i class="fas fa-table"></i>
-            Add New Category
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryName)
+        @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CategoryName)
+    </div>
 
-        </div>
-        <div class="card-body">
-            @using (Html.BeginForm("UpdateCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-
-
-            @Html.HiddenFor(m => m.CategoryId)
-            <div class="form-group">
-                <label class="control-label">Category Name</label>
-
-                @Html.TextBoxFor(m => m.CategoryName, new { @class = "form-control", placeholder = "Enter Category Name", required = "requird", autofocus = "autofocus" })
-            @Html.ValidationMessageFor(m => m.CategoryName, "", new { @class = "text-danger" })
-            </div>
-
-            <a onclick="window.history.back()" class="btn btn-danger">Cancle</a>
-            <input type="submit" class="btn btn-primary" value="Save" />
-            }
-        </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.CheckBox("IsActive")
+            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
         </div>
     </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}
