@@ -11,12 +11,27 @@ namespace OnlineShopingStore.Controllers
     public class HomeController : Controller
     {
         dbMyOnlineShoppingEntitiess ctx = new dbMyOnlineShoppingEntitiess();
-        public ActionResult Index(string search, int? page)
+        //public ActionResult Index(string search, int? page)
+        //{
+        //    HomeIndexViewModel model = new HomeIndexViewModel();
+        //    model = model.CreateModel(search, 4, page);
+        //    return View(model);
+        //}
+        public ActionResult Index(string search, int? genreId, int? page)
         {
             HomeIndexViewModel model = new HomeIndexViewModel();
-            model = model.CreateModel(search, 4, page);
+            model = model.CreateModel(search, 4, page, genreId);
+
+            var genres = ctx.Tbl_Genre.ToList();
+            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName", genreId);
+
+
+            ViewBag.SelectedGenre = genreId;
+
             return View(model);
         }
+
+
         public ActionResult About()
         {
             return View();

@@ -36,6 +36,7 @@
           </Key>
           <Property Name="GenreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="GenreName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsDelete" Type="bit" />
         </EntityType>
         <EntityType Name="Tbl_MemberRole">
           <Key>
@@ -214,6 +215,7 @@
           </Key>
           <Property Name="GenreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="GenreName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDelete" Type="Boolean" />
         </EntityType>
         <EntityType Name="Tbl_MemberRole">
           <Key>
@@ -396,6 +398,7 @@
           <EntitySetMapping Name="Tbl_Genre">
             <EntityTypeMapping TypeName="dbMyOnlineShoppingModel.Tbl_Genre">
               <MappingFragment StoreEntitySet="Tbl_Genre">
+                <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
                 <ScalarProperty Name="GenreId" ColumnName="GenreId" />
                 <ScalarProperty Name="GenreName" ColumnName="GenreName" />
               </MappingFragment>

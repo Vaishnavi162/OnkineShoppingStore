@@ -69,7 +69,7 @@
 </style>
 
 
-<div id="themeSlider" class="carousel slide" data-ride="carousel">
+<div id="themeSlider" class="carousel slide" data-ride="carousel" style="margin: 0 20px; border-radius: 15px; overflow: hidden;">
     <ol class="carousel-indicators">
         <li data-target="#themeSlider" data-slide-to="0" class="active"></li>
         <li data-target="#themeSlider" data-slide-to="1"></li>
@@ -79,24 +79,15 @@
     <div class="carousel-inner">
         <div class="item active">
             <div class="imgOverlay"></div>
-            <img style="height:400px;width:100%" src="~/Images/istockphoto-458990823-612x612.jpg" alt="First slide">
-            <div class="carousel-caption">
-                <h3>new</h3>
-            </div>
+            <img style="height:400px;width:100%; border-radius: 0;" src="~/Images/istockphoto-458990823-612x612.jpg" alt="First slide">
         </div>
         <div class="item">
             <div class="imgOverlay"></div>
-            <img style="height:400px;width:100%" src="~/Images/istockphoto-458610715-612x612.jpg" alt="Second slide">
-            <div class="carousel-caption">
-                <h3>My Phone</h3>
-            </div>
+            <img style="height:400px;width:100%; border-radius: 0;" src="~/Images/istockphoto-458610715-612x612.jpg" alt="Second slide">
         </div>
         <div class="item">
             <div class="imgOverlay"></div>
-            <img style="height:400px;width:100%" src="~/Images/istockphoto-1398204953-612x612.jpg" alt="Third slide">
-            <div class="carousel-caption">
-                <h3>Sale</h3>
-            </div>
+            <img style="height:400px;width:100%; border-radius: 0;" src="~/Images/istockphoto-1398204953-612x612.jpg" alt="Third slide">
         </div>
     </div>
 
@@ -106,8 +97,9 @@
     <a class="right carousel-control" href="#themeSlider" data-slide="next">
         <span class="fa fa-chevron-right"></span>
     </a>
-
 </div>
+
+
 @*<div class="olContent f1"><h2 style="color:black">Search Product/Category</h2></div>
     <div class="olSearch fr">
         <input type="text" placeholder="Enter Keyword" name="SearchKey" class="inputComn houseText form-control border-0" style="flex: 1; outline: none;" />
@@ -142,20 +134,46 @@
         </form>
         </div>
     </div>*@
-<div class="olContent f1">
+@*<div class="olContent f1">
+        <h2 style="color:black">Search Product/Category</h2>
+        <form action="@Url.Action("Index", "Home")" method="get" class="d-flex  ">
+            <input type="text" name="search" placeholder="Enter Keyword" class="inputComn " />
+
+            <button type="submit" class="searchBtn btn">
+                <img src="/Images/icons8-search-30.png" alt="Search" class="search-icon" />
+            </button>
+            <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'" class="btn btn-secondary ml-2">
+                Reset
+            </button>
+        </form>
+    </div>*@
+
+
+@*<select name="genreId" class="form-control mx-2" style="min-width: 200px;">
+        <option value="">All Genres</option>
+        @foreach (var genre in ViewBag.Genres as SelectList)
+        {
+            <option value="@genre.Value" @(Request["genreId"] == genre.Value ? "selected" : "")>
+                @genre.Text
+            </option>
+        }
+    </select>*@
+<div class="olContent f1" style=" margin: 0 20px" ;>
     <h2 style="color:black">Search Product/Category</h2>
-    <form action="@Url.Action("Index", "Home")" method="get" class="d-flex  ">
-        <input type="text" name="search" placeholder="Enter Keyword" class="inputComn " />
-        <button type="submit" class="searchBtn btn">
-            <img src="/Images/icons8-search-30.png" alt="Search" class="search-icon" />
+    <form action="@Url.Action("Index", "Home")" method="get" class="d-flex gap-2">
+        <input type="text" name="search" placeholder="Enter Keyword" class="form-control mr-2" style="border-radius: 20px;" value="@Request["search"]" />
+
+        @* Genre Dropdown *@
+        @Html.DropDownList("genreId", ViewBag.Genres as SelectList, "All Genres", new { @class = "form-control", @style = "width:200px; border-radius: 20px" })
+
+        <button type="submit" class="btn btn-primary ml-2" style="border-radius: 20px;">
+            <img src="/Images/icons8-search-30.png" style="height:18px;width:20px" alt="Search" class="search-icon" />
         </button>
-        <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'" class="btn btn-secondary ml-2">
+        <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'"  class="btn btn-secondary ml-2" style="border-radius: 20px; height:35px">
             Reset
         </button>
     </form>
 </div>
-
-
 
 
 
@@ -195,7 +213,7 @@
                                 {
                                     @Html.Hidden("productId", item.ProductId)
 
-                                   
+
                                     <button type="submit" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-cart-plus"></i> Add to Cart
                                     </button>
@@ -223,15 +241,15 @@
     <!-- Features Section -->
     <div class="container-fluid bg-light py-5">
         <div class="container">
-            <div class="row text-center">
-                <div class="col-md-4 mb-4 mb-md-0">
+            <div class="row text-center" style=" margin: 100px;">
+                <div class="col-md-4 mb-3 mb-md-0">
                     <div class="feature-box p-4 rounded shadow-sm bg-white">
                         <i class="fas fa-truck fa-3x text-primary mb-3"></i>
                         <h4>Free Shipping</h4>
                         <p class="text-muted">On all orders over $50</p>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4 mb-md-0">
+                <div class="col-md-4 mb-3 mb-md-0">
                     <div class="feature-box p-4 rounded shadow-sm bg-white">
                         <i class="fas fa-undo fa-3x text-primary mb-3"></i>
                         <h4>Easy Returns</h4>

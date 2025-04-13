@@ -22,16 +22,16 @@ h6 {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-.logo {
-    margin-bottom: 40px;
-}
-.logo-img {
-    width: 50px; /* Adjust the width as needed */
-    height: auto; /* Keeps the aspect ratio intact */
-}
+/*.logo {*/
+/*    margin-bottom: 40px;*/
+/*}*/
+/*.logo-img {
+    width: 50px;*/ /* Adjust the width as needed */
+    /*height: auto;*/ /* Keeps the aspect ratio intact */
+/*}*/
 
 
-    .logo h1,
+/*    .logo h1,
     .logo h2 {
         margin: 5px 0 5px;
         text-align: left;
@@ -40,7 +40,7 @@ h6 {
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: -1px;
-    }
+    }*/
 
         .logo h1 span,
         .logo h2 span {

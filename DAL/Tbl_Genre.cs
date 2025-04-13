@@ -16,5 +16,6 @@ namespace OnlineShopingStore.DAL
     {
         public int GenreId { get; set; }
         public string GenreName { get; set; }
+        public Nullable<bool> IsDelete { get; set; } = false;
     }
 }

@@ -1,0 +1,52 @@
+﻿@Model List<OnlineShopingStore.DAL.Tbl_Genre>
+    @{
+        ViewBag.Title = "Genres";
+    }
+
+    @*<h2>Genres</h2>
+
+        <p>
+            @Html.ActionLink("Add New Genre", "UpdateGenre", new { genreId = 0 }, new { @class = "btn btn-primary" })
+        </p>
+
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+
+            @foreach (var genre in Model)
+            {
+                <tr>
+                    <td>@genre.GenreId</td>
+                    <td>@genre.GenreName</td>
+                    <td>
+                        @Html.ActionLink("Edit", "UpdateGenre", new { genreId = genre.GenreId }, new { @class = "btn btn-warning" })
+                    </td>
+                </tr>
+            }
+        </table>*@
+
+    <h2>Genre List</h2>
+    <a href="@Url.Action("GenreDetail", "Admin")" class="btn btn-primary">Add New Genre</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Genre Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.GenreName</td>
+                    <td>
+                        <a href="@Url.Action("GenreDetail", "Admin", new { genreId = item.GenreId })">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

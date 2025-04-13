@@ -1,0 +1,54 @@
+﻿@model List<OnlineShopingStore.DAL.Tbl_Genre>
+
+@{
+    ViewBag.Title = "Genre";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
+}
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+
+            <h2>
+                <i class="fa fa-table"></i> Genre
+
+                <a href="@Url.Action("GenreAdd", "Admin")" class="btn btn-info" style="float:right">+ Add New</a>
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Genre Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = 1;
+                            foreach (var genre in Model)
+                            {
+                                <tr>
+                                    <td>@i</td>
+                                    <td>@genre.GenreName</td>
+                                    <td>
+                                        <a href="@Url.Action("GenreAdd", "Admin", new { id = genre.GenreId })">Edit</a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center">No genres found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+    </div>

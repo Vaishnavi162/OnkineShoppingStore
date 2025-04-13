@@ -95,10 +95,42 @@ namespace OnlineShopingStore.Controllers
             return View(allcategories);
         }
         [HttpPost]
-        public ActionResult AddCategory()
+      
+        public ActionResult AddCategory(CategoryDetail model)
         {
-            return UpdateCategory(0);
+            if (ModelState.IsValid)
+            {
+                Tbl_Category category;
+
+                // Check if it's an update or a new add
+                if (model.CategoryId > 0)
+                {
+                    category = _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(model.CategoryId);
+                    category.CategoryName = model.CategoryName;
+                    category.IsActive = model.IsActive;
+                    
+                }
+                else
+                {
+                    category = new Tbl_Category
+                    {
+                        CategoryName = model.CategoryName,
+                        IsActive = model.IsActive,
+                        IsDelete = false,
+                       
+                    };
+
+                    _unitOfWork.GetRepositoryInstance<Tbl_Category>().Add(category);
+                }
+
+                _unitOfWork.SaveChanges();
+                return RedirectToAction("Categories");
+            }
+
+            // Return the same form if validation fails
+            return View("UpdateCategory", model);
         }
+
 
         public ActionResult UpdateCategory(int? categoryId)
         {
@@ -134,7 +166,11 @@ namespace OnlineShopingStore.Controllers
         }
         public ActionResult Product()
         {
-            return View(_unitOfWork.GetRepositoryInstance<Tbl_Product>().GetProduct()); 
+            //return View(_unitOfWork.GetRepositoryInstance<Tbl_Product>().GetProduct());
+            // ViewBag.Genres = new SelectList(unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetAllRecords(), "GenreId", "GenreName");
+
+            var products = _unitOfWork.GetRepositoryInstance<Tbl_Product>().GetAllRecords().ToList();
+            return View(products);
         }
         [HttpGet]
         public ActionResult ProductEdit(int productId)
@@ -192,6 +228,36 @@ namespace OnlineShopingStore.Controllers
             _unitOfWork.GetRepositoryInstance<Tbl_Product>().Add(tbl);
             return RedirectToAction("Product");
         }
-        
+
+        public ActionResult GenreDetail()
+        {
+            var genreList = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetAllRecords().ToList();
+            return View(genreList);
+        }
+
+
+
+
+        public ActionResult GenreAdd(int id = 0)
+        {
+            Tbl_Genre genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
+            return View(genre);
+        }
+
+        [HttpPost]
+        public ActionResult GenreAdd(Tbl_Genre genre)
+        {
+            if (genre.GenreId == 0)
+            {
+                _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Add(genre);
+            }
+            else
+            {
+                _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Update(genre);
+            }
+            return RedirectToAction("GenreDetail");
+        }
+
+
     }
 }

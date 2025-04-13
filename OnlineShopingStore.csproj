@@ -166,6 +166,9 @@
     <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
       <HintPath>packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
     </Reference>
+    <Reference Include="Stripe.net, Version=48.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Stripe.net.48.0.0\lib\net461\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.0\lib\net462\System.Buffers.dll</HintPath>
@@ -198,6 +201,11 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -306,6 +314,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\StripeController.cs" />
     <Compile Include="DAL\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -360,6 +369,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryDetail.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
+    <Compile Include="Models\GenreDetail.cs" />
     <Compile Include="Models\Home\HomeIndexViewModel.cs" />
     <Compile Include="Models\Home\Item.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -2022,6 +2032,11 @@
     <Content Include="Views\Admin\AdminLogin.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Admin\UpdateCategory.cshtml" />
+    <Content Include="Views\Admin\Genre.cshtml" />
+    <Content Include="Views\Admin\GenreDetail.cshtml" />
+    <Content Include="Views\Admin\GenreAdd.cshtml" />
+    <Content Include="Views\Stripe\Success.cshtml" />
+    <Content Include="Views\Stripe\Cancle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

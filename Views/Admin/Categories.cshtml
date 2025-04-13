@@ -7,19 +7,22 @@
 <div class="container-fluid">
     <!-- Breadcrumbs-->
 
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
+    @*<ol class="breadcrumb">*@
+        @*<li class="breadcrumb-item">
             <a href="#">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active">Categories</li>
+        </li>*@
+      
+        @*<li class="breadcrumb-item active">Categories</li>*@
 
-    </ol>
+    @*</ol>*@
     <!-- DataTables Example -->
     <div class="card mb-3">
         <div class="card-header">
             <i class="fas fa-table"></i>
-            Category Details
+            Categorys
             <a href="@Url.Action("UpdateCategory", "Admin")" class="btn btn-info pull-right fa fa-plus">Add New</a>
+            @*@Html.ActionLink("Add New Category", "UpdateCategory", "Admin", new { categoryId = 0 }, new { @class = "btn btn-primary pull-right" })*@
+
         </div>
         <div class="card-body">
             <div class="table-responsive">
