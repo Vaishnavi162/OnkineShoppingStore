@@ -162,14 +162,20 @@
     <h2 style="color:black">Search Product/Category</h2>
     <form action="@Url.Action("Index", "Home")" method="get" class="d-flex gap-2">
         <input type="text" name="search" placeholder="Enter Keyword" class="form-control mr-2" style="border-radius: 20px;" value="@Request["search"]" />
+        @*@foreach (var genre in Model.Genres)
+        {
+            <a href="@Url.Action("Index", "Home", new { genre = genre })" class="btn btn-outline-primary m-1">
+                @genre
+            </a>
+        }*@
+        @Html.DropDownList("genre", new SelectList(Model.Genres, Request["genre"]), "All Genres", new { @class = "form-control mr-2", style = "border-radius: 20px;" })
 
-        @* Genre Dropdown *@
-        @Html.DropDownList("genreId", ViewBag.Genres as SelectList, "All Genres", new { @class = "form-control", @style = "width:200px; border-radius: 20px" })
+
 
         <button type="submit" class="btn btn-primary ml-2" style="border-radius: 20px;">
             <img src="/Images/icons8-search-30.png" style="height:18px;width:20px" alt="Search" class="search-icon" />
         </button>
-        <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'"  class="btn btn-secondary ml-2" style="border-radius: 20px; height:35px">
+        <button type="button" onclick="window.location.href='@Url.Action("Index", "Home")'" class="btn btn-secondary ml-2" style="border-radius: 20px; height:35px">
             Reset
         </button>
     </form>

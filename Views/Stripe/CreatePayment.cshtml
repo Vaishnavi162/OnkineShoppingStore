@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Stripe Payment";
+}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<h2>Stripe Payment</h2>
+<button id="payButton">Pay</button>
+
+<script>
+    var stripe = Stripe('pk_test_51RCd182KHVvYeOSDUMYH7gI1sHhpHH3pGIfxuYUtfTqVeHmlVK0G6ZO9q3DppBRp7mFcLx90XtyMOCsRwgtfnl3N00C3cKPWHa');
+
+    document.getElementById("payButton").addEventListener("click", function () {
+        stripe.confirmCardPayment("@ViewBag.ClientSecret", {
+            payment_method: {
+                card: {
+                    // Use Stripe Elements for real card input
+                }
+            }
+        }).then(function (result) {
+            if (result.error) {
+                alert("Payment failed: " + result.error.message);
+            } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                    alert("Payment successful!");
+                }
+            }
+        });
+    });
+</script>

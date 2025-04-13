@@ -2037,6 +2037,7 @@
     <Content Include="Views\Admin\GenreAdd.cshtml" />
     <Content Include="Views\Stripe\Success.cshtml" />
     <Content Include="Views\Stripe\Cancle.cshtml" />
+    <Content Include="Views\Stripe\CreatePayment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

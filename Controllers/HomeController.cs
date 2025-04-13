@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnlineShopingStore.DAL;
 using OnlineShopingStore.Models.Home;
+using PagedList;
 
 namespace OnlineShopingStore.Controllers
 {
@@ -17,18 +18,66 @@ namespace OnlineShopingStore.Controllers
         //    model = model.CreateModel(search, 4, page);
         //    return View(model);
         //}
-        public ActionResult Index(string search, int? genreId, int? page)
+        //public ActionResult Index(string search, int? genreId, int? page)
+        //{
+        //    HomeIndexViewModel model = new HomeIndexViewModel();
+        //    model = model.CreateModel(search, 4, page, genreId);
+
+        //    var genres = ctx.Tbl_Genre.ToList();
+        //    ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName", genreId);
+
+
+        //    ViewBag.SelectedGenre = genreId;
+
+        //    return View(model);
+        //}
+
+        public ActionResult Index(string search, string genre, int? page)
         {
-            HomeIndexViewModel model = new HomeIndexViewModel();
-            model = model.CreateModel(search, 4, page, genreId);
+            using (var db = new dbMyOnlineShoppingEntitiess())
+            {
+                var genres = db.Tbl_Category.Select(c => c.CategoryName).Distinct().ToList();
 
-            var genres = ctx.Tbl_Genre.ToList();
-            ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName", genreId);
+                // Join products and categories manually
+                var productsQuery = from p in db.Tbl_Product
+                                    join c in db.Tbl_Category on p.CategoryId equals c.CategoryId
+                                    select new
+                                    {
+                                        Product = p,
+                                        CategoryName = c.CategoryName
+                                    };
 
+                // Filter by genre
+                if (!string.IsNullOrEmpty(genre))
+                {
+                    productsQuery = productsQuery.Where(x => x.CategoryName == genre);
+                }
 
-            ViewBag.SelectedGenre = genreId;
+                // Filter by search term (on ProductName or Description)
+                if (!string.IsNullOrEmpty(search))
+                {
+                    productsQuery = productsQuery.Where(x =>
+                        x.Product.ProductName.Contains(search) ||
+                        x.Product.Description.Contains(search));
+                }
 
-            return View(model);
+                // Extract products
+                var productList = productsQuery.Select(x => x.Product).ToList();
+
+                // Pagination
+                int pageSize = 8;
+                int pageNumber = page ?? 1;
+                var Products = productList.ToPagedList(pageNumber, pageSize);
+
+                // Create view model
+                var viewModel = new HomeIndexViewModel
+                {
+                    ListofProducts = Products,
+                    Genres = genres
+                };
+
+                return View(viewModel);
+            }
         }
 
 
@@ -148,42 +197,7 @@ namespace OnlineShopingStore.Controllers
         }
 
 
-        //public ActionResult AddToCart(int productId)
-        //{
-        //    // Check if the user is logged in
-        //    if (Session["Fullname"] == null)
-        //    {
-        //        TempData["LoginRequired"] = "Please login to add items to your cart.";
-        //        return RedirectToAction("Login", "Account"); // Redirect to login page
-        //    }
-
-        //    // Proceed to add the product to the cart
-        //    List<Item> cart = new List<Item>();
-        //    if (Session["cart"] != null)
-        //    {
-        //        cart = (List<Item>)Session["cart"];
-        //    }
-
-        //    var product = ctx.Tbl_Product.Find(productId);
-
-        //    var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
-        //    if (existingItem != null)
-        //    {
-        //        existingItem.Quantity += 1;
-        //    }
-        //    else
-        //    {
-        //        cart.Add(new Item()
-        //        {
-        //            Product = product,
-        //            Quantity = 1
-        //        });
-        //    }
-
-        //    Session["cart"] = cart;
-
-        //    return RedirectToAction("Index");
-        //}
+        
 
 
 

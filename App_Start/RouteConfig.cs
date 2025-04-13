@@ -23,6 +23,12 @@ namespace OnlineShopingStore
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+    name: "Payment",
+    url: "Payment/{action}/{id}",
+    defaults: new { controller = "Payment", action = "CreatePayment", id = UrlParameter.Optional }
+);
+
             //routes.MapRoute(
             //    name: "Default",
             //    url: "{controller}/{action}/{id}",
