@@ -15,7 +15,9 @@ namespace OnlineShopingStore.Controllers
     {
         // GET: Admin
         public GenericUnitOfWork _unitOfWork = new GenericUnitOfWork();
+         dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess();
 
+        
 
         //public ActionResult AdminLogin()
         //{
@@ -62,9 +64,16 @@ namespace OnlineShopingStore.Controllers
 
         public ActionResult Dashboard()
         {
+           
             if (Session["Admin"] == null)
                 return RedirectToAction("AdminLogin");
-
+            var viewModel = new DashboardViewModel
+            {
+                TotalUsers = 10,
+                TotalProducts = 20,
+                TotalOrders = 5,
+                TotalRevenue = 1500.50m
+            };
             return View();
         }
 

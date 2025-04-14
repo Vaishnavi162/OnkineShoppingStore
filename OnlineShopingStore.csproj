@@ -368,6 +368,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CategoryDetail.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\GenreDetail.cs" />
     <Compile Include="Models\Home\HomeIndexViewModel.cs" />
@@ -1971,6 +1972,7 @@
     <Content Include="DAL\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="appsettings.json" />
     <None Include="Models\Home\.editorconfig" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
