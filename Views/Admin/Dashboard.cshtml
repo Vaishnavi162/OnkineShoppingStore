@@ -1,23 +1,8 @@
-﻿@model OnlineShopingStore.Models.DashboardViewModel
-
+﻿
 @{
     ViewBag.Title = "Dashboard";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Or your layout path
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
+<h2>Dashboard</h2>
 
-@if (Model != null)
-{
-    <div class="alert alert-success">Model loaded successfully!</div>
-
-    <ul>
-        <li>Total Users: @Model.TotalUsers</li>
-        <li>Total Products: @Model.TotalProducts</li>
-        <li>Total Orders: @Model.TotalOrders</li>
-        <li>Total Revenue: $@Model.TotalRevenue</li>
-    </ul>
-}
-else
-{
-    <div class="alert alert-danger">Model is null!</div>
-}

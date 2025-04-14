@@ -28,6 +28,8 @@ namespace OnlineShopingStore.Models
         {
         }
 
+        public object Tbl_Category { get; internal set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();

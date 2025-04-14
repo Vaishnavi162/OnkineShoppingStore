@@ -87,6 +87,60 @@
         .slider {
             margin-top: 20px; /* slider ke upar gap */
         }
+        /* Ensure the HTML and Body elements take up the full height of the screen */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* The wrapper holds all content */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Make sure the wrapper stretches to 100% of the viewport height */
+}
+
+/* Ensure the main content area stretches to fill the available space */
+.wrapper > .content {
+    flex: 1;
+}
+
+/* Footer styles */
+        footer {
+            background-color: #85c1e9;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            bottom: 0;
+        }
+
+/* Optional: If you want the footer to stick to the bottom when scrolling */
+footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Social media icons */
+.list-social {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-social li {
+    display: inline-block;
+}
+
+.list-social li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.list-social li a:hover {
+    color: #ddd;
+}
 
 
     </style>
@@ -178,88 +232,89 @@
                     <img src="~/Images/LOGO.png" alt="Logo" style=" border-radius:10px; margin-top: 0; padding-top: 0; height: 50px; width: 150px;" />
                 </a>
             </div>
-                <!-- RIGHT SIDE: Welcome + Links + Icons -->
-                <div class="d-flex align-items-center ms-auto">
-                    <!-- Navigation Links -->
-                    <ul class="navbar-nav d-flex flex-row align-items-center me-3">
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
-                            @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
-                        </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">
-                            @Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
-                        </li>
-                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">
-                            @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
-                        </li>
-                    </ul>
+            <!-- RIGHT SIDE: Welcome + Links + Icons -->
+            <div class="d-flex align-items-center ms-auto">
+                <!-- Navigation Links -->
+                <ul class="navbar-nav d-flex flex-row align-items-center me-3">
+                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
+                        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
+                    </li>
+                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">
+                        @Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
+                    </li>
+                    <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">
+                        @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link px-2", style = "border-radius: 20px; padding: 6px 12px;" })
+                    </li>
+                </ul>
 
 
-                    @if (!(ViewContext.RouteData.Values["action"].ToString() == "Contact" &&
-           ViewContext.RouteData.Values["controller"].ToString() == "Home"))
-                    {
-                        <span class="me-3">
-                            @if (Session["Fullname"] != null)
-                            {
-                                <strong> @Session["Fullname"]!</strong>
-                            }
+                @if (!(ViewContext.RouteData.Values["action"].ToString() == "Contact" &&
+       ViewContext.RouteData.Values["controller"].ToString() == "Home"))
+                {
+                    <span class="me-3">
+                        @if (Session["Fullname"] != null)
+                        {
+                            <strong> @Session["Fullname"]!</strong>
+                        }
 
-                        </span>
-                    }
+                    </span>
+                }
 
-                    <!-- Login/Logout -->
-                    @if (Session["Fullname"] == null)
-                    {
-                        <a href="@Url.Action("Login", "Account")" class="nav-link text-dark" title="Login">
-                            <i class="fas fa-user fa-lg"></i>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark" title="Logout">
-                            <i class="fas fa-user fa-lg"></i>
-                        </a>
-                    }
-
-                    <!-- Cart -->
-                    <a href="@Url.Action("CheckOut", "Home")" class="nav-link text-dark ms-3" title="Cart">
-                        <i class="fas fa-shopping-cart fa-lg"></i>
+                <!-- Login/Logout -->
+                @if (Session["Fullname"] == null)
+                {
+                    <a href="@Url.Action("Login", "Account")" class="nav-link text-dark" title="Login">
+                        <i class="fas fa-user fa-lg"></i>
                     </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark" title="Logout">
+                        <i class="fas fa-user fa-lg"></i>
+                    </a>
+                }
 
-                </div>
-
+                <!-- Cart -->
+                <a href="@Url.Action("CheckOut", "Home")" class="nav-link text-dark ms-3" title="Cart">
+                    <i class="fas fa-shopping-cart fa-lg"></i>
+                </a>
 
             </div>
-</nav>
 
 
-
-    @RenderBody()
-    <hr />
-    <footer>
-        <div class="row">
-            <div class="col-md-12 copyright">
-                <div class="col-md-6 col-sm-6 copyright-left">
-                    <p>&copy; @DateTime.Now.Year - OnlineShopingStore. All right reserved.</p>
-                </div>
-                <div class="col-12 text-center">
-                    <ul class="list-unstyled list-social d-flex justify-content-center">
-                        <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
-                        <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
-                        <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google"></i></a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
-    </footer>
-    </div>
+    </nav>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    <div class="wrapper">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="~/AdminStyle/vendor/chart.js/Chart.min.js"></script>
-    <script src="~/AdminStyle/js/demo/chart-area-demo.js"></script>
+        @RenderBody()
+        </div>
+        <hr />
+        <footer>
+            <div class="row">
+                <div class="col-md-12 copyright">
+                    <div class="col-md-6 col-sm-6 copyright-left">
+                        <p>&copy; @DateTime.Now.Year - OnlineShopingStore. All right reserved.</p>
+                    </div>
+                    <div class="col-12 text-center">
+                        <ul class="list-unstyled list-social d-flex justify-content-center">
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+                            <li class="mx-2"><a href="#" target="_blank"><i class="fa fa-google"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
 
-    @RenderSection("Scripts", required: false)
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="~/AdminStyle/vendor/chart.js/Chart.min.js"></script>
+        <script src="~/AdminStyle/js/demo/chart-area-demo.js"></script>
+
+        @RenderSection("Scripts", required: false)
 </body>
 </html>

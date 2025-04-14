@@ -22,7 +22,8 @@ namespace OnlineShopingStore.DAL
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            throw new UnintentionalCodeFirstException();
+            //throw new UnintentionalCodeFirstException();
+            base.OnModelCreating(modelBuilder);
         }
     
         public virtual DbSet<Tbl_Cart> Tbl_Cart { get; set; }
