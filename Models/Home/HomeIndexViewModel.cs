@@ -16,6 +16,7 @@ namespace OnlineShopingStore.Models.Home
         dbMyOnlineShoppingEntitiess contex = new dbMyOnlineShoppingEntitiess();
         public IPagedList<Tbl_Product> ListofProducts { get; set; }
         public List<string> Genres { get; set; }
+
         public HomeIndexViewModel CreateModel(string search, int pageSize, int? page, int? genreId)
         {
             SqlParameter[] param = new SqlParameter[]

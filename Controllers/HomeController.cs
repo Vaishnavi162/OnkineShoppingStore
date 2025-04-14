@@ -67,18 +67,20 @@ namespace OnlineShopingStore.Controllers
                 // Pagination
                 int pageSize = 8;
                 int pageNumber = page ?? 1;
-                var Products = productList.ToPagedList(pageNumber, pageSize);
+                var pagedProducts = productList.ToPagedList(pageNumber, pageSize);
 
                 // Create view model
                 var viewModel = new HomeIndexViewModel
                 {
-                    ListofProducts = Products,
-                    Genres = genres
+                    ListofProducts = pagedProducts,
+                    Genres = genres,
+                   
                 };
 
                 return View(viewModel);
             }
         }
+
 
 
         public ActionResult About()

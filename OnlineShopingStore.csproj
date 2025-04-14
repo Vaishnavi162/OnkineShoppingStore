@@ -1829,7 +1829,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\Apple.jpg" />
-    <Content Include="Images\Blue Simple Modern Electronic Logo.png" />
     <Content Include="Images\Bluetooth.jpg" />
     <Content Include="Images\core-values-goals-mission-business-purpose-concept_53876-95300.jpg" />
     <Content Include="Images\download.jpg" />
@@ -1840,6 +1839,7 @@
     <Content Include="Images\istockphoto-458990823-612x612.jpg" />
     <Content Include="Images\Lanovo.jpg" />
     <Content Include="Images\Lenovo V15.jpg" />
+    <Content Include="Images\LOGO.png" />
     <Content Include="Images\modern-stationary-collection-arrangement_23-2149309643.jpg" />
     <Content Include="Images\nextgen.png" />
     <Content Include="Images\vision-mission-inspiration-word_53876-132613.jpg" />
