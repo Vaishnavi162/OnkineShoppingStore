@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -165,6 +168,9 @@
     </Reference>
     <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
       <HintPath>packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
+    <Reference Include="Razorpay, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Razorpay.3.1.4\lib\net47\Razorpay.dll</HintPath>
     </Reference>
     <Reference Include="Stripe.net, Version=48.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Stripe.net.48.0.0\lib\net461\Stripe.net.dll</HintPath>
@@ -2040,6 +2046,7 @@
     <Content Include="Views\Stripe\Success.cshtml" />
     <Content Include="Views\Stripe\Cancle.cshtml" />
     <Content Include="Views\Stripe\CreatePayment.cshtml" />
+    <Content Include="Views\Payment\CreateOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

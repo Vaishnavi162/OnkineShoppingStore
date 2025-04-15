@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Pay with Razorpay";
+}
+
+<h2>Payment Gateway</h2>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<button id="rzp-button">Pay ₹500</button>
+
+<form id="razorpay-form" method="post" action="/Payment/VerifyPayment">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id" />
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id" />
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature" />
+</form>
+
+<script>
+    var options = {
+        "key": "@ViewBag.Key",
+        "amount": "@ViewBag.Amount",
+        "currency": "INR",
+        "name": "Online Shopping Store",
+        "description": "Test Transaction",
+        "order_id": "@ViewBag.OrderId",
+        "handler": function (response) {
+            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+            document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+            document.getElementById('razorpay_signature').value = response.razorpay_signature;
+            document.getElementById('razorpay-form').submit();
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    }
+</script>
