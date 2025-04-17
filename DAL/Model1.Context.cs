@@ -9,6 +9,7 @@
 
 namespace OnlineShopingStore.DAL
 {
+    using OnlineShopingStore.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -19,7 +20,8 @@ namespace OnlineShopingStore.DAL
             : base("name=dbMyOnlineShoppingEntitiess")
         {
         }
-    
+        public DbSet<PayPalOrder> PayPalOrders { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //throw new UnintentionalCodeFirstException();

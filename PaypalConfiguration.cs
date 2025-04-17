@@ -6,56 +6,66 @@ using PayPal.Api;
 
 namespace OnlineShopingStore
 {
-    public class PaypalConfiguration
+    public static class PaypalConfiguration
     {
-        public readonly static string clientId;
-        public readonly static string clientSecret;
+        public readonly static string ClientId;
+        public readonly static string ClientSecret;
 
         static PaypalConfiguration()
         {
-            var config = getconfig();
-            clientId = "AZs4ywT3LdJFEPPMTWQ6NcVXObH-Bc8qyYW04x78phOBAE_IGcBegs4PRVmfNjkh5Shst0ga9tY0ZXnL";
-            clientSecret = "EOOYDTWOOu_orfq3JxYHq3-ycGVvm3bQYqyvuOgR-i1GKHGzKpjv8vqdNK5LqMGLpuxPSwa3R7enz_H-";
+            var config = GetConfig();
+            ClientId = config["clientId"];
+            ClientSecret = config["clientSecret"];
         }
 
-        private static Dictionary<string, string> getconfig()
+        public static Dictionary<string, string> GetConfig()
         {
-            return PayPal.Api.ConfigManager.Instance.GetProperties();
+            return ConfigManager.Instance.GetProperties();
         }
+
         private static string GetAccessToken()
         {
-            string accessToken = new OAuthTokenCredential(clientId, clientSecret, getconfig()).GetAccessToken();
+            string accessToken = new OAuthTokenCredential(ClientId, ClientSecret, GetConfig()).GetAccessToken();
             return accessToken;
         }
+
         public static APIContext GetAPIContext()
         {
             APIContext apiContext = new APIContext(GetAccessToken());
-            apiContext.Config = getconfig();
+            apiContext.Config = GetConfig();
             return apiContext;
         }
     }
+
+
+
+    //public static class PaypalConfiguration
+    //{
+    //    public readonly static string clientId;
+    //    public readonly static string clientSecret;
+
+    //    static PaypalConfiguration()
+    //    {
+    //        var config = getconfig();
+    //        clientId = "AenSNnozdb4ijzGsXNkAa7P9yhpUdSxQtVMKj7LiZ1ibpuRgJf1hWUVVia8OPMhwl88uk8-TdXxJdj_x";
+    //        clientSecret = "EOnvqEGEf53B1TjyBxB3xcJivM793z6lYTYouAScHmsvzcmG_0R03-KJsli42gwJLpv1oHocIxawV_-n";
+    //    }
+
+    //    private static Dictionary<string, string> getconfig()
+    //    {
+    //        return PayPal.Api.ConfigManager.Instance.GetProperties();
+    //    }
+    //    private static string GetAccessToken()
+    //    {
+    //        string accessToken = new OAuthTokenCredential(clientId, clientSecret, getconfig()).GetAccessToken();
+    //        return accessToken;
+    //    }
+    //    public static APIContext GetAPIContext()
+    //    {
+    //        APIContext apiContext = new APIContext(GetAccessToken());
+    //        apiContext.Config = getconfig();
+    //        return apiContext;
+    //    }
+    //}
 }
 
-//using PayPal.Api;
-//using System.Collections.Generic;
-
-//public static class PaypalConfiguration
-//{
-//    public static APIContext GetAPIContext()
-//    {
-//        // Set configuration
-//        var config = new Dictionary<string, string>();
-//        config["mode"] = "sandbox";
-//        config["clientId"] = "clientId";
-//        config["clientSecret"] = "clientSecret";
-
-//        // Get OAuth token
-//        var accessToken = new OAuthTokenCredential(config).GetAccessToken();
-
-//        // Return API context with access token
-//        var apiContext = new APIContext(accessToken);
-//        apiContext.Config = config;
-
-//        return apiContext;
-//    }
-//}

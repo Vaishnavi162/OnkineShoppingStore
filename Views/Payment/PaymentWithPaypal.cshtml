@@ -1,50 +1,602 @@
-﻿@{
-    ViewBag.Title = "PaymentWithPaypal";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#007AFF',secondary:'#F5F5F5'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
 
-<h2>PaymentWithPaypal</h2>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-@if (Session["cart"] == null)
-{
-    <div class="alert alert-danger">
-        <strong>No products in cart!</strong>
-    </div>
-}
-else
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Line Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ int Total = 0; }
-            @foreach (var item in (List<OnlineShopingStore.Models.Home.Item>)Session["cart"])
-            {
-                int lineTotal = Convert.ToInt32(item.Quantity * item.Product.Price);
-                Total += lineTotal;
-                <tr>
-                    <td>@item.Product.ProductName</td>
-                    <td>@item.Product.Price</td>
-                    <td>@item.Quantity</td>
-                    <td>@lineTotal</td>
-                </tr>
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        .payment-success {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+            .custom-checkbox input {
+                opacity: 0;
+                width: 0;
+                height: 0;
             }
-            <tr>
-                <td colspan="4" class="text-right"><b>Total: @Total INR</b></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <div class="text-center">
-        <p>Click the button below to proceed with PayPal payment.</p>
-        <a href="@Url.Action("PaymentWithPaypal", "Payment")" class="btn btn-primary btn-lg">
-            Pay with PayPal
-        </a>
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #007AFF;
+            border-color: #007AFF;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .custom-radio {
+            position: relative;
+            width: 18px;
+            height: 18px;
+        }
+
+            .custom-radio input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .radio-mark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 18px;
+            width: 18px;
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+            border-radius: 50%;
+        }
+
+        .custom-radio input:checked ~ .radio-mark {
+            background-color: #fff;
+            border-color: #007AFF;
+        }
+
+        .radio-mark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #007AFF;
+        }
+
+        .custom-radio input:checked ~ .radio-mark:after {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-white font-sans text-gray-800">
+    <div class="min-h-screen flex flex-col">
+        <header class="py-4 px-6 border-b border-gray-100 flex justify-between items-center">
+            <div class="font-['Pacifico'] text-2xl text-primary">logo</div>
+            <div class="flex items-center gap-4">
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-question-line ri-lg"></i>
+                </div>
+                <div class="w-8 h-8 flex items-center justify-center">
+                    <i class="ri-user-line ri-lg"></i>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 py-8 px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="mb-8 text-center">
+                    <h1 class="text-2xl font-semibold mb-2">Payment Details</h1>
+                    <p class="text-gray-500">Complete your purchase securely</p>
+                </div>
+                <div class="flex flex-col md:flex-row gap-8">
+                    <!-- Payment Form -->
+                    <div class="flex-1">
+                        <div class="bg-white shadow-sm border border-gray-100 rounded p-6 mb-6">
+                            <h2 class="text-lg font-medium mb-4">Payment Method</h2>
+                            <div class="flex gap-3 mb-6">
+                                <button id="card-tab" class="flex-1 py-3 px-4 border rounded bg-primary bg-opacity-5 border-primary flex items-center justify-center gap-2 !rounded-button whitespace-nowrap">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-bank-card-line"></i>
+                                    </div>
+                                    <span>Credit Card</span>
+                                </button>
+                                <button id="paypal-tab" class="flex-1 py-3 px-4 border rounded bg-white border-gray-200 flex items-center justify-center gap-2 !rounded-button whitespace-nowrap">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-paypal-line"></i>
+                                    </div>
+                                    <span>PayPal</span>
+                                </button>
+                                <button id="applepay-tab" class="flex-1 py-3 px-4 border rounded bg-white border-gray-200 flex items-center justify-center gap-2 !rounded-button whitespace-nowrap">
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-apple-fill"></i>
+                                    </div>
+                                    <span>Apple Pay</span>
+                                </button>
+                            </div>
+                            <div id="card-form" class="payment-form">
+                                <div class="mb-4">
+                                    <label for="card-number" class="block text-sm font-medium text-gray-700 mb-1">Card Number</label>
+                                    <div class="relative">
+                                        <input type="text" id="card-number" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="1234 5678 9012 3456">
+                                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 flex gap-1">
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-visa-line"></i>
+                                            </div>
+                                            <div class="w-6 h-6 flex items-center justify-center">
+                                                <i class="ri-mastercard-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 mb-4">
+                                    <div>
+                                        <label for="expiry" class="block text-sm font-medium text-gray-700 mb-1">Expiry Date</label>
+                                        <input type="text" id="expiry" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="MM/YY">
+                                    </div>
+                                    <div>
+                                        <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                        <div class="relative">
+                                            <input type="text" id="cvv" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="123">
+                                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                                <div class="w-5 h-5 flex items-center justify-center">
+                                                    <i class="ri-question-line text-gray-400"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Cardholder Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="John Smith">
+                                </div>
+                                <div class="flex items-center mb-6">
+                                    <label class="custom-checkbox">
+                                        <input type="checkbox" checked>
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <span class="text-sm text-gray-600">Save card for future payments</span>
+                                </div>
+                            </div>
+                            <div id="paypal-form" class="payment-form hidden">
+                                <div class="p-6 text-center">
+                                    <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+                                        <i class="ri-paypal-fill ri-2x text-primary"></i>
+                                    </div>
+                                    <p class="mb-4">You will be redirected to PayPal to complete your payment securely.</p>
+                                    <button id="paypal-continue-button" class="bg-primary text-white py-3 px-6 rounded !rounded-button whitespace-nowrap">Continue to PayPal</button>
+                                </div>
+                            </div>
+                            <div id="applepay-form" class="payment-form hidden">
+                                <div class="p-6 text-center">
+                                    <div class="w-12 h-12 mx-auto mb-4 flex items-center justify-center">
+                                        <i class="ri-apple-fill ri-2x"></i>
+                                    </div>
+                                    <p class="mb-4">Click the button below to pay with Apple Pay.</p>
+                                    <button id="apple-pay-button" class="bg-black text-white py-3 px-6 rounded !rounded-button whitespace-nowrap flex items-center justify-center gap-2 mx-auto">
+                                        <div class="w-5 h-5 flex items-center justify-center">
+                                            <i class="ri-apple-fill text-white"></i>
+                                        </div>
+                                        <span>Pay</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white shadow-sm border border-gray-100 rounded p-6 mb-6">
+                            <h2 class="text-lg font-medium mb-4">Billing Address</h2>
+                            <div class="mb-4">
+                                <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                                <input type="text" id="address" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="123 Main Street">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-gray-700 mb-1">City</label>
+                                    <input type="text" id="city" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="New York">
+                                </div>
+                                <div>
+                                    <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State/Province</label>
+                                    <input type="text" id="state" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="NY">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="zip" class="block text-sm font-medium text-gray-700 mb-1">Postal Code</label>
+                                    <input type="text" id="zip" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary" placeholder="10001">
+                                </div>
+                                <div>
+                                    <label for="country" class="block text-sm font-medium text-gray-700 mb-1">Country</label>
+                                    <div class="relative">
+                                        <select id="country" class="w-full px-4 py-3 border border-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-20 focus:border-primary appearance-none pr-8">
+                                            <option>United States</option>
+                                            <option>Canada</option>
+                                            <option>United Kingdom</option>
+                                            <option>Australia</option>
+                                            <option>Germany</option>
+                                        </select>
+                                        <div class="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                                            <div class="w-5 h-5 flex items-center justify-center">
+                                                <i class="ri-arrow-down-s-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" checked>
+                                    <span class="checkmark"></span>
+                                </label>
+                                <span class="text-sm text-gray-600">Billing address is the same as shipping address</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order Summary -->
+                    <div class="w-full md:w-80">
+                        <div class="bg-white shadow-sm border border-gray-100 rounded p-6 sticky top-6">
+                            <h2 class="text-lg font-medium mb-4">Order Summary</h2>
+                            <div class="mb-4">
+                                <button class="flex items-center justify-between w-full text-left text-sm font-medium text-gray-700 mb-2">
+                                    <span>Order Details</span>
+                                    <div class="w-5 h-5 flex items-center justify-center">
+                                        <i class="ri-arrow-down-s-line"></i>
+                                    </div>
+                                </button>
+                                <div class="border-t border-gray-100 pt-3">
+                                    <div class="flex justify-between py-2">
+                                        <span class="text-sm text-gray-600">Premium Headphones</span>
+                                        <span class="text-sm">$129.99</span>
+                                    </div>
+                                    <div class="flex justify-between py-2">
+                                        <span class="text-sm text-gray-600">Wireless Charger</span>
+                                        <span class="text-sm">$45.00</span>
+                                    </div>
+                                    <div class="flex justify-between py-2">
+                                        <span class="text-sm text-gray-600">Phone Case</span>
+                                        <span class="text-sm">$24.99</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-gray-100 pt-4 mb-6">
+                                <div class="flex justify-between py-2">
+                                    <span class="text-sm text-gray-600">Subtotal</span>
+                                    <span class="text-sm">$199.98</span>
+                                </div>
+                                <div class="flex justify-between py-2">
+                                    <span class="text-sm text-gray-600">Shipping</span>
+                                    <span class="text-sm">$4.99</span>
+                                </div>
+                                <div class="flex justify-between py-2">
+                                    <span class="text-sm text-gray-600">Tax</span>
+                                    <span class="text-sm">$20.00</span>
+                                </div>
+                                <div class="flex justify-between py-3 font-medium">
+                                    <span>Total</span>
+                                    <span class="text-lg">$224.97</span>
+                                </div>
+                            </div>
+                            <button id="pay-button" class="w-full bg-primary text-white py-3 px-4 rounded font-medium !rounded-button whitespace-nowrap">
+                                Pay $224.97
+                            </button>
+                            <div class="mt-4 flex items-center justify-center gap-2 text-xs text-gray-500">
+                                <div class="w-4 h-4 flex items-center justify-center">
+                                    <i class="ri-lock-line"></i>
+                                </div>
+                                <span>Secure payment processed by Stripe</span>
+                            </div>
+                            <div class="mt-4 flex justify-center gap-3">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-visa-fill ri-lg"></i>
+                                </div>
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-mastercard-fill ri-lg"></i>
+                                </div>
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-paypal-fill ri-lg"></i>
+                                </div>
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-apple-fill ri-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="py-6 px-6 border-t border-gray-100">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="text-sm text-gray-500">
+                        © 2025 logo. All rights reserved.
+                    </div>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Privacy Policy</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Terms of Service</a>
+                        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Help Center</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
+    <!-- Payment Success Modal -->
+    <div id="payment-success" class="payment-success">
+        <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div class="w-8 h-8 flex items-center justify-center text-green-500">
+                    <i class="ri-check-line ri-2x"></i>
+                </div>
+            </div>
+            <h2 class="text-2xl font-semibold mb-2">Payment Successful!</h2>
+            <p class="text-gray-600 mb-4">Your transaction has been completed successfully.</p>
+            <p class="text-sm text-gray-500 mb-6">Transaction ID: TRX-8294756310</p>
+            <button id="continue-button" class="bg-primary text-white py-3 px-6 rounded !rounded-button whitespace-nowrap">Continue Shopping</button>
+        </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+const applePayButton = document.getElementById('apple-pay-button');
+const paymentSuccess = document.getElementById('payment-success');
+applePayButton.addEventListener('click', function() {
+// Show loading state
+const originalContent = applePayButton.innerHTML;
+applePayButton.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Processing...</span></div>';
+applePayButton.disabled = true;
+// Simulate Apple Pay sheet
+setTimeout(function() {
+// Create and show Apple Pay sheet modal
+const applePaySheet = document.createElement('div');
+applePaySheet.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+applePaySheet.innerHTML = `
+<div class="bg-white rounded-lg shadow-2xl p-6 max-w-md w-full mx-4">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-apple-fill text-black text-xl"></i>
+</div>
+<span class="font-semibold">Apple Pay</span>
+</div>
+<button id="apple-pay-close" class="text-gray-400 hover:text-gray-600">
+<div class="w-6 h-6 flex items-center justify-center">
+<i class="ri-close-line"></i>
+</div>
+</button>
+</div>
+<div class="mb-6">
+<div class="flex justify-between mb-2">
+<span class="text-gray-600">Amount</span>
+<span class="font-semibold">$224.97</span>
+</div>
+<div class="flex justify-between">
+<span class="text-gray-600">Payment Method</span>
+<span class="font-semibold">•••• 4242</span>
+</div>
+</div>
+<button id="apple-pay-confirm" class="w-full bg-black text-white py-3 rounded-lg font-medium !rounded-button">
+Confirm Payment
+</button>
+</div>
+`;
+document.body.appendChild(applePaySheet);
+// Handle close button
+document.getElementById('apple-pay-close').addEventListener('click', function() {
+document.body.removeChild(applePaySheet);
+applePayButton.innerHTML = originalContent;
+applePayButton.disabled = false;
+});
+// Handle confirm button
+document.getElementById('apple-pay-confirm').addEventListener('click', function() {
+document.body.removeChild(applePaySheet);
+// Show success modal
+paymentSuccess.style.display = 'flex';
+// Reset button
+applePayButton.innerHTML = originalContent;
+applePayButton.disabled = false;
+// Auto dismiss success modal after 5 seconds
+setTimeout(function() {
+paymentSuccess.style.display = 'none';
+}, 5000);
+});
+}, 1500);
+});
+const cardTab = document.getElementById('card-tab');
+const paypalTab = document.getElementById('paypal-tab');
+const applepayTab = document.getElementById('applepay-tab');
+const cardForm = document.getElementById('card-form');
+const paypalForm = document.getElementById('paypal-form');
+const applepayForm = document.getElementById('applepay-form');
+function setActiveTab(tab, form) {
+// Reset all tabs
+[cardTab, paypalTab, applepayTab].forEach(t => {
+t.classList.remove('bg-primary', 'bg-opacity-5', 'border-primary');
+t.classList.add('bg-white', 'border-gray-200');
+});
+// Reset all forms
+[cardForm, paypalForm, applepayForm].forEach(f => {
+f.classList.add('hidden');
+});
+// Set active tab
+tab.classList.remove('bg-white', 'border-gray-200');
+tab.classList.add('bg-primary', 'bg-opacity-5', 'border-primary');
+// Show active form
+form.classList.remove('hidden');
 }
+cardTab.addEventListener('click', () => setActiveTab(cardTab, cardForm));
+paypalTab.addEventListener('click', () => setActiveTab(paypalTab, paypalForm));
+applepayTab.addEventListener('click', () => setActiveTab(applepayTab, applepayForm));
+});
+document.addEventListener('DOMContentLoaded', function() {
+const paypalContinueButton = document.getElementById('paypal-continue-button');
+paypalContinueButton.addEventListener('click', function() {
+  const originalContent = paypalContinueButton.innerHTML;
+  paypalContinueButton.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Processing...</span></div>';
+  paypalContinueButton.disabled = true;
+  setTimeout(function() {
+    const paypalSheet = document.createElement('div');
+    paypalSheet.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    paypalSheet.innerHTML = `
+      <div class="bg-white rounded-lg shadow-2xl p-6 max-w-md w-full mx-4">
+        <div class="flex justify-between items-center mb-6">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 flex items-center justify-center">
+              <i class="ri-paypal-fill text-[#003087] text-2xl"></i>
+            </div>
+            <span class="font-semibold text-[#003087]">PayPal</span>
+          </div>
+          <button id="paypal-close" class="text-gray-400 hover:text-gray-600">
+            <div class="w-6 h-6 flex items-center justify-center">
+              <i class="ri-close-line"></i>
+            </div>
+          </button>
+        </div>
+        <div class="mb-6">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input type="email" class="w-full px-4 py-2 border border-gray-300 rounded text-sm" value="john.smith@example.com" readonly>
+          </div>
+          <div class="mb-6">
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-600">Amount</span>
+              <span class="font-semibold">$224.97</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Payment Method</span>
+              <span class="font-semibold">PayPal Balance</span>
+            </div>
+          </div>
+        </div>
+        <button id="paypal-confirm" class="w-full bg-[#0070BA] text-white py-3 rounded-lg font-medium !rounded-button hover:bg-[#003087] transition-colors">
+          Pay Now
+        </button>
+      </div>
+    `;
+    document.body.appendChild(paypalSheet);
+    document.getElementById('paypal-close').addEventListener('click', function() {
+      document.body.removeChild(paypalSheet);
+      paypalContinueButton.innerHTML = originalContent;
+      paypalContinueButton.disabled = false;
+    });
+    document.getElementById('paypal-confirm').addEventListener('click', function() {
+      document.body.removeChild(paypalSheet);
+      document.getElementById('payment-success').style.display = 'flex';
+      paypalContinueButton.innerHTML = originalContent;
+      paypalContinueButton.disabled = false;
+
+      setTimeout(function() {
+        document.getElementById('payment-success').style.display = 'none';
+      }, 5000);
+    });
+  }, 1500);
+});
+const payButton = document.getElementById('pay-button');
+const paymentSuccess = document.getElementById('payment-success');
+const continueButton = document.getElementById('continue-button');
+payButton.addEventListener('click', function() {
+// Show loading state
+payButton.innerHTML = '<div class="flex items-center justify-center gap-2"><div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Processing...</span></div>';
+payButton.disabled = true;
+// Simulate payment processing
+setTimeout(function() {
+// Show success modal
+paymentSuccess.style.display = 'flex';
+// Reset button
+payButton.innerHTML = 'Pay $224.97';
+payButton.disabled = false;
+// Auto dismiss after 5 seconds
+setTimeout(function() {
+paymentSuccess.style.display = 'none';
+}, 5000);
+}, 1500);
+});
+continueButton.addEventListener('click', function() {
+paymentSuccess.style.display = 'none';
+});
+});
+// Card number formatting
+document.addEventListener('DOMContentLoaded', function() {
+const cardNumberInput = document.getElementById('card-number');
+const expiryInput = document.getElementById('expiry');
+cardNumberInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+let formattedValue = '';
+for (let i = 0; i < value.length; i++) {
+if (i > 0 && i % 4 === 0) {
+formattedValue += ' ';
+}
+formattedValue += value[i];
+}
+e.target.value = formattedValue.substring(0, 19); // 16 digits + 3 spaces
+});
+expiryInput.addEventListener('input', function(e) {
+let value = e.target.value.replace(/\D/g, '');
+if (value.length > 2) {
+e.target.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+} else {
+e.target.value = value;
+}
+});
+});
+    </script>
+</body>
+</html>

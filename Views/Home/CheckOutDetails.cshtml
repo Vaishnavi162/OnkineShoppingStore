@@ -50,17 +50,23 @@
                 Payment >>
             </a>*@
         @*<a href="@Url.Action("Checkout", "Stripe")" class="btn btn-primary">Buy Now</a>*@
-        <a href="@Url.Action("CreatePayment", "Stripe")" class="btn btn-success">Pay with Stripe</a>
+        @*<a href="@Url.Action("CreatePayment", "Stripe")" class="btn btn-success">Pay with Stripe</a>*@
 
 
         <a href="@Url.Action("PaymentWithPaypal","Payment")" class="btn btn-primary">
-            Pay with PayPal
+            Pay Online
         </a>
+        <a href="@Url.Action("Index","Home")" class="btn btn-primary">
+           Continue Shopping
+        </a>
+        @*<form action="@Url.Action("PaymentWithPaypal", "Payment")" method="post">
+                <button type="submit" class="btn btn-primary">Pay with PayPal</button>
+            </form>*@
 
 
-        <a href="@Url.Action("CreateOrder","Payment")" class="btn btn-primary">
-            Pay with Razor
-        </a>
+        @*<a href="@Url.Action("CreateOrder","Payment")" class="btn btn-primary">
+                Pay with Razor
+            </a>*@
     }
 </div>
 

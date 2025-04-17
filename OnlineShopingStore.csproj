@@ -373,6 +373,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CategoryDetail.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
@@ -381,6 +382,7 @@
     <Compile Include="Models\Home\Item.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PayPalOrder.cs" />
     <Compile Include="Models\Shopping.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="PaypalConfiguration.cs" />
