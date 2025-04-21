@@ -21,7 +21,5 @@ namespace OnlineShopingStore.DAL
         public string ExpiryDate { get; set; }
         public string CVV { get; set; }
         public System.DateTime PaymentDate { get; set; }
-
-       
     }
 }

@@ -210,6 +210,8 @@ namespace OnlineShopingStore.Controllers
                     user.Fullname = updatedUser.Fullname;
                     user.Email = updatedUser.Email;
                     user.Password = updatedUser.Password;
+                    user.Contact = updatedUser.Contact;
+                    user.Address = updatedUser.Address;
                     // Add other fields as needed
 
                     context.SaveChanges();

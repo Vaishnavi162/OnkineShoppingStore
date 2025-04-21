@@ -128,6 +128,8 @@
           <Property Name="Fullname" Type="nvarchar(max)" />
           <Property Name="Email" Type="nvarchar(max)" />
           <Property Name="Password" Type="nvarchar(max)" />
+          <Property Name="contact" Type="nvarchar" MaxLength="10" />
+          <Property Name="Address" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK__Tbl_Cart__Produc__300424B4">
           <End Role="Tbl_Product" Type="Self.Tbl_Product" Multiplicity="0..1" />
@@ -312,6 +314,8 @@
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Fullname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Contact" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__Tbl_Cart__Produc__300424B4">
           <End Role="Tbl_Product" Type="Self.Tbl_Product" Multiplicity="0..1" />
@@ -509,6 +513,8 @@
           <EntitySetMapping Name="Tbl_User">
             <EntityTypeMapping TypeName="dbMyOnlineShoppingModel.Tbl_User">
               <MappingFragment StoreEntitySet="Tbl_User">
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact" ColumnName="contact" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Fullname" ColumnName="Fullname" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

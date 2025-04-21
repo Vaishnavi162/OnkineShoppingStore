@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "User Register";
-
 }
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -81,8 +80,6 @@
     }
 </style>
 
-
-
 <div class="register-wrapper">
     <div class="register-card">
         <h2>Register</h2>
@@ -100,6 +97,18 @@
                 @Html.LabelFor(m => m.Email, new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-lg", placeholder = "Email" })
                 @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Contact, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Contact, new { @class = "form-control form-control-lg", placeholder = "Contact Number" })
+                @Html.ValidationMessageFor(m => m.Contact, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(m => m.Address, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control form-control-lg", placeholder = "Address" })
+                @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
             </div>
 
             <div class="mb-3 position-relative">

@@ -20,6 +20,10 @@ namespace OnlineShopingStore.Models
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
+        public string Contact { get; set; }
+        public string Address { get; set; }
+
     }
 
 }
