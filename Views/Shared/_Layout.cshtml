@@ -255,9 +255,9 @@
                 {
                     <span class="me-3">
                         @*@if (Session["Fullname"] != null)
-                            {
-                                <strong> @Session["Fullname"]!</strong>
-                            }*@
+                {
+                    <strong> @Session["Fullname"]!</strong>
+                }*@
 
                     </span>
                 }
@@ -271,14 +271,11 @@
                 }
                 else
                 {
-                    <a href="@Url.Action("Profile", "Account")" class="nav-link text-dark">
-                        Profile
-                        @*<i class="fas fa-user fa-lg"></i>*@
-                    </a>
-                    <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark">
-                        Logout
-                        @*<i class="fas fa-user fa-lg"></i>*@
-                    </a>
+                    <div class="d-flex">
+                        <a href="@Url.Action("Profile", "Account")" class="nav-link text-dark me-3">Profile</a>
+                        <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark">Logout</a>
+                    </div>
+
                 }
 
                 <!-- Cart -->

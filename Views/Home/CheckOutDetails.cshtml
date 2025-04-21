@@ -1,72 +1,28 @@
-﻿@using OnlineShopingStore.Models.Home;
+﻿@model OnlineShopingStore.Models.Home.CheckOutDetailsViewModel
+
 @{
-    ViewBag.Title = "CheckOutDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Checkout Details";
 }
 <div class="casual" style=" margin: 0 20px" ;>
-    <h2>CheckOutDetails</h2>
-    @if (Session["cart"] == null)
+    <h2>Shipping Address</h2>
+
+    @if (Model.User != null)
     {
-        <div class="alert alert-danger">
-            <strong>No product added to cart</strong>
+        <div class="card mb-4">
+
+            <div class="card-body">
+                <p><strong>Full Name:</strong> @Model.User.Fullname</p>
+                <p><strong>Email:</strong> @Model.User.Email</p>
+                @*<p><strong>Contact:</strong> @Model.User.Contact</p>
+                    <p><strong>Address:</strong> @Model.User.Address</p>*@
+            </div>
         </div>
     }
-    else
-    {
-        <table class="table table-bordered">
-            <thread>
-                <tr>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Line Total</th>
-                </tr>
-            </thread>
-            <tbody>
-                @{
-                    int Total = 0;
-                }
 
-                @foreach (Item item in (List<Item>)Session["cart"])
-                {
-                    int lineTotal = Convert.ToInt32(item.Quantity * item.Product.Price);
-                    Total = Convert.ToInt32(@Total + lineTotal);
-                    Session["SesTotal"] = Total;
-                    <tr>
-                        <td>@item.Product.ProductName</td>
-                        <td>@item.Product.Price</td>
-                        <td>@item.Quantity</td>
-                        <td>@lineTotal</td>
+    
 
-                    </tr>
-                }
-                <tr>
-                    <td colspan="4" class="text-right"><b>Total :@Total</b></td>
-                </tr>
-
-            </tbody>
-        </table>
-        @*<a href="@Url.Action("PaymentWithPaypal","Payment")" class="btn btn-success">
-                Payment >>
-            </a>*@
-        @*<a href="@Url.Action("Checkout", "Stripe")" class="btn btn-primary">Buy Now</a>*@
-        @*<a href="@Url.Action("CreatePayment", "Stripe")" class="btn btn-success">Pay with Stripe</a>*@
-
-
-        <a href="@Url.Action("Payment","Payment")" class="btn btn-primary">
-            Pay Online
-        </a>
-        <a href="@Url.Action("Index","Home")" class="btn btn-primary">
-           Continue Shopping
-        </a>
-        @*<form action="@Url.Action("PaymentWithPaypal", "Payment")" method="post">
-                <button type="submit" class="btn btn-primary">Pay with PayPal</button>
-            </form>*@
-
-
-        @*<a href="@Url.Action("CreateOrder","Payment")" class="btn btn-primary">
-                Pay with Razor
-            </a>*@
-    }
-</div>
-
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Continue Shopping</a>
+    <a href="@Url.Action("Payment","Payment")" class="btn btn-primary">
+        Pay Online
+    </a>
+    </div>

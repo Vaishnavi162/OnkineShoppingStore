@@ -1,15 +1,14 @@
 ﻿@{
     ViewBag.Title = "User Login";
-
 }
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
 
 <style>
     body {
-        background: linear-gradient(120deg, #e0f7fa, #f0f4c3);
+        background: linear-gradient(120deg, #f0f4f7, #e0f7fa);
         font-family: 'Segoe UI', sans-serif;
-        font-size: 1.4rem; /* Base font size further increased */
+        font-size: 1.4rem;
     }
 
     .login-wrapper {
@@ -63,13 +62,11 @@
         }
 
     .password-toggle {
-        position: absolute;
-        right: 20px;
-        top: 52px;
         cursor: pointer;
         color: #007bff;
         font-size: 1.3rem;
         font-weight: bold;
+        margin-left: 10px;
     }
 
     .btn {
@@ -81,8 +78,17 @@
     .position-relative {
         position: relative;
     }
-</style>
 
+    /* Flexbox styling to make the button next to the input */
+    .password-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .password-container input {
+            flex-grow: 1;
+        }
+</style>
 
 <div class="login-wrapper">
     <div class="login-card">
@@ -99,8 +105,10 @@
 
             <div class="mb-3 position-relative">
                 <label class="form-label">Password</label>
-                <input type="password" name="Password" id="passwordField" class="form-control form-control-lg" placeholder="Enter Password" required />
-                <span class="password-toggle" onclick="togglePassword()">Show</span>
+                <div class="password-container">
+                    <input type="password" name="Password" id="passwordField" class="form-control form-control-lg" placeholder="Enter Password" required />
+                    <span class="password-toggle" onclick="togglePassword()">Show</span>
+                </div>
             </div>
 
             <div class="form-check mb-3">

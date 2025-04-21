@@ -14,7 +14,7 @@ using OnlineShopingStore.Models;
 
 namespace OnlineShopingStore.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class AccountController : Controller
     {
         private dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess();
@@ -72,13 +72,21 @@ namespace OnlineShopingStore.Controllers
         {
             using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
             {
+                //var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+                //if (user != null)
+                //{
+                //    // Store name or email in Session
+                //    Session["Fullname"] = user.Fullname; // Or use user.UEmail
+                //    return RedirectToAction("Index", "Home");
+                //}
                 var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
                 if (user != null)
                 {
-                    // Store name or email in Session
-                    Session["Fullname"] = user.Fullname; // Or use user.UEmail
+                    Session["UserId"] = user.UserID;       // ✅ Make sure this line is here
+                    Session["Fullname"] = user.Fullname;
                     return RedirectToAction("Index", "Home");
                 }
+
                 else
                 {
                     ModelState.AddModelError("", "Invalid email or password");
@@ -121,13 +129,107 @@ namespace OnlineShopingStore.Controllers
             return View(model);
         }
 
+        //public ActionResult Profile()
+        //{
+        //    if (Session["UserId"] == null)
+        //    {
+        //        TempData["LoginRequired"] = "Please login to view your profile.";
+        //        return RedirectToAction("Login", "Account");
+        //    }
 
-        
-        public ActionResult Logout()
+        //    int userId = Convert.ToInt32(Session["UserId"]);
+
+        //    using (var context = new dbMyOnlineShoppingEntitiess())
+        //    {
+        //        var user = context.Tbl_User.SingleOrDefault(x => x.UserID == userId);
+        //        if (user != null)
+        //        {
+        //            return View(user);
+        //        }
+        //    }
+
+        //    return RedirectToAction("Index", "Home");
+        //}
+        public ActionResult Profile()
         {
-            Session.Clear(); // This will remove all session variables
+            if (Session["UserId"] == null)
+            {
+                TempData["LoginRequired"] = "Please login to view your profile.";
+                return RedirectToAction("Login", "Account");
+            }
+
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            using (var context = new dbMyOnlineShoppingEntitiess())
+            {
+                var user = context.Tbl_User.SingleOrDefault(x => x.UserID == userId);
+                if (user != null)
+                {
+                    return View(user);
+                }
+            }
+
             return RedirectToAction("Index", "Home");
         }
+        [HttpGet]
+        public ActionResult EditProfile()
+        {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+            using (var context = new dbMyOnlineShoppingEntitiess())
+            {
+                var user = context.Tbl_User.FirstOrDefault(x => x.UserID == userId);
+                if (user != null)
+                {
+                    return View(user);
+                }
+            }
+
+            return RedirectToAction("Profile");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditProfile(Tbl_User updatedUser)
+        {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+            using (var context = new dbMyOnlineShoppingEntitiess())
+            {
+                var user = context.Tbl_User.FirstOrDefault(x => x.UserID == userId);
+                if (user != null)
+                {
+                    user.Fullname = updatedUser.Fullname;
+                    user.Email = updatedUser.Email;
+                    user.Password = updatedUser.Password;
+                    // Add other fields as needed
+
+                    context.SaveChanges();
+                    TempData["Message"] = "Profile updated successfully!";
+                    Session["Fullname"] = user.Fullname; // Update session if needed
+                }
+            }
+
+            return RedirectToAction("Profile");
+        }
+
+
+
+
+        public ActionResult Logout()
+{
+    Session.Clear(); // Clears all session data
+    return RedirectToAction("Index", "Home"); // Redirect to home page
+}
+
 
 
 

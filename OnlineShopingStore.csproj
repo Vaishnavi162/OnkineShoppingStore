@@ -382,6 +382,7 @@
     <Compile Include="Models\EditProfileViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\GenreDetail.cs" />
+    <Compile Include="Models\Home\CheckOutDetailsViewModel.cs" />
     <Compile Include="Models\Home\HomeIndexViewModel.cs" />
     <Compile Include="Models\Home\Item.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -2058,6 +2059,7 @@
     <Content Include="Views\Account\Payment.cshtml" />
     <Content Include="Views\Payment\Payment.cshtml" />
     <Content Include="Views\Admin\GenreEdit.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

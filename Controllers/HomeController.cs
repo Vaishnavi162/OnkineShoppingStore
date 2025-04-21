@@ -95,74 +95,103 @@ namespace OnlineShopingStore.Controllers
 
         public ActionResult CheckOut()
         {
-            return View();
+            // Pull the cart from session (or make it empty if null)
+            var cart = Session["cart"] as List<Item> ?? new List<Item>();
+
+            // Compute grand total
+            decimal grandTotal = (decimal)cart.Sum(i => i.Quantity * i.Product.Price);
+
+            // Either pass via ViewBag:
+            ViewBag.GrandTotal = grandTotal;
+
+            // Or use a simple view‑model:
+            // var vm = new CartViewModel { Items = cart, Total = grandTotal };
+            // return View(vm);
+
+            return View(cart);
         }
 
         public ActionResult CheckOutDetails()
         {
-            return View();
+            // 1) Get cart from session
+            var cart = Session["cart"] as List<Item> ?? new List<Item>();
+
+            // 2) Compute grand total
+            decimal total = (decimal)cart.Sum(i => i.Quantity * i.Product.Price);
+
+            // 3) Fetch logged‑in user
+            Tbl_User user = null;
+            if (Session["UserId"] != null)
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                user = ctx.Tbl_User.SingleOrDefault(u => u.UserID == userId);
+            }
+
+            // 4) Pack into view‑model
+            var vm = new CheckOutDetailsViewModel
+            {
+                User = user,
+                CartItems = cart,
+                GrandTotal = total
+            };
+
+            return View(vm);
         }
-        public ActionResult DecreaseQty(int productId)
+        //public ActionResult DecreaseQty(int productId)
+        //{
+        //    if (Session["cart"] != null)
+        //    {
+        //    List<Item> cart = (List<Item>)Session["cart"];
+        //    var product = ctx.Tbl_Product.Find(productId);
+        //    foreach (var item in cart)
+        //    {
+        //        if (item.Product.ProductId == productId)
+        //        {
+        //            int prevQty = item.Quantity;
+        //                if (prevQty > 0)
+        //                {
+        //                    cart.Remove(item);
+        //                    cart.Add(new Item()
+        //                    {
+        //                        Product = product,
+        //                        Quantity = prevQty - 1
+        //                    });
+        //                }
+        //                break;
+        //            }
+        //        }
+        //        Session["cart"] = cart;
+        //    }
+
+        //    return Redirect("CheckOut");
+        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DecreaseQty(int productId, string returnUrl)
         {
-            if (Session["cart"] != null)
+            var cart = Session["cart"] as List<Item>;
+            if (cart != null)
             {
-            List<Item> cart = (List<Item>)Session["cart"];
-            var product = ctx.Tbl_Product.Find(productId);
-            foreach (var item in cart)
-            {
-                if (item.Product.ProductId == productId)
+                // Find the item
+                var item = cart.FirstOrDefault(x => x.Product.ProductId == productId);
+                if (item != null)
                 {
-                    int prevQty = item.Quantity;
-                        if (prevQty > 0)
-                        {
-                            cart.Remove(item);
-                            cart.Add(new Item()
-                            {
-                                Product = product,
-                                Quantity = prevQty - 1
-                            });
-                        }
-                        break;
-                    }
+                    item.Quantity--;               // decrement
+                    if (item.Quantity <= 0)        // if 0 or less
+                        cart.Remove(item);         // remove from list
                 }
+
+                // Update session
                 Session["cart"] = cart;
             }
-           
-            return Redirect("CheckOut");
+
+            // Redirect back
+            if (!String.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            return RedirectToAction("CheckOut");
         }
 
-        //[HttpPost]
-        //public ActionResult AddToCart(int productId, int quantity)
-        //{
-        //    // Check login
-        //    if (Session["Fullname"] == null)
-        //    {
-        //        TempData["LoginRequired"] = "Please login to add items to your cart.";
-        //        return RedirectToAction("Login", "Account");
-        //    }
-
-        //    List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
-        //    var product = ctx.Tbl_Product.Find(productId);
-
-        //    var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
-        //    if (existingItem != null)
-        //    {
-        //        existingItem.Quantity += quantity; // ✅ Add the entered quantity
-        //    }
-        //    else
-        //    {
-        //        cart.Add(new Item
-        //        {
-        //            Product = product,
-        //            Quantity = quantity
-        //        });
-        //    }
-
-        //    Session["cart"] = cart;
-        //    TempData["CartSuccess"] = "Your product has been added to the cart.";
-
-        //    return RedirectToAction("Index");
-        //}
 
         [HttpPost]
         public ActionResult AddToCart(int productId, int? quantity)
@@ -182,6 +211,7 @@ namespace OnlineShopingStore.Controllers
             if (existingItem != null)
             {
                 existingItem.Quantity += qty;
+                return RedirectToAction("CheckOut");
             }
             else
             {
