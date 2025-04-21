@@ -1,0 +1,36 @@
+﻿@model OnlineShopingStore.Models.EditProfileViewModel
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+<div class="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Edit Profile</h2>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @Html.LabelFor(m => m.FullName)
+            @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FullName)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.Address)
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+    }
+    }

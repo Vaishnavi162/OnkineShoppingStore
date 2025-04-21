@@ -51,8 +51,15 @@
 
                                 <td>@item.CategoryName</td>
                                 <td>
-                                   
-                                    @Html.ActionLink("Edit", "CategoryEdit", new { catId = item.CategoryId })
+                                    <a href="@Url.Action("CategoryEdit", "Admin", new { catId = item.CategoryId })" class="btn btn-primary btn-sm">Edit</a>
+                                    @*@Html.ActionLink("Edit", "CategoryEdit", new { catId = item.CategoryId })*@
+                                    @*<a href="@Url.Action("CategoryDelete", "Admin", new { catId = item.CategoryId })"
+        onclick="return confirm('Are you sure you want to delete this category?');"
+        class="btn btn-danger btn-sm">Delete</a>*@
+                                    <a href="@Url.Action("CategoryDelete", "Admin", new { id = item.CategoryId })"
+                                       onclick="return confirm('Are you sure you want to delete this category?');"
+                                       class="btn btn-sm btn-danger">Delete</a>
+
                                 </td>
 
 

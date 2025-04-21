@@ -12,10 +12,16 @@ namespace OnlineShopingStore.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Tbl_Genre
+    public partial class Tbl_Payment
     {
-        public int GenreId { get; set; }
-        public string GenreName { get; set; }
-        public Nullable<bool> IsDelete { get; set; }
+        public int PaymentId { get; set; }
+        public string UserId { get; set; }
+        public string CardHolderName { get; set; }
+        public string CardNumber { get; set; }
+        public string ExpiryDate { get; set; }
+        public string CVV { get; set; }
+        public System.DateTime PaymentDate { get; set; }
+
+       
     }
 }

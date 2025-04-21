@@ -354,6 +354,9 @@
     <Compile Include="DAL\Tbl_Members.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAL\Tbl_Payment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL\Tbl_Product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -376,12 +379,14 @@
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\CategoryDetail.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
+    <Compile Include="Models\EditProfileViewModel.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\GenreDetail.cs" />
     <Compile Include="Models\Home\HomeIndexViewModel.cs" />
     <Compile Include="Models\Home\Item.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\PayPalOrder.cs" />
     <Compile Include="Models\Shopping.cs" />
     <Compile Include="Models\User.cs" />
@@ -2049,6 +2054,10 @@
     <Content Include="Views\Stripe\Cancle.cshtml" />
     <Content Include="Views\Stripe\CreatePayment.cshtml" />
     <Content Include="Views\Payment\CreateOrder.cshtml" />
+    <Content Include="Views\Account\EditProfile.cshtml" />
+    <Content Include="Views\Account\Payment.cshtml" />
+    <Content Include="Views\Payment\Payment.cshtml" />
+    <Content Include="Views\Admin\GenreEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

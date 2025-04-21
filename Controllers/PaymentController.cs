@@ -3,139 +3,183 @@ using PayPal.Api;
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using OnlineShopingStore.Models; // adjust namespace
+using OnlineShopingStore.Models;
+using OnlineShopingStore.DAL;
+using OnlineShopingStore.Repository; // adjust namespace
 
 namespace YourProject.Controllers
 {
+
     public class PaymentController : Controller
     {
-        private Payment payment;
+        private GenericUnitOfWork unitOfWork = new GenericUnitOfWork();
 
-        public ActionResult PaymentWithPaypal()
+        [HttpGet]
+        public ActionResult Payment()
         {
-            APIContext apiContext = PaypalConfiguration.GetAPIContext();
-
-            try
-            {
-                string payerId = Request.Params["PayerID"];
-                if (string.IsNullOrEmpty(payerId))
-                {
-                    // First call – redirect to PayPal
-                    string guid = Convert.ToString((new Random()).Next(100000));
-                    string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/Payment/PaymentWithPaypal?guid=" + guid;
-
-                    var createdPayment = CreatePayment(apiContext, baseURI, guid);
-
-                    var links = createdPayment.links.GetEnumerator();
-                    while (links.MoveNext())
-                    {
-                        Links lnk = links.Current;
-                        if (lnk.rel.ToLower().Trim().Equals("approval_url"))
-                        {
-                            Session.Add(guid, createdPayment.id); // Store paymentId
-                            return Redirect(lnk.href); // Go to PayPal
-                        }
-                    }
-
-                    return View("FailureView");
-                }
-                else
-                {
-                    // Return from PayPal
-                    var guid = Request.Params["guid"];
-                    var paymentId = Session[guid] as string;
-
-                    if (string.IsNullOrEmpty(paymentId))
-                        return View("FailureView");
-
-                    var executedPayment = ExecutePayment(apiContext, payerId, paymentId);
-
-                    if (executedPayment.state.ToLower() != "approved")
-                        return View("FailureView");
-
-                    return View("SuccessView");
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewBag.ErrorMessage = ex.Message;
-                return View("FailureView");
-            }
+            return View();
         }
 
-        private Payment CreatePayment(APIContext apiContext, string redirectURL, string guid)
+        [HttpPost]
+        public ActionResult Payment(PaymentViewModel model)
         {
-            var itemList = new ItemList() { items = new List<Item>() };
-            decimal totalAmountINR = 0;
-
-            if (Session["cart"] != null)
+            if (ModelState.IsValid)
             {
-                List<OnlineShopingStore.Models.Home.Item> cart = (List<OnlineShopingStore.Models.Home.Item>)Session["cart"];
-
-                foreach (var item in cart)
+                Tbl_Payment payment = new Tbl_Payment
                 {
-                    decimal priceINR = (decimal)item.Product.Price;
-                    int quantity = item.Quantity;
+                    UserId = User.Identity.Name, // Or set user ID from session if needed
+                    CardHolderName = model.CardHolderName,
+                    CardNumber = model.CardNumber,
+                    ExpiryDate = model.ExpiryDate,
+                    CVV = model.CVV,
+                    PaymentDate = DateTime.Now
+                };
 
-                    itemList.items.Add(new Item()
-                    {
-                        name = item.Product.ProductName,
-                        currency = "USD", // Always USD for PayPal
-                        price = (priceINR / 83).ToString("F2"), // Convert INR to USD
-                        quantity = quantity.ToString(),
-                        sku = "sku"
-                    });
+                unitOfWork.GetRepositoryInstance<Tbl_Payment>().Add(payment);
 
-                    totalAmountINR += priceINR * quantity;
-                }
+                TempData["Message"] = "Payment Successful!";
+                return RedirectToAction("SuccessView");
             }
 
-            decimal totalAmountUSD = totalAmountINR / 83;
-
-            var payer = new Payer() { payment_method = "paypal" };
-
-            var redirUrls = new RedirectUrls()
-            {
-                cancel_url = redirectURL + "&cancel=true",
-                return_url = redirectURL
-            };
-
-            var amount = new Amount()
-            {
-                currency = "USD",
-                total = totalAmountUSD.ToString("F2")
-            };
-
-            var transactionList = new List<Transaction>
-            {
-                new Transaction
-                {
-                    description = "Mobile purchase",
-                    invoice_number = Guid.NewGuid().ToString(),
-                    amount = amount,
-                    item_list = itemList
-                }
-            };
-
-            var payment = new Payment()
-            {
-                intent = "sale",
-                payer = payer,
-                transactions = transactionList,
-                redirect_urls = redirUrls
-            };
-
-            return payment.Create(apiContext);
+            return View(model);
         }
-
-        private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
+        public ActionResult SuccessView()
         {
-            var paymentExecution = new PaymentExecution() { payer_id = payerId };
-            payment = new Payment() { id = paymentId };
-            return payment.Execute(apiContext, paymentExecution);
+            return View();
         }
+
+        //public ActionResult PaymentSuccess()
+        //{
+        //    return View();
+        //}
     }
 }
+//    private Payment payment;
+
+//    public ActionResult PaymentWithPaypal()
+//    {
+//        APIContext apiContext = PaypalConfiguration.GetAPIContext();
+
+//        try
+//        {
+//            string payerId = Request.Params["PayerID"];
+//            if (string.IsNullOrEmpty(payerId))
+//            {
+//                // First call – redirect to PayPal
+//                string guid = Convert.ToString((new Random()).Next(100000));
+//                string baseURI = Request.Url.Scheme + "://" + Request.Url.Authority + "/Payment/PaymentWithPaypal?guid=" + guid;
+
+//                var createdPayment = CreatePayment(apiContext, baseURI, guid);
+
+//                var links = createdPayment.links.GetEnumerator();
+//                while (links.MoveNext())
+//                {
+//                    Links lnk = links.Current;
+//                    if (lnk.rel.ToLower().Trim().Equals("approval_url"))
+//                    {
+//                        Session.Add(guid, createdPayment.id); // Store paymentId
+//                        return Redirect(lnk.href); // Go to PayPal
+//                    }
+//                }
+
+//                return View("FailureView");
+//            }
+//            else
+//            {
+//                // Return from PayPal
+//                var guid = Request.Params["guid"];
+//                var paymentId = Session[guid] as string;
+
+//                if (string.IsNullOrEmpty(paymentId))
+//                    return View("FailureView");
+
+//                var executedPayment = ExecutePayment(apiContext, payerId, paymentId);
+
+//                if (executedPayment.state.ToLower() != "approved")
+//                    return View("FailureView");
+
+//                return View("SuccessView");
+//            }
+//        }
+//        catch (Exception ex)
+//        {
+//            ViewBag.ErrorMessage = ex.Message;
+//            return View("FailureView");
+//        }
+//    }
+
+//    private Payment CreatePayment(APIContext apiContext, string redirectURL, string guid)
+//    {
+//        var itemList = new ItemList() { items = new List<Item>() };
+//        decimal totalAmountINR = 0;
+
+//        if (Session["cart"] != null)
+//        {
+//            List<OnlineShopingStore.Models.Home.Item> cart = (List<OnlineShopingStore.Models.Home.Item>)Session["cart"];
+
+//            foreach (var item in cart)
+//            {
+//                decimal priceINR = (decimal)item.Product.Price;
+//                int quantity = item.Quantity;
+
+//                itemList.items.Add(new Item()
+//                {
+//                    name = item.Product.ProductName,
+//                    currency = "USD", // Always USD for PayPal
+//                    price = (priceINR / 83).ToString("F2"), // Convert INR to USD
+//                    quantity = quantity.ToString(),
+//                    sku = "sku"
+//                });
+
+//                totalAmountINR += priceINR * quantity;
+//            }
+//        }
+
+//        decimal totalAmountUSD = totalAmountINR / 83;
+
+//        var payer = new Payer() { payment_method = "paypal" };
+
+//        var redirUrls = new RedirectUrls()
+//        {
+//            cancel_url = redirectURL + "&cancel=true",
+//            return_url = redirectURL
+//        };
+
+//        var amount = new Amount()
+//        {
+//            currency = "USD",
+//            total = totalAmountUSD.ToString("F2")
+//        };
+
+//        var transactionList = new List<Transaction>
+//        {
+//            new Transaction
+//            {
+//                description = "Mobile purchase",
+//                invoice_number = Guid.NewGuid().ToString(),
+//                amount = amount,
+//                item_list = itemList
+//            }
+//        };
+
+//        var payment = new Payment()
+//        {
+//            intent = "sale",
+//            payer = payer,
+//            transactions = transactionList,
+//            redirect_urls = redirUrls
+//        };
+
+//        return payment.Create(apiContext);
+//    }
+
+//    private Payment ExecutePayment(APIContext apiContext, string payerId, string paymentId)
+//    {
+//        var paymentExecution = new PaymentExecution() { payer_id = payerId };
+//        payment = new Payment() { id = paymentId };
+//        return payment.Execute(apiContext, paymentExecution);
+//    }
+
 
 
 

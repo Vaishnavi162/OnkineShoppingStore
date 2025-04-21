@@ -1,0 +1,39 @@
+﻿@model OnlineShopingStore.Models.PaymentViewModel
+@{
+    ViewBag.Title = "Payment";
+}
+
+<div class="max-w-md mx-auto p-6 bg-white rounded-xl shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @Html.LabelFor(m => m.CardHolderName)
+            @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CardHolderName)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.CardNumber)
+            @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CardNumber)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.ExpiryDate)
+            @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control", placeholder = "MM/YY" })
+            @Html.ValidationMessageFor(m => m.ExpiryDate)
+        </div>
+
+        <div>
+            @Html.LabelFor(m => m.CVV)
+            @Html.PasswordFor(m => m.CVV, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.CVV)
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Payment</button>
+    }
+</div>

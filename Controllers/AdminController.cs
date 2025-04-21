@@ -164,6 +164,25 @@ namespace OnlineShopingStore.Controllers
             _unitOfWork.GetRepositoryInstance<Tbl_Category>().Update(tbl);
             return RedirectToAction("Categories");
         }
+
+        public ActionResult CategoryDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            var category = _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(id.Value);
+            if (category == null)
+            {
+                return HttpNotFound();
+            }
+
+            _unitOfWork.GetRepositoryInstance<Tbl_Category>().Remove(category);
+            _unitOfWork.SaveChanges();
+            return RedirectToAction("Categories");
+        }
+
         public ActionResult Product()
         {
             //return View(_unitOfWork.GetRepositoryInstance<Tbl_Product>().GetProduct());
@@ -199,20 +218,7 @@ namespace OnlineShopingStore.Controllers
             ViewBag.CategoryList = GetCategory();
             return View();
         }
-        //public ActionResult ProductAdd(int? productId)
-        //{
-        //    if (productId == null)
-        //    {
-        //        ViewBag.Message = "Product ID is not provided.";
-        //    }
-        //    else
-        //    {
-        //        // Logic to handle product addition using productId
-        //        ViewBag.Message = $"Product ID: {productId}";
-        //    }
-
-        //    return View();
-        //}
+        
         [HttpPost]
         public ActionResult ProductAdd(Tbl_Product tbl,HttpPostedFileBase File)
         {
@@ -228,6 +234,36 @@ namespace OnlineShopingStore.Controllers
             _unitOfWork.GetRepositoryInstance<Tbl_Product>().Add(tbl);
             return RedirectToAction("Product");
         }
+
+        //public ActionResult ProductDelete(int id)
+        //{
+        //    var product = _unitOfWork.GetRepositoryInstance<Tbl_Product>().GetFirstorDefault(id);
+        //    if (product == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    _unitOfWork.GetRepositoryInstance<Tbl_Product>().Remove(product);
+        //    _unitOfWork.SaveChanges(); // If your UnitOfWork handles SaveChanges separately
+        //    return RedirectToAction("Product");
+        //}
+        public ActionResult ProductDelete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            var product = _unitOfWork.GetRepositoryInstance<Tbl_Product>().GetFirstorDefault(id.Value);
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            _unitOfWork.GetRepositoryInstance<Tbl_Product>().Remove(product);
+            _unitOfWork.SaveChanges();
+            return RedirectToAction("Product");
+        }
+
 
         public ActionResult GenreDetail()
         {
@@ -257,6 +293,96 @@ namespace OnlineShopingStore.Controllers
             }
             return RedirectToAction("GenreDetail");
         }
+
+        public ActionResult GenreEdit(int id)
+        {
+            var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
+            if (genre == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("GenreAdd", genre); // You can reuse GenreAdd.cshtml for both Add/Edit
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GenreEdit(Tbl_Genre genre)
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Update(genre); // Your updated GenericRepo now works correctly
+                return RedirectToAction("GenreDetail");
+            }
+
+            return View("GenreAdd", genre); // Return to the same form view in case of error
+        }
+        public ActionResult GenreDelete(int id)
+        {
+            var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
+            if (genre == null)
+            {
+                return HttpNotFound();
+            }
+
+            _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Remove(genre);
+            _unitOfWork.SaveChanges(); // If your UnitOfWork handles SaveChanges separately
+            return RedirectToAction("GenreDetail");
+        }
+
+
+
+        //public ActionResult EditGenre(int id)
+        //{
+        //    if (id == 0)
+        //    {
+        //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+        //    }
+
+        //    var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
+        //    if (genre == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+
+        //    return View(genre); // Make sure you have a View named EditGenre.cshtml or pass "GenreAdd" view name
+        //}
+
+
+        ////[HttpPost]
+        ////[ValidateAntiForgeryToken]
+        ////public ActionResult EditGenre(Tbl_Genre genre)
+        ////{
+        ////    if (ModelState.IsValid)
+        ////    {
+        ////        _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Update(genre);
+        ////        return RedirectToAction("GenreDetail");
+        ////    }
+
+        ////    return View(genre);
+        ////}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult EditGenre(Tbl_Genre genre)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var repo = _unitOfWork.GetRepositoryInstance<Tbl_Genre>();
+        //        repo.Update(genre); // Ensure your repo uses proper attach logic
+        //        return RedirectToAction("GenreDetail");
+        //    }
+        //    return View(genre);
+        //}
+
+        //public ActionResult GenreDelete(int id)
+        //{
+        //    var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
+        //    if (genre != null)
+        //    {
+        //        _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Remove(genre);
+        //    }
+        //    return Redirect("GenreDetail");
+        //}
 
 
     }

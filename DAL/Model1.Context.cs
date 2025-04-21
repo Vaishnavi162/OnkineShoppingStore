@@ -9,7 +9,6 @@
 
 namespace OnlineShopingStore.DAL
 {
-    using OnlineShopingStore.Models;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
@@ -20,12 +19,10 @@ namespace OnlineShopingStore.DAL
             : base("name=dbMyOnlineShoppingEntitiess")
         {
         }
-        public DbSet<PayPalOrder> PayPalOrders { get; set; }
-
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //throw new UnintentionalCodeFirstException();
-            base.OnModelCreating(modelBuilder);
+            throw new UnintentionalCodeFirstException();
         }
     
         public virtual DbSet<Tbl_Cart> Tbl_Cart { get; set; }
@@ -39,5 +36,6 @@ namespace OnlineShopingStore.DAL
         public virtual DbSet<Tbl_ShippingDetails> Tbl_ShippingDetails { get; set; }
         public virtual DbSet<Tbl_SlideImage> Tbl_SlideImage { get; set; }
         public virtual DbSet<Tbl_User> Tbl_User { get; set; }
+        public virtual DbSet<Tbl_Payment> Tbl_Payment { get; set; }
     }
 }

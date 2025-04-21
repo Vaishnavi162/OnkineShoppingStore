@@ -255,9 +255,9 @@
                 {
                     <span class="me-3">
                         @*@if (Session["Fullname"] != null)
-                        {
-                            <strong> @Session["Fullname"]!</strong>
-                        }*@
+                            {
+                                <strong> @Session["Fullname"]!</strong>
+                            }*@
 
                     </span>
                 }
@@ -271,10 +271,12 @@
                 }
                 else
                 {
-                    <a href="@Url.Action("Profile", "Account")" class="nav-link text-dark">Profile
+                    <a href="@Url.Action("Profile", "Account")" class="nav-link text-dark">
+                        Profile
                         @*<i class="fas fa-user fa-lg"></i>*@
                     </a>
-                    <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark" >Logout
+                    <a href="@Url.Action("Logout", "Account")" class="nav-link text-dark">
+                        Logout
                         @*<i class="fas fa-user fa-lg"></i>*@
                     </a>
                 }
@@ -311,6 +313,41 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function submitPayment(method) {
+            const data = {
+                name: document.getElementById('name').value,
+                cardNumber: document.getElementById('card-number').value,
+                expiry: document.getElementById('expiry').value,
+                cvv: document.getElementById('cvv').value,
+                billingAddress: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                zipCode: document.getElementById('zip').value,
+                country: document.getElementById('country').value,
+                amount: 224.97,
+                method: method
+            };
+
+            fetch('/Payment/ProcessPayment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(result => {
+                    if (result.success) {
+                        alert("Payment Success! Transaction ID: " + result.transactionId);
+                    } else {
+                        alert("Payment Failed: " + result.message);
+                    }
+                });
+        }
+    </script>
 
 
     @Scripts.Render("~/bundles/jquery")

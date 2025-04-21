@@ -33,6 +33,12 @@ namespace OnlineShopingStore
        url: "Dashboard/Index",
        defaults: new { controller = "Dashboard", action = "Index" }
    );
+            routes.MapRoute(
+    name: "PaymentTest",
+    url: "payment-test",
+    defaults: new { controller = "Payment", action = "Payment" }
+);
+
 
             //routes.MapRoute(
             //    name: "Default",
