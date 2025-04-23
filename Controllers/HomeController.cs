@@ -137,34 +137,52 @@ namespace OnlineShopingStore.Controllers
 
             return View(vm);
         }
-        //public ActionResult DecreaseQty(int productId)
-        //{
-        //    if (Session["cart"] != null)
-        //    {
-        //    List<Item> cart = (List<Item>)Session["cart"];
-        //    var product = ctx.Tbl_Product.Find(productId);
-        //    foreach (var item in cart)
-        //    {
-        //        if (item.Product.ProductId == productId)
-        //        {
-        //            int prevQty = item.Quantity;
-        //                if (prevQty > 0)
-        //                {
-        //                    cart.Remove(item);
-        //                    cart.Add(new Item()
-        //                    {
-        //                        Product = product,
-        //                        Quantity = prevQty - 1
-        //                    });
-        //                }
-        //                break;
-        //            }
-        //        }
-        //        Session["cart"] = cart;
-        //    }
 
-        //    return Redirect("CheckOut");
-        //}
+        [HttpGet]
+        public ActionResult EditDetail()
+        {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+            var user = ctx.Tbl_User.FirstOrDefault(u => u.UserID == userId);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditDetail(Tbl_User updatedUser)
+        {
+            if (ModelState.IsValid)
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                var existingUser = ctx.Tbl_User.SingleOrDefault(u => u.UserID == userId);
+
+                if (existingUser != null)
+                {
+                    existingUser.Fullname = updatedUser.Fullname;
+                    existingUser.Email = updatedUser.Email;
+                    existingUser.Contact = updatedUser.Contact;
+                    existingUser.Address = updatedUser.Address;
+
+                    ctx.SaveChanges();
+
+                    TempData["ProfileUpdated"] = "Your profile has been updated.";
+                    return RedirectToAction("CheckOutDetails");
+                }
+            }
+
+            return View(updatedUser);
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

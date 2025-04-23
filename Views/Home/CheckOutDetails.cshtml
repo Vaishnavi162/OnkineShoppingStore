@@ -3,26 +3,27 @@
 @{
     ViewBag.Title = "Checkout Details";
 }
-<div class="casual" style=" margin: 0 20px" ;>
+<div class="casual" style=" margin: 0 70px" ;>
     <h2>Shipping Address</h2>
 
     @if (Model.User != null)
     {
         <div class="card mb-4">
 
-            <div class="card-body">
+            <div class="card-body ">
                 <p><strong>Full Name:</strong> @Model.User.Fullname</p>
                 <p><strong>Email:</strong> @Model.User.Email</p>
                 <p><strong>Contact:</strong> @Model.User.Contact</p>
-                    <p><strong>Address:</strong> @Model.User.Address</p>
+                <p><strong>Address:</strong> @Model.User.Address</p>
             </div>
         </div>
+        <a href="@Url.Action("EditDetail", "Home")" class="btn btn-primary">Edit Shipping Details</a>
     }
 
-    
 
-    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Continue Shopping</a>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Continue Shopping</a>
     <a href="@Url.Action("Payment","Payment")" class="btn btn-primary">
-        Pay Online
+        Pay Card
     </a>
-    </div>
+</div>

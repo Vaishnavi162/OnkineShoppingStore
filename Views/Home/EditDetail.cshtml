@@ -1,0 +1,40 @@
+﻿@model OnlineShopingStore.DAL.Tbl_User
+
+@{
+    ViewBag.Title = "Edit Profile";
+}
+<div class="container">
+    <h2>Edit Your Profile</h2>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Fullname)
+            @Html.TextBoxFor(m => m.Fullname, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Fullname)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Contact)
+            @Html.TextBoxFor(m => m.Contact, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Contact)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address)
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Address)
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <a href="@Url.Action("CheckOutDetails", "Home")" class="btn btn-primary">Cancel</a>
+    }
+    </div>

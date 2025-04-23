@@ -8,6 +8,7 @@ namespace OnlineShopingStore.Models
 {
     public class PaymentViewModel
     {
+
         [Required]
         public string CardHolderName { get; set; }
 

@@ -2060,6 +2060,7 @@
     <Content Include="Views\Payment\Payment.cshtml" />
     <Content Include="Views\Admin\GenreEdit.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Home\EditDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
