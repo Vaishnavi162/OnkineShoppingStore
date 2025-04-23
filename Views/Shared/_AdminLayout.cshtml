@@ -94,8 +94,8 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Orders" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Orders", "Admin")">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Orders</span>
                 </a>

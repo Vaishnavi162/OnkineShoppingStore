@@ -36,6 +36,8 @@ namespace OnlineShopingStore.DAL
         public virtual DbSet<Tbl_ShippingDetails> Tbl_ShippingDetails { get; set; }
         public virtual DbSet<Tbl_SlideImage> Tbl_SlideImage { get; set; }
         public virtual DbSet<Tbl_User> Tbl_User { get; set; }
+        public virtual DbSet<Tbl_Order> Tbl_Order { get; set; }
+        public virtual DbSet<Tbl_OrderDetail> Tbl_OrderDetail { get; set; }
         public virtual DbSet<Tbl_Payment> Tbl_Payment { get; set; }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using OnlineShopingStore;
-using PayPal.Api;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using OnlineShopingStore.Models;
 using OnlineShopingStore.DAL;
-using OnlineShopingStore.Repository; // adjust namespace
+using OnlineShopingStore.Repository;
+using OnlineShopingStore.Models.Home;
 
-namespace YourProject.Controllers
+namespace OnlineShopingStore.Controllers
 {
-
     public class PaymentController : Controller
     {
         private GenericUnitOfWork unitOfWork = new GenericUnitOfWork();
@@ -23,37 +23,163 @@ namespace YourProject.Controllers
         [HttpPost]
         public ActionResult Payment(PaymentViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                Tbl_Payment payment = new Tbl_Payment
-                {
-                    UserId = User.Identity.Name, // Or set user ID from session if needed
-                    CardHolderName = model.CardHolderName,
-                    CardNumber = model.CardNumber,
-                    ExpiryDate = model.ExpiryDate,
-                    CVV = model.CVV,
-                    PaymentDate = DateTime.Now
-                };
-
-                unitOfWork.GetRepositoryInstance<Tbl_Payment>().Add(payment);
-
-                TempData["Message"] = "Payment Successful!";
-                return RedirectToAction("SuccessView");
+                return View(model);
             }
 
-            return View(model);
+            // 1) Get User ID from Session
+            if (Session["UserId"] == null)
+            {
+                TempData["Error"] = "Please log in to complete payment.";
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            // 2) Get cart from session
+            var cart = Session["cart"] as List<Item>;
+            if (cart == null || cart.Count == 0)
+            {
+                TempData["Error"] = "Cart is empty.";
+                return RedirectToAction("CheckOut", "Home");
+            }
+
+            // 3) Calculate total
+            decimal totalAmount = (decimal)cart.Sum(i => i.Product.Price * i.Quantity);
+
+            // 4) Save Tbl_Payment
+            Tbl_Payment payment = new Tbl_Payment
+            {
+                UserId = Convert.ToInt32(Session["UserId"]),
+
+                CardHolderName = model.CardHolderName,
+                CardNumber = model.CardNumber,
+                ExpiryDate = model.ExpiryDate,
+                CVV = model.CVV,
+                PaymentDate = DateTime.Now,
+                AmountPaid = totalAmount
+            };
+            unitOfWork.GetRepositoryInstance<Tbl_Payment>().Add(payment);
+
+            // Save payment now to get PaymentID
+            unitOfWork.SaveChanges();
+
+            // 5) Create Tbl_Order
+            Tbl_Order order = new Tbl_Order
+            {
+                UserID = userId,
+                PaymentID = payment.PaymentId,
+                OrderDate = DateTime.Now,
+                OrderStatus = "Processing",
+
+                // Save payment info to Tbl_Order as well
+                PaymentAmount = payment.AmountPaid,
+                CardNumber = payment.CardNumber,
+                NameOnCard = payment.CardHolderName
+            };
+            unitOfWork.GetRepositoryInstance<Tbl_Order>().Add(order);
+            unitOfWork.SaveChanges();
+
+            // 6) Create Tbl_OrderDetail for each cart item
+            foreach (var item in cart)
+            {
+                Tbl_OrderDetail detail = new Tbl_OrderDetail
+                {
+                    OrderID = order.OrderID,
+                    ProductID = item.Product.ProductId,
+                    Quantity = item.Quantity,
+                    Price = (decimal)item.Product.Price
+                };
+                unitOfWork.GetRepositoryInstance<Tbl_OrderDetail>().Add(detail);
+            }
+
+            unitOfWork.SaveChanges();
+
+            // 7) Clear cart
+            Session["cart"] = null;
+
+            TempData["Message"] = "Payment Successful & Order Placed!";
+            return RedirectToAction("SuccessView");
         }
+
         public ActionResult SuccessView()
         {
             return View();
         }
-
-        //public ActionResult PaymentSuccess()
-        //{
-        //    return View();
-        //}
     }
 }
+
+
+
+
+
+
+
+
+
+//using OnlineShopingStore;
+//using PayPal.Api;
+//using System;
+//using System.Collections.Generic;
+//using System.Web.Mvc;
+//using OnlineShopingStore.Models;
+//using OnlineShopingStore.DAL;
+//using OnlineShopingStore.Repository; // adjust namespace
+
+//namespace YourProject.Controllers
+//{
+
+//    public class PaymentController : Controller
+//    {
+//        private GenericUnitOfWork unitOfWork = new GenericUnitOfWork();
+
+//        [HttpGet]
+//        public ActionResult Payment()
+//        {
+//            return View();
+//        }
+
+//        [HttpPost]
+//        public ActionResult Payment(PaymentViewModel model)
+//        {
+//            if (ModelState.IsValid)
+//            {
+//                Tbl_Payment payment = new Tbl_Payment
+//                {
+//                    UserId = User.Identity.Name, // Or set user ID from session if needed
+//                    CardHolderName = model.CardHolderName,
+//                    CardNumber = model.CardNumber,
+//                    ExpiryDate = model.ExpiryDate,
+//                    CVV = model.CVV,
+//                    PaymentDate = DateTime.Now
+//                };
+
+//                unitOfWork.GetRepositoryInstance<Tbl_Payment>().Add(payment);
+
+//                TempData["Message"] = "Payment Successful!";
+//                return RedirectToAction("SuccessView");
+//            }
+
+//            return View(model);
+//        }
+
+//        public ActionResult SuccessView()
+//        {
+//            return View();
+//        }
+
+
+//    }
+//}
+
+
+
+
+
+
+
+
 //    private Payment payment;
 
 //    public ActionResult PaymentWithPaypal()

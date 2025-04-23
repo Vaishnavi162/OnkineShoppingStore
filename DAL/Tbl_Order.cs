@@ -12,26 +12,26 @@ namespace OnlineShopingStore.DAL
     using System;
     using System.Collections.Generic;
     
-    public partial class Tbl_Payment
+    public partial class Tbl_Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Tbl_Payment()
+        public Tbl_Order()
         {
-            this.Tbl_Order = new HashSet<Tbl_Order>();
+            this.Tbl_OrderDetail = new HashSet<Tbl_OrderDetail>();
         }
     
-        public int PaymentId { get; set; }
-        public int UserId { get; set; }
-        public string CardHolderName { get; set; }
+        public int OrderID { get; set; }
+        public int UserID { get; set; }
+        public int PaymentID { get; set; }
+        public string OrderStatus { get; set; }
+        public Nullable<System.DateTime> OrderDate { get; set; }
+        public Nullable<decimal> PaymentAmount { get; set; }
         public string CardNumber { get; set; }
-        public string ExpiryDate { get; set; }
-        public string CVV { get; set; }
-        public System.DateTime PaymentDate { get; set; }
-        public Nullable<decimal> AmountPaid { get; set; }
+        public string NameOnCard { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Tbl_Order> Tbl_Order { get; set; }
+        public virtual ICollection<Tbl_OrderDetail> Tbl_OrderDetail { get; set; }
         public virtual Tbl_User Tbl_User { get; set; }
-
+        public virtual Tbl_Payment Tbl_Payment { get; set; }
     }
 }

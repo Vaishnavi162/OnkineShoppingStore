@@ -19,7 +19,13 @@
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Cart__Produc__300424B4" ManuallyRouted="false" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Produ__Categ__286302EC" ManuallyRouted="false" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Shipp__Membe__36B12243" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Payment" Width="1.5" PointX="8.375" PointY="9.75" />
+        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Order" Width="1.5" PointX="12" PointY="5.25" />
+        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_OrderDetail" Width="1.5" PointX="14.25" PointY="3.25" />
+        <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Order__7B264821" />
+        <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__UserI__7755B73D" />
+        <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Produ__7C1A6C5A" />
+        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Payment" Width="1.5" PointX="8.375" PointY="10" />
+        <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Payme__0B5CAFEA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

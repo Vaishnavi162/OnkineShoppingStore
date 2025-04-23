@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace OnlineShopingStore.Controllers
 {
@@ -330,59 +331,28 @@ namespace OnlineShopingStore.Controllers
             return RedirectToAction("GenreDetail");
         }
 
+        public ActionResult Orders()
+        {
+            var payments = (from p in ctx.Tbl_Payment
+                            join u in ctx.Tbl_User on p.UserId equals u.UserID
+                            where p.AmountPaid != null
+                            select new PaymentOrderViewModel
+                            {
+                                PaymentID = p.PaymentId,
+                                UserID = p.UserId,
+                                CardHolderName = p.CardHolderName,
+                                CardNumber = p.CardNumber,
+                                ExpiryDate = p.ExpiryDate,
+                                CVV = p.CVV,
+                                PaymentDate = p.PaymentDate,
+                                AmountPaid = p.AmountPaid,
+                                UserName = u.Fullname,
+                                Email = u.Email
+                            }).ToList();
 
 
-        //public ActionResult EditGenre(int id)
-        //{
-        //    if (id == 0)
-        //    {
-        //        return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
-        //    }
-
-        //    var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
-        //    if (genre == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-
-        //    return View(genre); // Make sure you have a View named EditGenre.cshtml or pass "GenreAdd" view name
-        //}
-
-
-        ////[HttpPost]
-        ////[ValidateAntiForgeryToken]
-        ////public ActionResult EditGenre(Tbl_Genre genre)
-        ////{
-        ////    if (ModelState.IsValid)
-        ////    {
-        ////        _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Update(genre);
-        ////        return RedirectToAction("GenreDetail");
-        ////    }
-
-        ////    return View(genre);
-        ////}
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult EditGenre(Tbl_Genre genre)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var repo = _unitOfWork.GetRepositoryInstance<Tbl_Genre>();
-        //        repo.Update(genre); // Ensure your repo uses proper attach logic
-        //        return RedirectToAction("GenreDetail");
-        //    }
-        //    return View(genre);
-        //}
-
-        //public ActionResult GenreDelete(int id)
-        //{
-        //    var genre = _unitOfWork.GetRepositoryInstance<Tbl_Genre>().GetFirstorDefault(id);
-        //    if (genre != null)
-        //    {
-        //        _unitOfWork.GetRepositoryInstance<Tbl_Genre>().Remove(genre);
-        //    }
-        //    return Redirect("GenreDetail");
-        //}
+            return View(payments);
+        }
 
 
     }

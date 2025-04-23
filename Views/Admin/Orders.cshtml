@@ -1,0 +1,40 @@
+﻿@model List<OnlineShopingStore.Models.PaymentOrderViewModel>
+@{
+    ViewBag.Title = "Order Payment Records";
+}
+
+<h2 class="mb-4">Order Payment Details</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Payment ID</th>
+            <th>User ID</th>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Card Holder</th>
+            <th>Card Number</th>
+            <th>Expiry</th>
+            <th>CVV</th>
+            <th>Amount Paid</th>
+            <th>Payment Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td>@p.PaymentID</td>
+                <td>@p.UserID</td>
+                <td>@p.UserName</td>
+                <td>@p.Email</td>
+                <td>@p.CardHolderName</td>
+                <td>@p.CardNumber</td>
+                <td>@p.ExpiryDate</td>
+                <td>@p.CVV</td>
+                <td>₹@p.AmountPaid</td>
+                <td>@p.PaymentDate</td>
+            </tr>
+        }
+    </tbody>
+</table>

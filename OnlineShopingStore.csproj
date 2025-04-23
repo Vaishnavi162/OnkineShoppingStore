@@ -354,6 +354,12 @@
     <Compile Include="DAL\Tbl_Members.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAL\Tbl_Order.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\Tbl_OrderDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL\Tbl_Payment.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -387,6 +393,7 @@
     <Compile Include="Models\Home\Item.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PaymentOrderViewModel.cs" />
     <Compile Include="Models\PaymentViewModel.cs" />
     <Compile Include="Models\PayPalOrder.cs" />
     <Compile Include="Models\Shopping.cs" />
@@ -2061,6 +2068,7 @@
     <Content Include="Views\Admin\GenreEdit.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Home\EditDetail.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
