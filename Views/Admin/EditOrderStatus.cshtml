@@ -1,0 +1,21 @@
+﻿@model OnlineShopingStore.Models.PaymentOrderViewModel
+
+@{
+    var statusList = new List<SelectListItem>
+{
+        new SelectListItem { Text = "Pending", Value = "Pending" },
+        new SelectListItem { Text = "Processing", Value = "Processing" },
+        new SelectListItem { Text = "Completed", Value = "Completed" },
+        new SelectListItem { Text = "Cancelled", Value = "Cancelled" }
+    };
+}
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(m => m.PaymentID)
+
+    <label>Status:</label>
+    @Html.DropDownListFor(m => m.OrderStatus, statusList, "Select Status", new { @class = "form-control" })
+
+    <button type="submit" class="btn btn-primary mt-2">Update Status</button>
+}

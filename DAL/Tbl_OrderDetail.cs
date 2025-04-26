@@ -19,6 +19,7 @@ namespace OnlineShopingStore.DAL
         public int ProductID { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public string OrderStatus { get; set; }
     
         public virtual Tbl_Order Tbl_Order { get; set; }
         public virtual Tbl_Product Tbl_Product { get; set; }

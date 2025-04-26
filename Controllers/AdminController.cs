@@ -65,8 +65,17 @@ namespace OnlineShopingStore.Controllers
         {
             if (Session["Admin"] == null)
                 return RedirectToAction("AdminLogin");
+            var model = new DashboardViewModel
+            {
+                TotalUsers = ctx.Tbl_User.Count(),
+                TotalProducts = ctx.Tbl_Product.Count(),
+                TotalOrders = ctx.Tbl_Order.Count(),
+                TotalCategories = ctx.Tbl_Category.Count(),
+                TotalGenres = ctx.Tbl_Genre.Count()
+            };
 
-            return View();
+            return View(model);
+            
         }
 
         public ActionResult Logout()
@@ -76,7 +85,7 @@ namespace OnlineShopingStore.Controllers
         }
         public List<SelectListItem> GetCategory()
         {
-            List<SelectListItem> list= new List<SelectListItem>();
+            List<SelectListItem> list = new List<SelectListItem>();
             var cat = _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetAllRecords();
             foreach (var item in cat)
             {
@@ -84,7 +93,7 @@ namespace OnlineShopingStore.Controllers
             }
             return list;
         }
-        
+
         //public ActionResult Dashboard()
         //{
         //    return View();
@@ -96,7 +105,7 @@ namespace OnlineShopingStore.Controllers
             return View(allcategories);
         }
         [HttpPost]
-      
+
         public ActionResult AddCategory(CategoryDetail model)
         {
             if (ModelState.IsValid)
@@ -109,7 +118,7 @@ namespace OnlineShopingStore.Controllers
                     category = _unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(model.CategoryId);
                     category.CategoryName = model.CategoryName;
                     category.IsActive = model.IsActive;
-                    
+
                 }
                 else
                 {
@@ -118,7 +127,7 @@ namespace OnlineShopingStore.Controllers
                         CategoryName = model.CategoryName,
                         IsActive = model.IsActive,
                         IsDelete = false,
-                       
+
                     };
 
                     _unitOfWork.GetRepositoryInstance<Tbl_Category>().Add(category);
@@ -155,13 +164,13 @@ namespace OnlineShopingStore.Controllers
 
         public ActionResult CategoryEdit(int catId)
         {
-          
-            return View(_unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(catId)); 
+
+            return View(_unitOfWork.GetRepositoryInstance<Tbl_Category>().GetFirstorDefault(catId));
         }
         [HttpPost]
         public ActionResult CategoryEdit(Tbl_Category tbl)
         {
-           
+
             _unitOfWork.GetRepositoryInstance<Tbl_Category>().Update(tbl);
             return RedirectToAction("Categories");
         }
@@ -196,7 +205,7 @@ namespace OnlineShopingStore.Controllers
         public ActionResult ProductEdit(int productId)
         {
             ViewBag.CategoryList = GetCategory();
-            return View(_unitOfWork.GetRepositoryInstance<Tbl_Product>().GetFirstorDefault(productId)); 
+            return View(_unitOfWork.GetRepositoryInstance<Tbl_Product>().GetFirstorDefault(productId));
         }
         [HttpPost]
         public ActionResult ProductEdit(Tbl_Product tbl, HttpPostedFileBase File)
@@ -211,7 +220,7 @@ namespace OnlineShopingStore.Controllers
             tbl.ProductImage = File != null ? pic : tbl.ProductImage;
             tbl.ModifiedData = DateTime.Now;
             _unitOfWork.GetRepositoryInstance<Tbl_Product>().Update(tbl);
-            return RedirectToAction("Product"); 
+            return RedirectToAction("Product");
         }
 
         public ActionResult ProductAdd()
@@ -219,12 +228,12 @@ namespace OnlineShopingStore.Controllers
             ViewBag.CategoryList = GetCategory();
             return View();
         }
-        
+
         [HttpPost]
-        public ActionResult ProductAdd(Tbl_Product tbl,HttpPostedFileBase File)
+        public ActionResult ProductAdd(Tbl_Product tbl, HttpPostedFileBase File)
         {
             string pic = null;
-            if(File != null)
+            if (File != null)
             {
                 pic = System.IO.Path.GetFileName(File.FileName);
                 string path = System.IO.Path.Combine(Server.MapPath("~/ProductImg/"), pic);
@@ -331,27 +340,113 @@ namespace OnlineShopingStore.Controllers
             return RedirectToAction("GenreDetail");
         }
 
+        //public ActionResult Orders()
+        //{
+        //    var payments = (from p in ctx.Tbl_Payment
+        //                    join u in ctx.Tbl_User on p.UserId equals u.UserID
+        //                    join pr in ctx.Tbl_Product on p.ProductId equals pr.ProductId into productGroup
+        //                    from pr in productGroup.DefaultIfEmpty()
+        //                    where p.AmountPaid != null
+        //                    select new PaymentOrderViewModel
+        //                    {
+        //                        PaymentID = p.PaymentId,
+        //                        UserID = p.UserId,
+        //                        CardHolderName = p.CardHolderName,
+        //                        CardNumber = p.CardNumber,
+        //                        ExpiryDate = p.ExpiryDate,
+        //                        CVV = p.CVV,
+        //                        PaymentDate = p.PaymentDate,
+        //                        AmountPaid = p.AmountPaid,
+        //                        UserName = u.Fullname,
+        //                        Email = u.Email,
+        //                        Status = p.Status,
+        //                        ProductName = pr != null ? pr.ProductName : "No Product",
+        //                    }).ToList();
+
+
+        //    return View(payments);
+        //}
+        public ActionResult UpdateAllOrdersStatus()
+        {
+            var orders = _unitOfWork.GetRepositoryInstance<Tbl_Order>().GetAllRecords().ToList();
+
+            foreach (var order in orders)
+            {
+                order.OrderStatus = "Pending";
+                _unitOfWork.GetRepositoryInstance<Tbl_Order>().Update(order);
+            }
+
+            _unitOfWork.SaveChanges(); // Sabko ek saath save karega
+
+            TempData["Message"] = "All previous orders updated to 'Pending'.";
+            return RedirectToAction("Orders"); // Tumhara Order List page
+        }
+
         public ActionResult Orders()
         {
             var payments = (from p in ctx.Tbl_Payment
                             join u in ctx.Tbl_User on p.UserId equals u.UserID
+                            join o in ctx.Tbl_Order on p.PaymentId equals o.PaymentID
                             where p.AmountPaid != null
-                            select new PaymentOrderViewModel
+                            select new
                             {
-                                PaymentID = p.PaymentId,
-                                UserID = p.UserId,
-                                CardHolderName = p.CardHolderName,
-                                CardNumber = p.CardNumber,
-                                ExpiryDate = p.ExpiryDate,
-                                CVV = p.CVV,
-                                PaymentDate = p.PaymentDate,
-                                AmountPaid = p.AmountPaid,
-                                UserName = u.Fullname,
-                                Email = u.Email
+                                Payment = p,
+                                User = u,
+                                OrderID = o.OrderID
+                            }).AsEnumerable() // move to memory
+                            .Select(x => new PaymentOrderViewModel
+                            {
+                                PaymentID = x.Payment.PaymentId,
+                                UserID = x.Payment.UserId,
+                                CardHolderName = x.Payment.CardHolderName,
+                                CardNumber = x.Payment.CardNumber,
+                                ExpiryDate = x.Payment.ExpiryDate,
+                                CVV = x.Payment.CVV,
+                                PaymentDate = x.Payment.PaymentDate,
+                                AmountPaid = x.Payment.AmountPaid,
+                                UserName = x.User.Fullname,
+                                Email = x.User.Email,
+                                OrderStatus = x.Payment.Status,
+                                ProductName = string.Join(", ",
+                                    (from od in ctx.Tbl_OrderDetail
+                                     join pr in ctx.Tbl_Product on od.ProductID equals pr.ProductId
+                                     where od.OrderID == x.OrderID
+                                     select pr.ProductName).ToList()
+                                )
                             }).ToList();
 
-
             return View(payments);
+        }
+
+
+
+        public ActionResult EditOrderStatus(int id)
+        {
+            var payment = ctx.Tbl_Payment.Find(id);
+            if (payment == null) return HttpNotFound();
+
+            var model = new PaymentOrderViewModel
+            {
+                PaymentID = payment.PaymentId,
+                OrderStatus = payment.Status
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult EditOrderStatus(PaymentOrderViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var payment = ctx.Tbl_Payment.Find(model.PaymentID);
+                if (payment != null)
+                {
+                    payment.Status = model.OrderStatus;
+                    ctx.SaveChanges();
+                }
+                return RedirectToAction("Orders");
+            }
+            return View(model);
         }
 
 

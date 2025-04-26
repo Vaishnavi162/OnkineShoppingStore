@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3cc7ca3b03d343e2a20158c2c19fa12f" Name="Diagram1">
+      <Diagram DiagramId="3cc7ca3b03d343e2a20158c2c19fa12f" Name="Diagram1" ZoomLevel="62">
         <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Cart" Width="1.5" PointX="5.25" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_CartStatus" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Category" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
@@ -20,12 +20,13 @@
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Produ__Categ__286302EC" ManuallyRouted="false" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Shipp__Membe__36B12243" ManuallyRouted="false" />
         <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Order" Width="1.5" PointX="12" PointY="5.25" />
-        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_OrderDetail" Width="1.5" PointX="14.25" PointY="3.25" />
+        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_OrderDetail" Width="1.5" PointX="12.625" PointY="2.625" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Order__7B264821" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__UserI__7755B73D" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Produ__7C1A6C5A" />
-        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Payment" Width="1.5" PointX="8.375" PointY="10" />
+        <EntityTypeShape EntityType="dbMyOnlineShoppingModel.Tbl_Payment" Width="1.5" PointX="9.75" PointY="7.5" />
         <AssociationConnector Association="dbMyOnlineShoppingModel.FK__Tbl_Order__Payme__0B5CAFEA" />
+        <AssociationConnector Association="dbMyOnlineShoppingModel.FK_Tbl_Payment_ToTable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

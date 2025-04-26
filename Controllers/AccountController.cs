@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OnlineShopingStore.DAL;
 using OnlineShopingStore.Models;
+using OnlineShopingStore.Repository;
 
 namespace OnlineShopingStore.Controllers
 {
@@ -222,7 +223,13 @@ namespace OnlineShopingStore.Controllers
 
             return RedirectToAction("Profile");
         }
+        private GenericUnitOfWork unitOfWork = new GenericUnitOfWork();
 
+        public ActionResult Users()
+        {
+            var users = unitOfWork.GetRepositoryInstance<Tbl_User>().GetAllRecords().ToList();
+            return View(users);
+        }
 
 
 

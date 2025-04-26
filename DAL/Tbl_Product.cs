@@ -19,6 +19,7 @@ namespace OnlineShopingStore.DAL
         {
             this.Tbl_Cart = new HashSet<Tbl_Cart>();
             this.Tbl_OrderDetail = new HashSet<Tbl_OrderDetail>();
+            this.Tbl_Payment = new HashSet<Tbl_Payment>();
         }
     
         public int ProductId { get; set; }
@@ -40,5 +41,7 @@ namespace OnlineShopingStore.DAL
         public virtual Tbl_Category Tbl_Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_OrderDetail> Tbl_OrderDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Payment> Tbl_Payment { get; set; }
     }
 }

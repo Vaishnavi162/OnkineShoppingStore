@@ -4,15 +4,15 @@
     ViewBag.Title = "Genre";
     Layout = "~/Views/Shared/_AdminLayout.cshtml"; 
 }
-
+<div class="container-fluid">
     <div class="card mb-3">
         <div class="card-header">
 
-           
-                <i class="fa fa-table"></i> Genre
 
-                <a href="@Url.Action("GenreAdd", "Admin")" class="btn btn-info pull-right fa fa-plus">Add New</a>
-            
+            <i class="fa fa-table"></i> Genre
+
+            <a href="@Url.Action("GenreAdd", "Admin")" class="btn btn-info pull-right fa fa-plus">Add New</a>
+
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -56,5 +56,5 @@
                 </table>
             </div>
         </div>
-        </div>
-    @*</div>*@
+    </div>
+    </div>

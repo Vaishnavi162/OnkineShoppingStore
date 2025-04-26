@@ -149,80 +149,7 @@
 </head>
 <body>
 
-    @*<div class="container">
-        <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <div class="logo">
-                    <div class="logo-container">
-                        <br />
-                        <img src="~/Images/Blue Simple Modern Electronic Logo.png" width="200px" height="100px" />
-                    </div>
-                </div>
-
-                <ul class="nav nav-pills">
-                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "active" : "")">
-                        @Html.ActionLink("Home", "Index", "Home")
-                    </li>
-                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "About" ? "active" : "")">
-                        @Html.ActionLink("About", "About", "Home")
-                    </li>
-                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Contact" ? "active" : "")">
-                        @Html.ActionLink("Contact", "Contact", "Home")
-                    </li>
-
-                </ul>
-            </div>
-
-            <div class="col-md-6 col-sm-6 col-xs-6">
-                <div class="account">
-                    <br />
-                    @{ var currentController = ViewContext.RouteData.Values["controller"]?.ToString(); var currentAction = ViewContext.RouteData.Values["action"]?.ToString(); }
-
-                    @if (!(Request.RequestContext.RouteData.Values["action"].ToString() == "Contact" &&
-                        Request.RequestContext.RouteData.Values["controller"].ToString() == "Home"))
-                    {
-                        if (Session["Fullname"] != null)
-                        {
-                            <h4>Welcome, @Session["Fullname"]!</h4>
-                        }
-                        else
-                        {
-                            <h4>Welcome to our online store!</h4>
-                        }
-
-
-
-                <ul class="nav navbar-nav navbar-right d-flex align-items-center gap-3">
-                    <li>
-                        @if (Session["Fullname"] == null)
-                        {
-                        <li>
-                            <a href="@Url.Action("Login", "Account")" class="text-dark text-decoration-none" title="Login">
-                                <i class="fas fa-user fa-lg"></i>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="@Url.Action("Logout", "Account")" class="text-dark text-decoration-none" title="Account">
-                                <i class="fas fa-user fa-lg"></i>
-                            </a>
-                        </li>
-                    }
-                        </li>
-
-                            <a href="@Url.Action("CheckOut","Home")" class="text-dark text-decoration-none"  title="Cart">
-                                <i class="fas fa-shopping-cart fa-lg"></i>
-                            </a>
-
-                    </ul>
-
-                    }
-                </div>
-            </div>
-        </div>
-        <br />*@
+ 
 
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid d-flex justify-content-between align-items-center px-4">
@@ -356,4 +283,5 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+
 </html>

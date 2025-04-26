@@ -122,5 +122,7 @@ namespace OnlineShopingStore.Repository
         {
             _dbSet.Where(wherePredict).ToList().ForEach(ForEachPredict);
         }
+
+
     }
 }
