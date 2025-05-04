@@ -12,9 +12,11 @@ namespace OnlineShopingStore.Models
         [Required]
         public string CardHolderName { get; set; }
 
-        [Required]
-        [CreditCard]
+        [Required(ErrorMessage = "Card number is required")]
+        [StringLength(16, MinimumLength = 16, ErrorMessage = "Card number must be 16 digits")]
+        [RegularExpression(@"^\d{16}$", ErrorMessage = "Card number must be numeric and 16 digits long")]
         public string CardNumber { get; set; }
+
 
         [Required]
         public string ExpiryDate { get; set; }

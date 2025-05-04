@@ -67,6 +67,28 @@
             transform: translateY(-5px);
         }
 </style>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="popupMessage" style="
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        color: #0f5132;
+        padding: 15px 25px;
+        border-radius: 10px;
+        z-index: 9999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        font-weight: 600;
+        display: none;
+        cursor: pointer; /* Change cursor to indicate it's clickable */
+    " onclick="this.style.display='none'">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 
 
 <div id="themeSlider" class="carousel slide" data-ride="carousel" style="margin: 0 20px; border-radius: 15px; overflow: hidden;">
@@ -163,11 +185,11 @@
     <form action="@Url.Action("Index", "Home")" method="get" class="d-flex gap-2">
         <input type="text" name="search" placeholder="Enter Keyword" class="form-control mr-2" style="border-radius: 20px;" value="@Request["search"]" />
         @*@foreach (var genre in Model.Genres)
-        {
-            <a href="@Url.Action("Index", "Home", new { genre = genre })" class="btn btn-outline-primary m-1">
-                @genre
-            </a>
-        }*@
+            {
+                <a href="@Url.Action("Index", "Home", new { genre = genre })" class="btn btn-outline-primary m-1">
+                    @genre
+                </a>
+            }*@
         @Html.DropDownList("genre", new SelectList(Model.Genres, Request["genre"]), "All Genres", new { @class = "form-control mr-2", style = "border-radius: 20px;" })
 
 
@@ -220,6 +242,9 @@
                                     @Html.Hidden("productId", item.ProductId)
 
 
+
+
+
                                     <button type="submit" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-cart-plus"></i> Add to Cart
                                     </button>
@@ -234,6 +259,7 @@
 
                         </div>
                     </div>
+
                     <div class="card-footer bg-white border-top-0">
                         <a href="@Url.Action("Details", "Home", new { productId = item.ProductId })"
                            class="btn btn-link text-secondary btn-block">
@@ -274,9 +300,82 @@
     </div>
 
 </div>
+
 <div class="container">
     <br />
     @Html.PagedListPager(
     Model.ListofProducts,
     pageNum => Url.Action("Index", new { page = pageNum, search = Request.QueryString["search"] }))
 </div>
+<script>
+    window.onload = function () {
+        var popup = document.getElementById('popupMessage');
+        if (popup) {
+            popup.style.display = 'block';
+            setTimeout(function () {
+                popup.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
+    }
+</script>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="popupMessage" style="
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        color: #0f5132;
+        padding: 15px 25px;
+        border-radius: 10px;
+        z-index: 9999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        font-weight: 600;
+        display: none;
+        cursor: pointer; /* Change cursor to indicate it's clickable */
+    " onclick="this.style.display='none'">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<script>
+    // Show the popup when page loads
+    window.onload = function () {
+        var popupMessage = document.getElementById('popupMessage');
+        if (popupMessage) {
+            popupMessage.style.display = 'block'; // Display the popup
+        }
+    };
+</script>
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="popupMessage" style="
+        position: fixed;
+        top: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+        color: #0f5132;
+        padding: 15px 25px;
+        border-radius: 10px;
+        z-index: 9999;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        font-weight: 600;
+        display: none;
+        cursor: pointer;
+    " onclick="this.style.display='none'">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<script>
+    window.onload = function () {
+        var popupMessage = document.getElementById('popupMessage');
+        if (popupMessage) {
+            popupMessage.style.display = 'block';
+        }
+    };
+</script>

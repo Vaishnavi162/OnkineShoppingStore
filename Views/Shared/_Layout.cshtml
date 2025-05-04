@@ -255,9 +255,9 @@
                 {
                     <span class="me-3">
                         @*@if (Session["Fullname"] != null)
-                {
-                    <strong> @Session["Fullname"]!</strong>
-                }*@
+                            {
+                                <strong> @Session["Fullname"]!</strong>
+                            }*@
 
                     </span>
                 }
@@ -312,38 +312,42 @@
     </footer>
 
     <script>
-        function submitPayment(method) {
-            const data = {
-                name: document.getElementById('name').value,
-                cardNumber: document.getElementById('card-number').value,
-                expiry: document.getElementById('expiry').value,
-                cvv: document.getElementById('cvv').value,
-                billingAddress: document.getElementById('address').value,
-                city: document.getElementById('city').value,
-                state: document.getElementById('state').value,
-                zipCode: document.getElementById('zip').value,
-                country: document.getElementById('country').value,
-                amount: 224.97,
-                method: method
-            };
+        function addToCart(itemName) {
+            document.getElementById('addToCartMessage').innerText = itemName + ' has been added to your cart!';
+            var modal = new bootstrap.Modal(document.getElementById('addToCartSuccessModal'));
+            modal.show();
+            function submitPayment(method) {
+                const data = {
+                    name: document.getElementById('name').value,
+                    cardNumber: document.getElementById('card-number').value,
+                    expiry: document.getElementById('expiry').value,
+                    cvv: document.getElementById('cvv').value,
+                    billingAddress: document.getElementById('address').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                    zipCode: document.getElementById('zip').value,
+                    country: document.getElementById('country').value,
+                    amount: 224.97,
+                    method: method
+                };
 
-            fetch('/Payment/ProcessPayment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-                },
-                body: JSON.stringify(data)
-            })
-                .then(res => res.json())
-                .then(result => {
-                    if (result.success) {
-                        alert("Payment Success! Transaction ID: " + result.transactionId);
-                    } else {
-                        alert("Payment Failed: " + result.message);
-                    }
-                });
-        }
+                fetch('/Payment/ProcessPayment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(res => res.json())
+                    .then(result => {
+                        if (result.success) {
+                            alert("Payment Success! Transaction ID: " + result.transactionId);
+                        } else {
+                            alert("Payment Failed: " + result.message);
+                        }
+                    });
+            }
     </script>
 
 
@@ -356,4 +360,25 @@
 
     @RenderSection("Scripts", required: false)
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Success Modal -->
+<div class="modal fade" id="addToCartSuccessModal" tabindex="-1" aria-labelledby="addToCartSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="addToCartSuccessModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="addToCartMessage">Product has been successfully added to your cart.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 </html>

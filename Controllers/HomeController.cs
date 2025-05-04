@@ -241,13 +241,14 @@ namespace OnlineShopingStore.Controllers
             }
 
             Session["cart"] = cart;
-            TempData["CartSuccess"] = "Your product has been added to the cart.";
-
+            TempData["SuccessMessage"] = "Product added to cart successfully!";
             return RedirectToAction("Index");
+
+
         }
 
 
-        
+
 
 
 

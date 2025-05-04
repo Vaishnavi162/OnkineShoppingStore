@@ -64,7 +64,7 @@ namespace OnlineShopingStore.Controllers
             return View();
         }
 
-        
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -72,23 +72,22 @@ namespace OnlineShopingStore.Controllers
         {
             using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
             {
-                //var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
-                //if (user != null)
-                //{
-                //    // Store name or email in Session
-                //    Session["Fullname"] = user.Fullname; // Or use user.UEmail
-                //    return RedirectToAction("Index", "Home");
-                //}
                 var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
                 if (user != null)
                 {
-                    Session["UserId"] = user.UserID;       // ✅ Make sure this line is here
+                    // Store user info in session
+                    Session["UserId"] = user.UserID;
                     Session["Fullname"] = user.Fullname;
+
+                    // Set success message in TempData to show it in the next request
+                    TempData["SuccessMessage"] = "Login successful!";
+
+                    // Redirect to Home page or any other page
                     return RedirectToAction("Index", "Home");
                 }
-
                 else
                 {
+                    // Show error message if login fails
                     ModelState.AddModelError("", "Invalid email or password");
                     return View();
                 }
@@ -227,10 +226,17 @@ namespace OnlineShopingStore.Controllers
 
 
         public ActionResult Logout()
-{
-    Session.Clear(); // Clears all session data
-    return RedirectToAction("Index", "Home"); // Redirect to home page
-}
+        {
+            // Clear session or authentication info
+            Session.Clear(); // or use Session.Abandon();
+
+            // Set TempData success message
+            TempData["SuccessMessage"] = "Logout successful!";
+
+            // Redirect to login or home page
+            return RedirectToAction("Index", "Home"); // or RedirectToAction("Login", "Account");
+        }
+
 
 
 
