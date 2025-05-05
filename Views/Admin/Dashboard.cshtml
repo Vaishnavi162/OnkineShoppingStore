@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
 }
+
 <div class="container-fluid">
     <div class="card mb-3">
         <div class="card-header">
@@ -11,12 +12,12 @@
             Dashboard
         </div>
         <div class="card-body">
-           
+
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <div class="row">
                     <div class="col-md-3">
                         <a href="@Url.Action("Categories", "Admin")" class="text-decoration-none ;style="color: black;">
-                            <div class="card p-3 mb-3 "style="color: black;">
+                            <div class="card p-3 mb-3 " style="color: black;">
                                 <h4>Total Categories</h4>
                                 <h3>@Model.TotalCategories</h3>
                             </div>
@@ -25,7 +26,7 @@
 
                     <div class="col-md-3">
                         <a href="@Url.Action("Product", "Admin")" class="text-decoration-none ;style="color: black;">
-                            <div class="card p-3 mb-3 "style="color: black;">
+                            <div class="card p-3 mb-3 " style="color: black;">
                                 <h4>Total Products</h4>
                                 <h3>@Model.TotalProducts</h3>
                             </div>
@@ -33,7 +34,7 @@
                     </div>
                     <div class="col-md-3">
                         <a href="@Url.Action("GenreDetail", "Admin")" class="text-decoration-none ;style="color: black;">
-                            <div class="card p-3 mb-3 "style="color: black;">
+                            <div class="card p-3 mb-3 " style="color: black;">
                                 <h4>Total Genres</h4>
                                 <h3>@Model.TotalGenres</h3>
                             </div>
@@ -42,7 +43,7 @@
 
                     <div class="col-md-3">
                         <a href="@Url.Action("Orders", "Admin")" class="text-decoration-none ;style="color: black;">
-                            <div class="card p-3 mb-3 "style="color: black;">
+                            <div class="card p-3 mb-3 " style="color: black;">
                                 <h4>Total Orders</h4>
                                 <h3>@Model.TotalOrders</h3>
                             </div>
@@ -50,7 +51,7 @@
                     </div>
                     <div class="col-md-3">
                         <a href="@Url.Action("Users", "Account")" class="text-decoration-none ;style="color: black;">
-                            <div class="card p-3 mb-3 "style="color: black;">
+                            <div class="card p-3 mb-3 " style="color: black;">
                                 <h4>Total Users</h4>
                                 <h3>@Model.TotalUsers</h3>
                             </div>
@@ -58,10 +59,10 @@
                     </div>
 
                 </div>
-                
+
             </table>
-            </div>
-        
         </div>
+
     </div>
-       
+</div>
+

@@ -61,27 +61,50 @@ namespace OnlineShopingStore.Controllers
             return View();
         }
 
+        //public ActionResult Dashboard()
+        //{
+
+        //    if (Session["Admin"] == null)
+        //        return RedirectToAction("AdminLogin");
+        //    var model = new DashboardViewModel
+        //    {
+        //        TotalUsers = ctx.Tbl_User.Count(),
+        //        TotalProducts = ctx.Tbl_Product.Count(),
+        //        TotalOrders = ctx.Tbl_Order.Count(),
+        //        TotalCategories = ctx.Tbl_Category.Count(),
+        //        TotalGenres = ctx.Tbl_Genre.Count()
+        //    };
+
+        //    return View(model);
+
+        //}
+        
         public ActionResult Dashboard()
         {
-            if (Session["Admin"] == null)
-                return RedirectToAction("AdminLogin");
-            var model = new DashboardViewModel
+            using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
             {
-                TotalUsers = ctx.Tbl_User.Count(),
-                TotalProducts = ctx.Tbl_Product.Count(),
-                TotalOrders = ctx.Tbl_Order.Count(),
-                TotalCategories = ctx.Tbl_Category.Count(),
-                TotalGenres = ctx.Tbl_Genre.Count()
-            };
+                var model = new DashboardViewModel
+                {
+                    TotalCategories = db.Tbl_Category.Count(),
+                    TotalProducts = db.Tbl_Product.Count(),
+                    TotalUsers = db.Tbl_User.Count()
+                };
 
-            return View(model);
-            
+                return View(model);
+            }
         }
+
 
         public ActionResult Logout()
         {
-            Session["Admin"] = null;
-            return RedirectToAction("AdminLogin");
+            //Session["Admin"] = null;
+            //return RedirectToAction("AdminLogin");
+            // Clear the session
+            Session.Clear();
+            Session.Abandon();
+
+            // Redirect to Login page (Index action of AccountController)
+            return RedirectToAction("Login", "Account");
         }
         public List<SelectListItem> GetCategory()
         {

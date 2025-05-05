@@ -67,6 +67,33 @@ namespace OnlineShopingStore.Controllers
 
 
 
+        //[HttpPost]
+        //[AllowAnonymous]
+        //public ActionResult Login(Tbl_User model)
+        //{
+        //    using (dbMyOnlineShoppingEntitiess db = new dbMyOnlineShoppingEntitiess())
+        //    {
+        //        var user = db.Tbl_User.FirstOrDefault(x => x.Email == model.Email && x.Password == model.Password);
+        //        if (user != null)
+        //        {
+        //            // Store user info in session
+        //            Session["UserId"] = user.UserID;
+        //            Session["Fullname"] = user.Fullname;
+
+        //            // Set success message in TempData to show it in the next request
+        //            TempData["SuccessMessage"] = "Login successful!";
+
+        //            // Redirect to Home page or any other page
+        //            return RedirectToAction("Index", "Home");
+        //        }
+        //        else
+        //        {
+        //            // Show error message if login fails
+        //            ModelState.AddModelError("", "Invalid email or password");
+        //            return View();
+        //        }
+        //    }
+        //}
         [HttpPost]
         [AllowAnonymous]
         public ActionResult Login(Tbl_User model)
@@ -80,10 +107,18 @@ namespace OnlineShopingStore.Controllers
                     Session["UserId"] = user.UserID;
                     Session["Fullname"] = user.Fullname;
 
-                    // Set success message in TempData to show it in the next request
+                    // Set success message in TempData
                     TempData["SuccessMessage"] = "Login successful!";
 
-                    // Redirect to Home page or any other page
+                    // Check if the user is admin
+                    if (user.Email == "admin@gmail.com" && user.Password == "admin123")
+                    {
+                        TempData["SuccessMessage"] = "Redirecting to dashboard...";
+                        return RedirectToAction("Dashboard", "Admin");
+
+                    }
+
+                    // Redirect to Index for regular users
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -94,6 +129,7 @@ namespace OnlineShopingStore.Controllers
                 }
             }
         }
+
 
 
         [AllowAnonymous]

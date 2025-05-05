@@ -29,5 +29,7 @@ namespace OnlineShopingStore.DAL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_Order> Tbl_Order { get; set; }
+       public string Role { get; set; }
+
     }
 }
