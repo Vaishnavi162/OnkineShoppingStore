@@ -122,5 +122,10 @@ namespace OnlineShopingStore.Repository
         {
             _dbSet.Where(wherePredict).ToList().ForEach(ForEachPredict);
         }
+
+        public int GetFirstorDefault(Func<object, bool> value)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

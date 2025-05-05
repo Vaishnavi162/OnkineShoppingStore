@@ -100,6 +100,12 @@
                     <span>Orders</span>
                 </a>
             </li>
+            <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Users" ? "active" : "")">
+                <a class="nav-link" href="@Url.Action("Users", "Account")">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Users</span>
+                </a>
+            </li>
         </ul>
 
         <div id="content-wrapper">

@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using OnlineShopingStore.DAL;
 using OnlineShopingStore.Models;
+using OnlineShopingStore.Repository;
 
 namespace OnlineShopingStore.Controllers
 {
@@ -171,6 +172,76 @@ namespace OnlineShopingStore.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        //public ActionResult MyOrders()
+        //{
+        //    if (Session["UserId"] == null)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    int userId = Convert.ToInt32(Session["UserId"]);
+
+        //    var orders = (from order in db.Tbl_Order
+        //                  where order.UserID == userId
+        //                  select new UserOrderDetailViewModel
+        //                  {
+        //                      OrderID = order.OrderID,
+        //                      OrderDate = (DateTime)order.OrderDate,
+        //                      PaymentAmount = order.PaymentAmount ?? 0,
+        //                      OrderStatus = order.OrderStatus,
+        //                      Products = (from detail in db.Tbl_OrderDetail
+        //                                  join product in db.Tbl_Product
+        //                                  on detail.ProductID equals product.ProductId
+        //                                  where detail.OrderID == order.OrderID
+        //                                  select new UserOrderDetailViewModel.ProductInfo
+        //                                  {
+        //                                      ProductName = product.ProductName,
+        //                                      ProductImage = product.ProductImage,
+        //                                      Price = detail.Price,
+        //                                      Quantity = detail.Quantity
+        //                                  }).ToList()
+        //                  }).ToList();
+
+        //    return View(orders);
+        //}
+        public ActionResult MyOrders()
+        {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            int userId = Convert.ToInt32(Session["UserId"]);
+
+            var orders = db.Tbl_Order
+                .Where(order => order.UserID == userId)
+                .Select(order => new UserOrderDetailViewModel
+                {
+                    OrderID = order.OrderID,
+                    OrderDate = order.OrderDate ?? DateTime.MinValue,
+                    PaymentAmount = order.PaymentAmount ?? 0,
+                    OrderStatus = order.OrderStatus, // this is admin-updated value
+                    Products = db.Tbl_OrderDetail
+                        .Where(detail => detail.OrderID == order.OrderID)
+                        .Join(db.Tbl_Product,
+                              detail => detail.ProductID,
+                              product => product.ProductId,
+                              (detail, product) => new UserOrderDetailViewModel.ProductInfo
+                              {
+                                  ProductName = product.ProductName,
+                                  ProductImage = product.ProductImage,
+                                  Price = detail.Price,
+                                  Quantity = detail.Quantity
+                              })
+                        .ToList()
+                })
+                .ToList();
+
+            return View(orders);
+        }
+
+
+
         [HttpGet]
         public ActionResult EditProfile()
         {
@@ -221,7 +292,13 @@ namespace OnlineShopingStore.Controllers
 
             return RedirectToAction("Profile");
         }
+        private GenericUnitOfWork unitOfWork = new GenericUnitOfWork();
 
+        public ActionResult Users()
+        {
+            var users = unitOfWork.GetRepositoryInstance<Tbl_User>().GetAllRecords().ToList();
+            return View(users);
+        }
 
 
 

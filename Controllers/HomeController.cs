@@ -12,24 +12,54 @@ namespace OnlineShopingStore.Controllers
     public class HomeController : Controller
     {
         dbMyOnlineShoppingEntitiess ctx = new dbMyOnlineShoppingEntitiess();
-        //public ActionResult Index(string search, int? page)
+
+        //public ActionResult Index(string search, string genre, int? page)
         //{
-        //    HomeIndexViewModel model = new HomeIndexViewModel();
-        //    model = model.CreateModel(search, 4, page);
-        //    return View(model);
-        //}
-        //public ActionResult Index(string search, int? genreId, int? page)
-        //{
-        //    HomeIndexViewModel model = new HomeIndexViewModel();
-        //    model = model.CreateModel(search, 4, page, genreId);
+        //    using (var db = new dbMyOnlineShoppingEntitiess())
+        //    {
+        //        var genres = db.Tbl_Category.Select(c => c.CategoryName).Distinct().ToList();
 
-        //    var genres = ctx.Tbl_Genre.ToList();
-        //    ViewBag.Genres = new SelectList(genres, "GenreId", "GenreName", genreId);
+        //        // Join products and categories manually
+        //        var productsQuery = from p in db.Tbl_Product
+        //                            join c in db.Tbl_Category on p.CategoryId equals c.CategoryId
+        //                            select new
+        //                            {
+        //                                Product = p,
+        //                                CategoryName = c.CategoryName
+        //                            };
 
+        //        // Filter by genre
+        //        if (!string.IsNullOrEmpty(genre))
+        //        {
+        //            productsQuery = productsQuery.Where(x => x.CategoryName == genre);
+        //        }
 
-        //    ViewBag.SelectedGenre = genreId;
+        //        // Filter by search term (on ProductName or Description)
+        //        if (!string.IsNullOrEmpty(search))
+        //        {
+        //            productsQuery = productsQuery.Where(x =>
+        //                x.Product.ProductName.Contains(search) ||
+        //                x.Product.Description.Contains(search));
+        //        }
 
-        //    return View(model);
+        //        // Extract products
+        //        var productList = productsQuery.Select(x => x.Product).ToList();
+
+        //        // Pagination
+        //        int pageSize = 8;
+        //        int pageNumber = page ?? 1;
+        //        var pagedProducts = productList.ToPagedList(pageNumber, pageSize);
+
+        //        // Create view model
+        //        var viewModel = new HomeIndexViewModel
+        //        {
+        //            ListofProducts = pagedProducts,
+        //            Genres = genres,
+
+        //        };
+
+        //        return View(viewModel);
+        //    }
         //}
 
         public ActionResult Index(string search, string genre, int? page)
@@ -38,22 +68,22 @@ namespace OnlineShopingStore.Controllers
             {
                 var genres = db.Tbl_Category.Select(c => c.CategoryName).Distinct().ToList();
 
-                // Join products and categories manually
                 var productsQuery = from p in db.Tbl_Product
                                     join c in db.Tbl_Category on p.CategoryId equals c.CategoryId
                                     select new
                                     {
                                         Product = p,
-                                        CategoryName = c.CategoryName
+                                        CategoryName = c.CategoryName,
+                                        SoldQty = db.Tbl_OrderDetail
+                                                     .Where(o => o.ProductID == p.ProductId)
+                                                     .Sum(o => (int?)o.Quantity) ?? 0
                                     };
 
-                // Filter by genre
                 if (!string.IsNullOrEmpty(genre))
                 {
                     productsQuery = productsQuery.Where(x => x.CategoryName == genre);
                 }
 
-                // Filter by search term (on ProductName or Description)
                 if (!string.IsNullOrEmpty(search))
                 {
                     productsQuery = productsQuery.Where(x =>
@@ -61,20 +91,20 @@ namespace OnlineShopingStore.Controllers
                         x.Product.Description.Contains(search));
                 }
 
-                // Extract products
-                var productList = productsQuery.Select(x => x.Product).ToList();
+                var productList = productsQuery.ToList().Select(x =>
+                {
+                    x.Product.Quantity = x.Product.Quantity - x.SoldQty; // Update quantity to show remaining
+                    return x.Product;
+                }).ToList();
 
-                // Pagination
                 int pageSize = 8;
                 int pageNumber = page ?? 1;
                 var pagedProducts = productList.ToPagedList(pageNumber, pageSize);
 
-                // Create view model
                 var viewModel = new HomeIndexViewModel
                 {
                     ListofProducts = pagedProducts,
-                    Genres = genres,
-                   
+                    Genres = genres
                 };
 
                 return View(viewModel);
@@ -210,7 +240,69 @@ namespace OnlineShopingStore.Controllers
             return RedirectToAction("CheckOut");
         }
 
+        //[HttpPost]
+        //public ActionResult AddToCart(int productId, int? quantity)
+        //{
+        //    int qty = quantity ?? 1;
 
+        //    if (Session["Fullname"] == null)
+        //    {
+        //        TempData["LoginRequired"] = "Please login to add items to your cart.";
+        //        return RedirectToAction("Login", "Account");
+        //    }
+
+        //    // Get product
+        //    var product = ctx.Tbl_Product.Find(productId);
+        //    if (product == null)
+        //    {
+        //        TempData["ErrorMessage"] = "Product not found.";
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    // Step 1: Get total sold quantity from your order/payment table
+        //    int soldQty = ctx.Tbl_OrderDetail
+        //                   .Where(x => x.ProductID == productId)
+        //                   .Sum(x => (int?)x.Quantity) ?? 0;
+
+        //    // Step 2: Calculate remaining stock
+        //    int remainingQty = (int)(product.Quantity - soldQty);
+
+        //    // Step 3: Check against cart quantity
+        //    List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
+        //    var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
+        //    int currentQtyInCart = existingItem?.Quantity ?? 0;
+
+        //    if (currentQtyInCart + qty > remainingQty)
+        //    {
+        //        int allowedQty = remainingQty - currentQtyInCart;
+        //        TempData["ErrorMessage"] = allowedQty > 0
+        //            ? $"Only {allowedQty} unit(s) of '{product.ProductName}' are available due to current orders."
+        //            : $"'{product.ProductName}' is currently out of stock.";
+
+        //        // Stay on Checkout page in case of error
+        //        return RedirectToAction("CheckOut");
+        //    }
+
+        //    // Add/update item in cart
+        //    if (existingItem != null)
+        //    {
+        //        existingItem.Quantity += qty;
+        //        TempData["SuccessMessage"] = "Cart updated successfully!";
+        //        return RedirectToAction("CheckOut"); // Stay on CheckOut after update
+        //    }
+        //    else
+        //    {
+        //        cart.Add(new Item
+        //        {
+        //            Product = product,
+        //            Quantity = qty
+        //        });
+        //    }
+
+        //    Session["cart"] = cart;
+        //    TempData["SuccessMessage"] = "Product added to cart successfully!";
+        //    return RedirectToAction("CheckOut"); // Always redirect to CheckOut
+        //}
         [HttpPost]
         public ActionResult AddToCart(int productId, int? quantity)
         {
@@ -222,14 +314,49 @@ namespace OnlineShopingStore.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
+            // Get product
             var product = ctx.Tbl_Product.Find(productId);
+            if (product == null)
+            {
+                TempData["ErrorMessage"] = "Product not found.";
+                return RedirectToAction("Index");
+            }
 
+            // Step 1: Get total sold quantity from your order/payment table
+            int soldQty = ctx.Tbl_OrderDetail
+                           .Where(x => x.ProductID == productId)
+                           .Sum(x => (int?)x.Quantity) ?? 0;
+
+            // Step 2: Calculate remaining stock
+            int remainingQty = (int)(product.Quantity - soldQty);
+
+            // ✅ Block immediately if no stock left
+            if (remainingQty <= 0)
+            {
+                TempData["Error"] = "This product is out of stock.";
+                return RedirectToAction("Details", new { productId = productId });
+            }
+
+            // Step 3: Check against cart quantity
+            List<Item> cart = Session["cart"] as List<Item> ?? new List<Item>();
             var existingItem = cart.FirstOrDefault(item => item.Product.ProductId == productId);
+            int currentQtyInCart = existingItem?.Quantity ?? 0;
+
+            if (currentQtyInCart + qty > remainingQty)
+            {
+                int allowedQty = remainingQty - currentQtyInCart;
+                TempData["ErrorMessage"] = allowedQty > 0
+                    ? $"Only {allowedQty} unit(s) of '{product.ProductName}' are available due to current orders."
+                    : $"'{product.ProductName}' is currently out of stock.";
+
+                return RedirectToAction("CheckOut");
+            }
+
+            // Add/update item in cart
             if (existingItem != null)
             {
                 existingItem.Quantity += qty;
-                return RedirectToAction("CheckOut");
+                TempData["SuccessMessage"] = "Cart updated successfully!";
             }
             else
             {
@@ -238,13 +365,11 @@ namespace OnlineShopingStore.Controllers
                     Product = product,
                     Quantity = qty
                 });
+                TempData["SuccessMessage"] = "Product added to cart successfully!";
             }
 
             Session["cart"] = cart;
-            TempData["SuccessMessage"] = "Product added to cart successfully!";
-            return RedirectToAction("Index");
-
-
+            return RedirectToAction("CheckOut");
         }
 
 

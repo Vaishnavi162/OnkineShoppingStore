@@ -27,6 +27,7 @@ namespace OnlineShopingStore.Controllers
             {
                 return View(model);
             }
+            model.Status = "Pending"; // Set status automatically
 
             // 1) Get User ID from Session
             if (Session["UserId"] == null)
@@ -52,13 +53,14 @@ namespace OnlineShopingStore.Controllers
             Tbl_Payment payment = new Tbl_Payment
             {
                 UserId = Convert.ToInt32(Session["UserId"]),
-
+                
                 CardHolderName = model.CardHolderName,
                 CardNumber = model.CardNumber,
                 ExpiryDate = model.ExpiryDate,
                 CVV = model.CVV,
                 PaymentDate = DateTime.Now,
-                AmountPaid = totalAmount
+                AmountPaid = totalAmount,
+                ProductId = (cart.Count == 1) ? cart[0].Product.ProductId : (int?)null
             };
             unitOfWork.GetRepositoryInstance<Tbl_Payment>().Add(payment);
 
@@ -69,9 +71,10 @@ namespace OnlineShopingStore.Controllers
             Tbl_Order order = new Tbl_Order
             {
                 UserID = userId,
+                
                 PaymentID = payment.PaymentId,
                 OrderDate = DateTime.Now,
-                OrderStatus = "Processing",
+                OrderStatus = "Pending",
 
                 // Save payment info to Tbl_Order as well
                 PaymentAmount = payment.AmountPaid,
@@ -86,10 +89,12 @@ namespace OnlineShopingStore.Controllers
             {
                 Tbl_OrderDetail detail = new Tbl_OrderDetail
                 {
+                    
                     OrderID = order.OrderID,
                     ProductID = item.Product.ProductId,
                     Quantity = item.Quantity,
-                    Price = (decimal)item.Product.Price
+                    Price = (decimal)item.Product.Price,
+                    OrderStatus = "Pending",
                 };
                 unitOfWork.GetRepositoryInstance<Tbl_OrderDetail>().Add(detail);
             }
@@ -102,6 +107,8 @@ namespace OnlineShopingStore.Controllers
             TempData["Message"] = "Payment Successful & Order Placed!";
             return RedirectToAction("SuccessView");
         }
+
+        
 
         public ActionResult SuccessView()
         {

@@ -1,0 +1,44 @@
+﻿@model List<OnlineShopingStore.DAL.Tbl_User>
+
+@{
+    ViewBag.Title = "All Users";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            All Registered User
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Sr No.</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Address</th>
+                            <th>Password</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@Model[i].Fullname</td>
+                                <td>@Model[i].Email</td>
+                                <td>@Model[i].Contact</td>
+                                <td>@Model[i].Address</td>
+                                <td>@Model[i].Password</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

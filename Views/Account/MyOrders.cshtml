@@ -1,0 +1,53 @@
+﻿@model List<OnlineShopingStore.Models.UserOrderDetailViewModel>
+
+
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            
+            <h2>My Order</h2>  
+        </div>
+        @if (!Model.Any())
+        {
+            <p>No orders found.</p>
+        }
+        else
+        {
+            foreach (var order in Model)
+            {
+    <div class="border p-3 mb-4 shadow rounded">
+        <h4 class="font-semibold">Order ID: @order.OrderID</h4>
+        <p><strong>Date:</strong> @order.OrderDate</p>
+        <p><strong>Status:</strong> @order.OrderStatus</p>
+        <p><strong>Paid:</strong> ₹@order.PaymentAmount</p>
+
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in order.Products)
+                {
+                    <tr>
+                        <td>
+                            <img src="@Url.Content("~/ProductImg/" + item.ProductImage)" alt="Product" width="60" />
+                        </td>
+                        <td>@item.ProductName</td>
+                        <td>₹@item.Price</td>
+                        <td>@item.Quantity</td>
+                        <td>₹@(item.Price * item.Quantity)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+            }
+        }
+        </div>
+</div>

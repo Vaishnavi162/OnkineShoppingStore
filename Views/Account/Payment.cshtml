@@ -16,6 +16,7 @@
             @Html.ValidationMessageFor(m => m.CardHolderName)
         </div>
 
+<<<<<<< HEAD
         @*<div>
                 @Html.LabelFor(m => m.CardNumber)
                 @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control" })
@@ -34,6 +35,10 @@
             })
             @Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
         </div>
+=======
+        <input type="text" name="CardNumber" maxlength="16" pattern="\d{16}" title="Enter 16 digits card number" required />
+
+>>>>>>> b3c086d493cfc534c33b4ed2d44175afe3bb7395
 
 
         <div>
@@ -41,6 +46,8 @@
             @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control", placeholder = "MM/YY" })
             @Html.ValidationMessageFor(m => m.ExpiryDate)
         </div>
+        @Html.HiddenFor(m => m.Status)
+
 
         <div>
             @Html.LabelFor(m => m.CVV)

@@ -1,40 +1,82 @@
-﻿@model List<OnlineShopingStore.Models.PaymentOrderViewModel>
+﻿@model IEnumerable<OnlineShopingStore.Models.PaymentOrderViewModel>
 @{
     ViewBag.Title = "Order Payment Records";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<h2 class="mb-4">Order Payment Details</h2>
+<div class="container-fluid">
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fas fa-table"></i>
+            Order
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>Email</th>
+                            <th>Products</th>
+                            <th>Card Holder</th>
+                            <th>Card Number</th>
+                            <th>Expiry</th>
+                            <th>CVV</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.PaymentID</td>
+                                <td>@item.UserID</td>
+                                <td>@item.UserName</td>
+                                <td>@item.Email</td>
+                                <td>@item.ProductName</td>
+                                <td>@item.CardHolderName</td>
+                                <td>@item.CardNumber</td>
+                                <td>@item.ExpiryDate</td>
+                                <td>@item.CVV</td>
+                                <td>₹@item.AmountPaid</td>
+                                <td>@(item.PaymentDate?.ToString("dd-MM-yyyy"))</td>
+                                @*<td>@item.OrderStatus</td>*@
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Payment ID</th>
-            <th>User ID</th>
-            <th>User Name</th>
-            <th>Email</th>
-            <th>Card Holder</th>
-            <th>Card Number</th>
-            <th>Expiry</th>
-            <th>CVV</th>
-            <th>Amount Paid</th>
-            <th>Payment Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var p in Model)
-        {
-            <tr>
-                <td>@p.PaymentID</td>
-                <td>@p.UserID</td>
-                <td>@p.UserName</td>
-                <td>@p.Email</td>
-                <td>@p.CardHolderName</td>
-                <td>@p.CardNumber</td>
-                <td>@p.ExpiryDate</td>
-                <td>@p.CVV</td>
-                <td>₹@p.AmountPaid</td>
-                <td>@p.PaymentDate</td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.OrderStatus))
+                                    {
+                                        if (item.OrderStatus == "Success")
+                                        {
+                                            <span class="badge bg-success">Success</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">@item.OrderStatus</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @Html.ActionLink("Edit Status", "EditOrderStatus", "Admin", new { id = item.PaymentID }, null)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

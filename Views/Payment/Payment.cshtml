@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Make a Payment";
 }
+
 <div class="container">
     <h2>Make a Payment</h2>
 
@@ -9,11 +10,22 @@
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.CardHolderName)
-            @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.CardHolderName)
-        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Input</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CardHolderName)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CardHolderName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CardHolderName)
+                    </td>
+                </tr>
+
 
         @*<div class="form-group">
                 @Html.LabelFor(m => m.CardNumber)
@@ -21,6 +33,7 @@
                 @Html.ValidationMessageFor(m => m.CardNumber)
             </div>*@
         <div class="form-group">
+           
             @Html.LabelFor(m => m.CardNumber)
             @Html.TextBoxFor(m => m.CardNumber, new
             {
@@ -31,23 +44,43 @@
                 placeholder = "Enter 16-digit card number",
                 oninput = "this.value = this.value.replace(/[^0-9]/g, '').slice(0,16);"
             })
-            @Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
+            @*@Html.ValidationMessageFor(m => m.CardNumber, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.ExpiryDate)
-            @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control", placeholder = "MM/YY" })
-            @Html.ValidationMessageFor(m => m.ExpiryDate)
-        </div>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CardNumber)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CardNumber, new { @class = "form-control", maxlength = "16", type = "text" })
+                        @Html.ValidationMessageFor(m => m.CardNumber)
+                    </td>
+                </tr>*@
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.CVV)
-            @Html.TextBoxFor(m => m.CVV, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.CVV)
-        </div>
+
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.ExpiryDate)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ExpiryDate, new { @class = "form-control", placeholder = "MM/YY" })
+                        @Html.ValidationMessageFor(m => m.ExpiryDate)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.CVV)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.CVV, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CVV)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <button type="submit" class="btn btn-success">Submit Payment</button>
     }
+
+
+</div>
+
 
 </div>
 

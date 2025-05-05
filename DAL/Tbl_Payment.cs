@@ -28,10 +28,11 @@ namespace OnlineShopingStore.DAL
         public string CVV { get; set; }
         public System.DateTime PaymentDate { get; set; }
         public Nullable<decimal> AmountPaid { get; set; }
+        public string Status { get; set; }
+        public Nullable<int> ProductId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tbl_Order> Tbl_Order { get; set; }
-        public virtual Tbl_User Tbl_User { get; set; }
-
+        public virtual Tbl_Product Tbl_Product { get; set; }
     }
 }

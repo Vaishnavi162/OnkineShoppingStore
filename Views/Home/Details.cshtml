@@ -4,7 +4,30 @@
     ViewBag.Title = "Details";
 }
 
+<style>
+    .out-of-stock-message {
+        text-align: center; /* Center the text horizontally */
+        font-size: 2rem; /* Larger font size for the header */
+        font-weight: bold; /* Make the text bold */
+        margin: 20px auto; /* Center the div horizontally and add margin */
+        max-width: 600px; /* Optional: Control max width */
+        color: #dc3545; /* Red color for "Out of Stock" */
+    }
+
+        .out-of-stock-message h2 {
+            margin: 0; /* Remove default margin */
+            padding: 10px 0; /* Add padding around the message */
+        }
+
+
+</style>
 <div class="container my-5">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
     <div class="row">
         <div class="col-md-6">
             <br />
@@ -24,6 +47,7 @@
                 </span>
             </div>
 
+
             @if (Model.Quantity > 0)
             {
                 using (Html.BeginForm("AddToCart", "Home", FormMethod.Post))
@@ -39,8 +63,17 @@
                         <i class="fas fa-cart-plus"></i> Add to Cart
                     </button>
                 }
-
             }
+            else
+            {
+                @*<div class="alert alert-danger mt-3 out-of-stock-message">
+                <strong>Sorry!</strong> This product is currently out of stock.
+            </div>*@
+                <div class="out-of-stock-message mt-3">
+                    <h2>Sorry! This product is currently out of stock.</h2>
+                </div>
+            }
+
 
             <hr>
             <div class="product-details">

@@ -398,6 +398,7 @@
     <Compile Include="Models\PayPalOrder.cs" />
     <Compile Include="Models\Shopping.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserOrderDetailViewModel.cs" />
     <Compile Include="PaypalConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
@@ -1854,6 +1855,9 @@
     <Content Include="Images\Bluetooth.jpg" />
     <Content Include="Images\core-values-goals-mission-business-purpose-concept_53876-95300.jpg" />
     <Content Include="Images\download.jpg" />
+    <Content Include="Images\HP_Rotating_iphone_23April2025_lkdtcg.jpg" />
+    <Content Include="Images\HP_Rotating_LaptopMania_25April2025_sltuyy.jpg" />
+    <Content Include="Images\HP_Rotating_Pad_26April2025_lfca4a.jpg" />
     <Content Include="Images\icons8-search-30.png" />
     <Content Include="Images\istockphoto-1293075297-612x612.jpg" />
     <Content Include="Images\istockphoto-1398204953-612x612.jpg" />
@@ -2069,6 +2073,9 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Home\EditDetail.cshtml" />
     <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\EditOrderStatus.cshtml" />
+    <Content Include="Views\Account\Users.cshtml" />
+    <Content Include="Views\Account\MyOrders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

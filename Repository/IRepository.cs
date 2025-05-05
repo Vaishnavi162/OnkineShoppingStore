@@ -24,6 +24,6 @@ namespace OnlineShopingStore.Repository
         IEnumerable<Tbl_Entity> GetListParameter(Expression<Func<Tbl_Entity, bool>> WherePredict);
         IEnumerable<Tbl_Entity> GetResultBySqlprocedure(string query, params object[] parameters);
         IEnumerable<Tbl_Entity> GetRecordsToShow(int PageNo, int PageSize, int CurrentPage, Expression<Func<Tbl_Entity, bool>> wherePredict, Expression<Func<Tbl_Entity, int>> orderByPredict);
-        
+        int GetFirstorDefault(Func<object, bool> value);
     }
 }
